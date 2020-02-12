@@ -1,0 +1,30 @@
+steps:
+  # Install App
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['ci']
+  # Test App
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['run', 'lint']
+  # Build App
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['run', 'build']
+
+  # Install Functions
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['ci']
+    dir: 'functions'
+  # Test Functions
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['run', 'lint']
+    dir: 'functions'
+
+  # Deploy
+  - name: 'gcr.io/$PROJECT_ID/firebase'
+    args:
+      [
+        'deploy',
+        '--debug',
+        '--token',
+        '1//06tvHkwVc3Qt1CgYIARAAGAYSNwF-L9IrL3arhZqYs6cPrqT-DGn5AzoMC-x7XnfmOrJU0ioACe3mdFtcznyUcVokWYo3m9vurBc',
+      ]
+timeout: '900s'

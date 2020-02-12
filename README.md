@@ -1,4 +1,26 @@
+# SENG 513 - Winter 2020 - Final Project
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Setup
+
+- Install NodeJS v12 from https://nodejs.org/en/download/releases/
+- Clone the repo
+- Run `npm ci` to install all the dependencies
+- Run `npm start` to start the application locally
+- Application will start on `https://localhost:3000`
+
+### IDE Integration
+
+1. WebStorm: https://prettier.io/docs/en/webstorm.html
+2. VSCode: Install the `eslint` and `prettier` plugins. Add these configurations to your settings
+   ```
+   "editor.formatOnSave": true,
+   "eslint.format.enable": true,
+   "editor.codeActionsOnSave": {
+       "source.fixAll.eslint": true
+   },
+   ```
 
 ## Available Scripts
 
@@ -12,11 +34,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
 ### `npm run build`
 
 Builds the app for production to the `build` folder.<br />
@@ -27,42 +44,23 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## Code Style
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+This project uses [eslint](https://eslint.org) and [prettier](https://prettier.io) for linting and formatting JavaScript code. <br>
+For CSS/SCSS style, we use [stylelint](https://github.com/stylelint/stylelint) and [scss](https://sass-lang.com/documentation/syntax). <br>
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+By default, all the linters run in pre-commit hooks to ensure that code is following the expected style guidelines <br>
+before it is committed.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+The following scripts are included: <br>
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- `npm run lint`: Runs the linting tools and outputs and violations to the console
+- `npm run lint:fix`: Same as above, but will attempt to fix any violations. Note <br>
+  that eslint cannot fix some errors. Any errors that are not fixed will be displayed <br>
+  in the console.
 
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
