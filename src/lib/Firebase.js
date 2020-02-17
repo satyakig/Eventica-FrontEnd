@@ -2,11 +2,10 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firebase-firestore';
 
-let db;
-let auth;
+let firebase;
 
 export function initializeApp() {
-  app.initializeApp({
+  firebase = app.initializeApp({
     apiKey: 'AIzaSyDGt23yzVQmF0mdIqUilPLCGNjnpX_aaMM',
     authDomain: 'seng-513.firebaseapp.com',
     databaseURL: 'https://seng-513.firebaseio.com',
@@ -16,11 +15,12 @@ export function initializeApp() {
     appId: '1:80908029198:web:1d9a83e216706c1f085b5f',
     measurementId: 'G-THXM09W8DF',
   });
-
-  db = app.firestore();
-  auth = app.auth();
 }
 
-export const DATABASE = db;
+export function getDb() {
+  return firebase.firestore();
+}
 
-export const AUTH = auth;
+export function getAuth() {
+  return firebase.auth();
+}
