@@ -29,3 +29,7 @@ export function loginWithGoogle() {
   const provider = new app.auth.GoogleAuthProvider();
   getAuth().signInWithPopup(provider);
 }
+
+export function logout() {
+  getAuth().signOut();
+}
