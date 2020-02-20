@@ -12,6 +12,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './components/App/App';
 import combinedReducer from './redux/combinedReducer';
 import * as serviceWorker from './serviceWorker';
+import { initializeApp } from './lib/Firebase';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -42,6 +43,9 @@ const render = (Component) => {
     document.getElementById('root'),
   );
 };
+
+// Initialize firebase
+initializeApp();
 
 render(App);
 
