@@ -24,3 +24,8 @@ export function getDb() {
 export function getAuth() {
   return firebase.auth();
 }
+
+export function loginWithGoogle() {
+  const provider = new app.auth.GoogleAuthProvider();
+  getAuth().signInWithPopup(provider);
+}
