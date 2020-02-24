@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { AuthContainer } from '../../containers/AuthContainer';
+import { loginWithGoogle } from '../../lib/Firebase';
 import './App.scss';
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
           }}
         />
       </Switch>
+      <button onClick={loginWithGoogle}>Login</button>
     </div>
   );
 };
