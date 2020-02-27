@@ -1,5 +1,4 @@
 import React from 'react';
-import './NavBar.scss';
 import { useSelector } from 'react-redux';
 import { Navbar, DropdownButton, Dropdown, Form, FormControl, Button } from 'react-bootstrap';
 
