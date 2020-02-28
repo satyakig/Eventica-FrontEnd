@@ -24,7 +24,7 @@
   },
   "pre-commit": "lint:staged",
   "lint-staged": {
-    "*.{js,jsx}": [
+    "*.{js,jsx},!functions/*": [
       "npm run lint:fix"
     ],
     "*.*css": [
