@@ -44,6 +44,10 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+### `firebase deploy`
+
+Manually deploys everything related to firebase (including the cloud functions).
+
 ## Code Style
 
 This project uses [eslint](https://eslint.org) and [prettier](https://prettier.io) for linting and formatting JavaScript code. <br>
