@@ -1,16 +1,12 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Navbar, DropdownButton, Dropdown, Form, FormControl, Button } from 'react-bootstrap';
 
 const NavBar = () => {
-  const loggedIn = useSelector((state) => {
-    return state.userReducer.loggedIn;
-  });
+  // TODO: Get logged in status from user authentication PR
+  const loggedIn = false;
 
-  function ProfileButton(props) {
-    const isLoggedIn = props.isLoggedIn;
-
-    if (isLoggedIn) {
+  function profileButton() {
+    if (loggedIn) {
       return (
         <DropdownButton
           variant="outline-primary"
@@ -47,8 +43,7 @@ const NavBar = () => {
         <Button variant="outline-primary" type="create-event" className=" mr-2 mt-2 mt-sm-0">
           Create Event
         </Button>
-
-        <ProfileButton isLoggedIn={loggedIn} />
+        {profileButton()}
       </Navbar.Collapse>
     </Navbar>
   );

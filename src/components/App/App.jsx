@@ -11,7 +11,7 @@ const App = () => {
   }, []);
 
   return (
-    <div className="App">
+    <div className="App flex-container">
       <NavBar />
       <HomePage />
     </div>
