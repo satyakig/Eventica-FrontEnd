@@ -1,20 +1,14 @@
-import React, { useEffect } from 'react';
-import './App.scss';
-import { initializeApp } from '../../lib/Firebase';
+import React from 'react';
 import HomePage from '../HomePage/HomePage';
 import NavBar from '../NavBar/NavBar';
+import './App.scss';
 
 const App = () => {
-  useEffect(() => {
-    // Initialize the firebase app
-    initializeApp();
-  }, []);
-
   return (
-    <div className="App flex-container">
+    <main>
       <NavBar />
       <HomePage />
-    </div>
+    </main>
   );
 };
 
