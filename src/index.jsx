@@ -8,7 +8,6 @@ import { applyMiddleware, createStore } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 import App from './components/App/App';
 import combinedReducer from './redux/combinedReducer';

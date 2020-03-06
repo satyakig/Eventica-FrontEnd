@@ -12,10 +12,10 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "preserve",
     "baseUrl": "src",
-    "incremental": true
+    "incremental": false,
+    "noEmit": true
   },
   "include": ["src"],
   "exclude": ["node_modules"]
