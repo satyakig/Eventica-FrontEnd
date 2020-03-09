@@ -12,8 +12,8 @@ export const navbarStyles = ({ spacing, breakpoints, shape, palette, transitions
       },
     },
     title: {
-      flexBasis: '9ch',
-      minWidth: '9ch',
+      flexBasis: '11ch',
+      minWidth: '11ch',
       userSelect: 'none',
       textTransform: 'uppercase',
     },
