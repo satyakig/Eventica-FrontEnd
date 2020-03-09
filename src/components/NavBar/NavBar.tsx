@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import {
   AppBar,
   Toolbar,
@@ -8,11 +8,20 @@ import {
   InputBase,
   MenuItem,
   Menu,
+  Button,
+  useMediaQuery,
+  Avatar,
+  ListItemIcon,
 } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MoreIcon from '@material-ui/icons/MoreVert';
+import EventIcon from '@material-ui/icons/Event';
+import LogoutIcon from '@material-ui/icons/ExitToApp';
+import ManageEventIcon from '@material-ui/icons/EventNote';
+import ProfileIcon from '@material-ui/icons/AccountCircle';
+import { useSelector } from 'react-redux';
+import { ReduxState } from 'redux/combinedReducer';
+import { ReactComponent as GoogleLogo } from 'assets/google.svg';
+import { getAuth, makeLoginPopup } from 'lib/Firebase';
 import { navbarStyles } from './NavBar.styles';
 
 const useStyles = makeStyles(navbarStyles);
@@ -20,109 +29,138 @@ const useStyles = makeStyles(navbarStyles);
 const Navbar = (): JSX.Element => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
+  const isSmall = useMediaQuery((theme: Theme) => {
+    return theme.breakpoints.down('sm');
+  });
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const user = useSelector((state: ReduxState) => {
+    return state.userReducer;
+  });
 
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     setAnchorEl(event.currentTarget);
-  };
+  }
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
+  function handleClose() {
     setAnchorEl(null);
-    handleMobileMenuClose();
-  };
+  }
 
-  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
+  function sigIn() {
+    makeLoginPopup();
+  }
 
-  const menuId = 'primary-search-account-menu';
+  function createEvent() {
+    console.debug('Create Event click');
+  }
 
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
+  function profileClick() {
+    console.debug('Profile click');
+    handleClose();
+  }
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton color="inherit">
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
+  function manageEventsClick() {
+    console.debug('Manage Events click');
+    handleClose();
+  }
+
+  function logout() {
+    getAuth()
+      .signOut()
+      .then();
+    handleClose();
+  }
+
+  function getEndComponents() {
+    if (user.uid.length > 0) {
+      return (
+        <div className={classes.end}>
+          {isSmall ? (
+            <IconButton className={classes.smallEvent} onClick={createEvent}>
+              <EventIcon />
+            </IconButton>
+          ) : (
+            <Button size="large" onClick={createEvent} startIcon={<EventIcon />}>
+              Create
+            </Button>
+          )}
+          <IconButton onClick={handleClick}>
+            <Avatar alt={user.name} src={user.photoURL} className={classes.small} />
+          </IconButton>
+        </div>
+      );
+    } else {
+      return (
+        <div className={classes.end}>
+          {isSmall ? (
+            <IconButton onClick={sigIn}>
+              <GoogleLogo />
+            </IconButton>
+          ) : (
+            <Button color="default" size="large" startIcon={<GoogleLogo />} onClick={sigIn}>
+              Login
+            </Button>
+          )}
+        </div>
+      );
+    }
+  }
 
   return (
-    <div className={classes.grow}>
-      <AppBar position="static" color="default">
-        <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit">
-            <MenuIcon />
-          </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Eventica
-          </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
+    <AppBar position="static" color="default">
+      <Toolbar className={classes.navBar}>
+        <Typography className={classes.title} variant="h6" noWrap={true}>
+          Eventica
+        </Typography>
+        <div className={classes.search}>
+          <div className={classes.searchIcon}>
+            <SearchIcon />
           </div>
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <IconButton
-              edge="end"
-              aria-controls={menuId}
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton aria-controls={mobileMenuId} onClick={handleMobileMenuOpen} color="inherit">
-              <MoreIcon />
-            </IconButton>
-          </div>
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-    </div>
+          <InputBase
+            placeholder="Search Events…"
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+            inputProps={{ 'aria-label': 'search' }}
+          />
+        </div>
+        {getEndComponents()}
+        <Menu
+          anchorEl={anchorEl}
+          keepMounted={true}
+          getContentAnchorEl={null}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={profileClick}>
+            <ListItemIcon className={classes.listIcon}>
+              <ProfileIcon fontSize="small" />
+            </ListItemIcon>
+            <Typography>Profile</Typography>
+          </MenuItem>
+          <MenuItem onClick={manageEventsClick}>
+            <ListItemIcon className={classes.listIcon}>
+              <ManageEventIcon fontSize="small" />
+            </ListItemIcon>
+            <Typography>Manage Events</Typography>
+          </MenuItem>
+          <MenuItem onClick={logout}>
+            <ListItemIcon className={classes.listIcon}>
+              <LogoutIcon fontSize="small" />
+            </ListItemIcon>
+            <Typography>Logout</Typography>
+          </MenuItem>
+        </Menu>
+      </Toolbar>
+    </AppBar>
   );
 };
 

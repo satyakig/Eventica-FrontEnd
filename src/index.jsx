@@ -12,7 +12,6 @@ import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import App from './components/App/App';
 import combinedReducer from './redux/combinedReducer';
 import * as serviceWorker from './serviceWorker';
-import { initializeApp } from './lib/Firebase';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -39,8 +38,6 @@ const theme = createMuiTheme({
 });
 
 const render = (Component) => {
-  initializeApp();
-
   // eslint-disable-next-line react/no-render-return-value
   return ReactDOM.render(
     <ThemeProvider theme={theme}>
