@@ -52,9 +52,7 @@ export class EventModel {
   status = EVENT_STATUS.CANCELLED;
   type = EVENT_TYPE.PRIVATE;
 
-  eventUserStatus = USER_EVENT_STATUS.NO;
-
-  constructor(event?: EventType, user?: EventUserType) {
+  constructor(event?: EventType) {
     if (event) {
       this.address = event.address;
       this.category = event.category;
@@ -71,10 +69,6 @@ export class EventModel {
       this.start = event.start;
       this.status = event.status;
       this.type = event.type;
-    }
-
-    if (user) {
-      this.eventUserStatus = user.status;
     }
   }
 
@@ -97,6 +91,18 @@ export class EventModel {
   isEventCancelled(): boolean {
     return this.status === EVENT_STATUS.CANCELLED;
   }
+}
+
+export class UserEventModel extends EventModel {
+  eventUserStatus = USER_EVENT_STATUS.NO;
+
+  constructor(event?: EventType, user?: EventUserType) {
+    super(event);
+
+    if (user) {
+      this.eventUserStatus = user.status;
+    }
+  }
 
   isUserHost(): boolean {
     return this.eventUserStatus === USER_EVENT_STATUS.HOST;
@@ -118,4 +124,5 @@ export class EventModel {
 export class EventsModel {
   selectedEvent: string = '';
   events: GenericDataMap<string, EventModel> = new GenericDataMap();
+  userEvents: GenericDataMap<string, UserEventModel> = new GenericDataMap();
 }

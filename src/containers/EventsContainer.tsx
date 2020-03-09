@@ -2,8 +2,12 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
 import { DB_PATHS, getDb } from 'lib/Firebase';
-import { EventType, EventUserType } from 'redux/models/EventModel';
-import { resetEventsAction, setEventAction } from '../redux/actions/EventsActions';
+import { EVENT_TYPE, EventType, EventUserType } from 'redux/models/EventModel';
+import {
+  resetEventsAction,
+  setEventsAction,
+  setUserEventAction,
+} from '../redux/actions/EventsActions';
 
 const EventsContainer = (): JSX.Element | null => {
   const dispatch = useDispatch();
@@ -12,6 +16,27 @@ const EventsContainer = (): JSX.Element | null => {
   });
 
   const [eventUsers, setEventUsers] = useState<EventUserType[]>([]);
+
+  useEffect(() => {
+    if (userId) {
+      const unsubscribe = getDb()
+        .collection(DB_PATHS.EVENTS)
+        .where('type', '==', EVENT_TYPE.PUBLIC)
+        .onSnapshot((doc) => {
+          const data = doc.docs.map((value) => {
+            return value.data() as EventType;
+          });
+
+          dispatch(setEventsAction(data));
+        });
+
+      return () => {
+        return unsubscribe();
+      };
+    } else {
+      dispatch(resetEventsAction());
+    }
+  }, [dispatch, userId]);
 
   useEffect(() => {
     if (userId) {
@@ -51,7 +76,7 @@ const EventsContainer = (): JSX.Element | null => {
             if (doc.docs.length === 1) {
               const data = doc.docs[0].data() as EventType;
 
-              dispatch(setEventAction(data, eventUser));
+              dispatch(setUserEventAction(data, eventUser));
             }
           });
 

@@ -1,33 +1,45 @@
-import { EventModel, EventsModel } from '../models/EventModel';
+import { GenericDataMap } from 'lib/GenericDataMap';
+import { EventModel, EventsModel, UserEventModel } from '../models/EventModel';
 import { newState } from '../NewState';
 import {
-  EVENT_ACTIONS_CONSTANTS,
+  EVENT_ACTION_CONSTANTS,
   UpdateSelectedEventActionType,
-  SetEventActionType,
+  SetUserEventActionType,
+  SetEventsActionType,
 } from '../actions/EventsActions';
 
-type ActionType = UpdateSelectedEventActionType & SetEventActionType;
+type ActionType = UpdateSelectedEventActionType & SetUserEventActionType & SetEventsActionType;
 
 export const EventsReducer = (
   state: EventsModel = new EventsModel(),
   action: ActionType,
 ): EventsModel => {
-  if (action.type === EVENT_ACTIONS_CONSTANTS.UPDATE_SELECTED_EVENT) {
+  if (action.type === EVENT_ACTION_CONSTANTS.UPDATE_SELECTED_EVENT) {
     return newState(state, {
       selectedEvent: action.eventId,
     });
   }
 
-  if (action.type === EVENT_ACTIONS_CONSTANTS.SET_EVENT) {
-    const event = new EventModel(action.event, action.userEvent);
-    state.events.set(event.eid, event);
+  if (action.type === EVENT_ACTION_CONSTANTS.SET_USER_EVENT) {
+    const event = new UserEventModel(action.event, action.userEvent);
+    state.userEvents.set(event.eid, event);
 
     return newState(state, {
-      events: state.events.clone(),
+      userEvents: state.userEvents.clone(),
     });
   }
 
-  if (action.type === EVENT_ACTIONS_CONSTANTS.RESET_EVENTS) {
+  if (action.type === EVENT_ACTION_CONSTANTS.SET_EVENTS) {
+    const events = action.events.map((event) => {
+      return new EventModel(event);
+    });
+
+    return newState(state, {
+      events: new GenericDataMap<string, EventModel>('eid', events),
+    });
+  }
+
+  if (action.type === EVENT_ACTION_CONSTANTS.RESET_EVENTS) {
     return new EventsModel();
   }
 

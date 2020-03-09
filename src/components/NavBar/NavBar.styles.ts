@@ -12,8 +12,8 @@ export const navbarStyles = ({ spacing, breakpoints, shape, palette, transitions
       },
     },
     title: {
-      flexBasis: '11ch',
-      minWidth: '11ch',
+      flexBasis: '10ch',
+      minWidth: '10ch',
       userSelect: 'none',
       textTransform: 'uppercase',
     },
@@ -29,12 +29,12 @@ export const navbarStyles = ({ spacing, breakpoints, shape, palette, transitions
       },
       borderRadius: shape.borderRadius,
       marginRight: 0,
-      marginLeft: spacing(3),
+      marginLeft: spacing(2),
       [breakpoints.down('sm')]: {
-        marginLeft: spacing(2),
+        marginLeft: spacing(1),
       },
       [breakpoints.down('xs')]: {
-        marginLeft: spacing(1),
+        marginLeft: spacing(0),
       },
       backgroundColor: fade(palette.common.white, 0.15),
       '&:hover': {

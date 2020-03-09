@@ -18,11 +18,12 @@ import EventIcon from '@material-ui/icons/Event';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 import ManageEventIcon from '@material-ui/icons/EventNote';
 import ProfileIcon from '@material-ui/icons/AccountCircle';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
 import { ReactComponent as GoogleLogo } from 'assets/google.svg';
 import { getAuth, makeLoginPopup } from 'lib/Firebase';
 import { navbarStyles } from './NavBar.styles';
+import { setSearchTermAction } from '../../redux/actions/AppStateActions';
 
 const useStyles = makeStyles(navbarStyles);
 
@@ -33,8 +34,14 @@ const Navbar = (): JSX.Element => {
     return theme.breakpoints.down('sm');
   });
 
+  const dispatch = useDispatch();
+
   const user = useSelector((state: ReduxState) => {
     return state.userReducer;
+  });
+
+  const searchTerm = useSelector((state: ReduxState) => {
+    return state.appStateReducer.searchTerm;
   });
 
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
@@ -68,6 +75,10 @@ const Navbar = (): JSX.Element => {
       .signOut()
       .then();
     handleClose();
+  }
+
+  function updateSearch(event: React.ChangeEvent<HTMLInputElement>) {
+    dispatch(setSearchTermAction(event.target.value));
   }
 
   function getEndComponents() {
@@ -116,6 +127,8 @@ const Navbar = (): JSX.Element => {
             <SearchIcon />
           </div>
           <InputBase
+            value={searchTerm}
+            onChange={updateSearch}
             placeholder="Search Events…"
             classes={{
               root: classes.inputRoot,
