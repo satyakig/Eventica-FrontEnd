@@ -37,11 +37,11 @@ const Navbar = (): JSX.Element => {
   const dispatch = useDispatch();
 
   const user = useSelector((state: ReduxState) => {
-    return state.userReducer;
+    return state.user;
   });
 
   const searchTerm = useSelector((state: ReduxState) => {
-    return state.appStateReducer.searchTerm;
+    return state.appState.searchTerm;
   });
 
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {

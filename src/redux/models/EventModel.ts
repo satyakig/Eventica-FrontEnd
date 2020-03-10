@@ -122,7 +122,12 @@ export class UserEventModel extends EventModel {
 }
 
 export class EventsModel {
+  // This is the selected event ID
   selectedEvent: string = '';
+
+  // These are the public events
   events: GenericDataMap<string, EventModel> = new GenericDataMap();
+
+  // These are the events the user is a part of (Host, Yes, Maybe, No)
   userEvents: GenericDataMap<string, UserEventModel> = new GenericDataMap();
 }

@@ -5,7 +5,7 @@ import { ReduxState } from 'redux/combinedReducer';
 export function useLoggedIn(): boolean {
   const loggedIn =
     useSelector((state: ReduxState) => {
-      return state.userReducer.uid;
+      return state.user.uid;
     }).length > 0;
 
   return useMemo(() => {

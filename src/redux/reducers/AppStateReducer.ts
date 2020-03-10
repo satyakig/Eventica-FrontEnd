@@ -1,6 +1,6 @@
 import { newState } from '../NewState';
 import { APP_STATE_ACTION_CONSTANTS, SetSearchTermActionType } from '../actions/AppStateActions';
-import { AppStateModel } from '../models/AppState';
+import { AppStateModel } from '../models/AppStateModel';
 
 type ActionType = SetSearchTermActionType;
 

@@ -12,7 +12,7 @@ import {
 const EventsContainer = (): JSX.Element | null => {
   const dispatch = useDispatch();
   const userId = useSelector((state: ReduxState) => {
-    return state.userReducer.uid;
+    return state.user.uid;
   });
 
   const [eventUsers, setEventUsers] = useState<EventUserType[]>([]);
