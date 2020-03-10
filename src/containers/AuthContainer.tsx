@@ -7,7 +7,7 @@ import {
   updateUserIdAction,
 } from 'redux/actions/UserActions';
 import { UserType } from 'redux/models/UserModel';
-import { resetEventsAction } from '../redux/actions/EventsActions';
+import { resetEventsAction } from 'redux/actions/EventsActions';
 
 const AuthContainer = (): JSX.Element | null => {
   const dispatch = useDispatch();
