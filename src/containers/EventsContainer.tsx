@@ -33,8 +33,6 @@ const EventsContainer = (): JSX.Element | null => {
       return () => {
         return unsubscribe();
       };
-    } else {
-      dispatch(resetEventsAction());
     }
   }, [dispatch, userId]);
 
@@ -59,8 +57,6 @@ const EventsContainer = (): JSX.Element | null => {
       return () => {
         return unsubscribe();
       };
-    } else {
-      dispatch(resetEventsAction());
     }
   }, [dispatch, userId]);
 
