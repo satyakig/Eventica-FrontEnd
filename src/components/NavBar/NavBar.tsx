@@ -25,11 +25,13 @@ import { getAuth, makeLoginPopup } from 'lib/Firebase';
 import { navbarStyles } from './NavBar.styles';
 import { setSearchTermAction } from '../../redux/actions/AppStateActions';
 import Profile from '../Profile/Profile';
+import CreateEvent from '../CreateEvent/CreateEvent';
 
 const useStyles = makeStyles(navbarStyles);
 
 const Navbar = (): JSX.Element => {
   const classes = useStyles();
+  const [openCreateEvent, setCreateEvent] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openProfile, setOpenProfile] = useState(false);
   const isSmall = useMediaQuery((theme: Theme) => {
@@ -58,8 +60,12 @@ const Navbar = (): JSX.Element => {
     makeLoginPopup().then();
   }
 
-  function createEvent() {
-    console.debug('Create Event click');
+  function openCreateEventModal() {
+    setCreateEvent(true);
+  }
+
+  function closeCreateEventModal() {
+    setCreateEvent(false);
   }
 
   function profileClick() {
@@ -92,11 +98,11 @@ const Navbar = (): JSX.Element => {
       return (
         <div className={classes.end}>
           {isSmall ? (
-            <IconButton className={classes.smallEvent} onClick={createEvent}>
+            <IconButton className={classes.smallEvent} onClick={openCreateEventModal}>
               <EventIcon />
             </IconButton>
           ) : (
-            <Button size="large" onClick={createEvent} startIcon={<EventIcon />}>
+            <Button size="large" onClick={openCreateEventModal} startIcon={<EventIcon />}>
               Create
             </Button>
           )}
@@ -125,6 +131,7 @@ const Navbar = (): JSX.Element => {
   return (
     <AppBar position="static" color="default">
       <Profile open={openProfile} handleClose={handleProfileClose} />
+      <CreateEvent openCreateEvent={openCreateEvent} handleClose={closeCreateEventModal} />
       <Toolbar className={classes.navBar}>
         <Typography className={classes.title} variant="h6" noWrap={true}>
           Eventica
