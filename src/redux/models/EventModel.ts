@@ -1,6 +1,6 @@
 import { GenericDataMap } from 'lib/GenericDataMap';
 
-export const USER_EVENT_STATUS = { HOST: 0, ATTENDING: 1, MAYBE: 2, NO: 3 };
+export const USER_EVENT_STATUS = { HOST: 0, ATTENDING: 1, MAYBE: 2, NO: 3, INVITED: 4 };
 
 export const EVENT_STATUS = { ACTIVE: 0, POSTPONED: 1, CANCELLED: 2 };
 
@@ -118,6 +118,10 @@ export class UserEventModel extends EventModel {
 
   isUserNo(): boolean {
     return this.eventUserStatus === USER_EVENT_STATUS.NO;
+  }
+
+  isUserInvited(): boolean {
+    return this.eventUserStatus === USER_EVENT_STATUS.INVITED;
   }
 }
 

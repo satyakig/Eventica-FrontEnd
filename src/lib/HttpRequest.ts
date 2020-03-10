@@ -6,14 +6,14 @@ import { addNotificationAction } from '../redux/actions/NotificationActions';
 
 export const PATHS = {
   EVENT: 'event',
-  USER: 'user',
   COMMENT: 'comment',
 };
 
 export type ThunkActionType = ThunkAction<void, ReduxState, null, AnyAction>;
 
+// https://seng-513.appspot.com/
 const CLIENT: AxiosInstance = axios.create({
-  baseURL: 'https://seng-513.appspot.com/',
+  baseURL: 'http://localhost:3001/',
 });
 
 export function postRequest(path: string, data: any): ThunkActionType {
@@ -49,7 +49,10 @@ export function patchRequest(path: string, data: any): ThunkActionType {
 export function deleteRequest(path: string, data: any): ThunkActionType {
   return (dispatch, getState) => {
     CLIENT.delete(path, {
-      headers: { Authorization: `Bearer ${getState().user.uid}`, data },
+      headers: {
+        Authorization: `Bearer ${getState().user.uid}`,
+      },
+      data: data,
     })
       .then((response: AxiosResponse) => {
         dispatch(addNotificationAction(response.data, 'success'));
