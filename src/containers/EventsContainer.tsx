@@ -3,11 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
 import { DB_PATHS, getDb } from 'lib/Firebase';
 import { EVENT_TYPE, EventType, EventUserType } from 'redux/models/EventModel';
-import {
-  resetEventsAction,
-  setEventsAction,
-  setUserEventAction,
-} from '../redux/actions/EventsActions';
+import { setEventsAction, setUserEventAction } from '../redux/actions/EventsActions';
 
 const EventsContainer = (): JSX.Element | null => {
   const dispatch = useDispatch();
