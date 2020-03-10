@@ -11,7 +11,7 @@ type ActionType = UpdateUserIdActionType & UpdateUserDataActionType;
 export const UserReducer = (state: User = new User(), action: ActionType): User => {
   if (action.type === USER_ACTION_CONSTANTS.UPDATE_USER_ID) {
     return newState(state, {
-      id: action.id,
+      uid: action.id,
     });
   }
 
