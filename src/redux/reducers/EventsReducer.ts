@@ -40,7 +40,10 @@ export const EventsReducer = (
   }
 
   if (action.type === EVENT_ACTION_CONSTANTS.RESET_EVENTS) {
-    return new EventsModel();
+    return newState(state, {
+      selectedEvent: '',
+      userEvents: new GenericDataMap<string, UserEventModel>(),
+    });
   }
 
   return state;
