@@ -9,6 +9,9 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import { profileStyles } from './Profile.styles';
+import { Avatar, FormControl, InputLabel, OutlinedInput } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import { ReduxState } from '../../redux/combinedReducer';
 
 export interface DialogTitleProps extends WithStyles {
   id: string;
@@ -53,26 +56,48 @@ interface ProfileProps {
 }
 
 const Profile = (props: ProfileProps) => {
+  const user = useSelector((state: ReduxState) => {
+    return state.user;
+  });
+
+  const [name, setName] = React.useState(user.name);
+  const [email, setEmail] = React.useState(user.email);
+  const [phone, setPhone] = React.useState(user.phone);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+    setEmail(event.target.value);
+    setPhone(event.target.value);
+  };
+
   return (
     <Dialog onClose={props.handleClose} aria-labelledby="customized-dialog-title" open={props.open}>
       <DialogTitle id="customized-dialog-title" onClose={props.handleClose}>
-        Modal title
+        Profile
       </DialogTitle>
-      <DialogContent dividers>
-        <Typography gutterBottom>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-          in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-        </Typography>
-        <Typography gutterBottom>
-          Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus
-          vel augue laoreet rutrum faucibus dolor auctor.
-        </Typography>
-        <Typography gutterBottom>
-          Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel
-          scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus
-          auctor fringilla.
-        </Typography>
-      </DialogContent>
+      <Avatar alt={user.name} src={user.photoURL} />
+      <FormControl variant="outlined">
+        <InputLabel htmlFor="component-outlined">Name</InputLabel>
+        <OutlinedInput id="component-outlined" value={name} onChange={handleChange} label="Name" />
+      </FormControl>
+      <FormControl variant="outlined">
+        <InputLabel htmlFor="component-outlined">Email</InputLabel>
+        <OutlinedInput
+          id="component-outlined"
+          value={email}
+          onChange={handleChange}
+          label="Email"
+        />
+      </FormControl>
+      <FormControl variant="outlined">
+        <InputLabel htmlFor="component-outlined">Phone</InputLabel>
+        <OutlinedInput
+          id="component-outlined"
+          value={phone}
+          onChange={handleChange}
+          label="Phone"
+        />
+      </FormControl>
       <DialogActions>
         <Button autoFocus onClick={props.handleClose} color="primary">
           Save changes
