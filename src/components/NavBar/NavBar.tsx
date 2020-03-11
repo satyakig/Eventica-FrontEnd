@@ -24,12 +24,14 @@ import { ReactComponent as GoogleLogo } from 'assets/google.svg';
 import { getAuth, makeLoginPopup } from 'lib/Firebase';
 import { navbarStyles } from './NavBar.styles';
 import { setSearchTermAction } from '../../redux/actions/AppStateActions';
+import Profile from '../Profile/Profile';
 
 const useStyles = makeStyles(navbarStyles);
 
 const Navbar = (): JSX.Element => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [openProfile, setOpenProfile] = useState(false);
   const isSmall = useMediaQuery((theme: Theme) => {
     return theme.breakpoints.down('sm');
   });
@@ -61,8 +63,13 @@ const Navbar = (): JSX.Element => {
   }
 
   function profileClick() {
-    console.debug('Profile click');
-    handleClose();
+    console.debug('profileClick');
+    setOpenProfile(true);
+  }
+
+  function handleProfileClose() {
+    console.debug('handleProfileClose');
+    setOpenProfile(false);
   }
 
   function manageEventsClick() {
@@ -118,6 +125,7 @@ const Navbar = (): JSX.Element => {
 
   return (
     <AppBar position="static" color="default">
+      <Profile open={openProfile} handleClose={handleProfileClose} />
       <Toolbar className={classes.navBar}>
         <Typography className={classes.title} variant="h6" noWrap={true}>
           Eventica
