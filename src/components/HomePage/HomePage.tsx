@@ -17,7 +17,6 @@ import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon';
 import MailIcon from '@material-ui/icons/Mail';
 import './HomePage.scss';
 import EventCard from '../EventCard/EventCard';
-// import { EventCard } from 'components/EventCard/EventCard';
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -170,7 +169,7 @@ const HomePage = () => {
           <Button size="small">Learn More</Button>
         </CardActions>
       </Card>
-      <EventCard></EventCard>
+      <EventCard />
     </div>
   );
 };
