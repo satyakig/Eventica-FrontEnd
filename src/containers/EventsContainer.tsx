@@ -14,22 +14,20 @@ const EventsContainer = (): JSX.Element | null => {
   const [eventUsers, setEventUsers] = useState<EventUserType[]>([]);
 
   useEffect(() => {
-    if (userId) {
-      const unsubscribe = getDb()
-        .collection(DB_PATHS.EVENTS)
-        .where('type', '==', EVENT_TYPE.PUBLIC)
-        .onSnapshot((doc) => {
-          const data = doc.docs.map((value) => {
-            return value.data() as EventType;
-          });
-
-          dispatch(setEventsAction(data));
+    const unsubscribe = getDb()
+      .collection(DB_PATHS.EVENTS)
+      .where('type', '==', EVENT_TYPE.PUBLIC)
+      .onSnapshot((doc) => {
+        const data = doc.docs.map((value) => {
+          return value.data() as EventType;
         });
 
-      return () => {
-        return unsubscribe();
-      };
-    }
+        dispatch(setEventsAction(data));
+      });
+
+    return () => {
+      return unsubscribe();
+    };
   }, [dispatch, userId]);
 
   useEffect(() => {
