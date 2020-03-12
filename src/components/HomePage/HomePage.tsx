@@ -16,7 +16,7 @@ import { createStyles, makeStyles } from '@material-ui/styles';
 import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon';
 import MailIcon from '@material-ui/icons/Mail';
 import './HomePage.scss';
-import EventCard from '../EventCard/EventCard';
+import EventGrid from '../EventGrid/EventGrid';
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -56,6 +56,8 @@ const HomePage = () => {
 
   return (
     <div className="body">
+      <EventGrid />
+
       <Snackbar open={true} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
         <Alert onClose={() => {}} severity="success" elevation={6} variant="filled">
           This is a success message!
@@ -169,7 +171,6 @@ const HomePage = () => {
           <Button size="small">Learn More</Button>
         </CardActions>
       </Card>
-      <EventCard />
     </div>
   );
 };
