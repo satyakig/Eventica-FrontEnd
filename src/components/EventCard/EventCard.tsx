@@ -7,7 +7,7 @@ const EventCard = (props: any) => {
   const classes = eventCardStyles();
 
   function cardClick(): void {
-    console.log(props);
+    console.log(props.event);
   }
 
   return (
