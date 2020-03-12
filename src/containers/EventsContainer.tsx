@@ -28,7 +28,7 @@ const EventsContainer = (): JSX.Element | null => {
     return () => {
       return unsubscribe();
     };
-  }, [dispatch, userId]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (userId) {

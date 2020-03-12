@@ -1,7 +1,6 @@
 import { createStyles, makeStyles } from '@material-ui/styles';
-import { Theme } from '@material-ui/core';
 
-export const eventCardStyles = makeStyles((theme: Theme) => {
+export const eventCardStyles = makeStyles(() => {
   return createStyles({
     subtitle: {
       fontSize: 14,

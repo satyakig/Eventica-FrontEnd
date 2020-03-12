@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Container, isWidthUp } from '@material-ui/core';
+import { Grid, Container } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
 import EventCard from '../EventCard/EventCard';
