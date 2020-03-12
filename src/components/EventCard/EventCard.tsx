@@ -6,7 +6,7 @@ import { eventCardStyles } from './EventCard.styles';
 const EventCard = (props: any) => {
   const classes = eventCardStyles();
   return (
-    <Card key={props.event.name} className={classes.cardContainer}>
+    <Card key={props.index} className={classes.cardContainer}>
       <CardActionArea className={classes.cardClick}>
         <CardMedia
           component="img"

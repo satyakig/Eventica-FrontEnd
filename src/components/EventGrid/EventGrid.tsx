@@ -15,7 +15,7 @@ const EventGrid = (props: any) => {
         {events.map((event, index) => {
           return (
             <Grid item xs={12} sm={3}>
-              <EventCard event={event} />
+              <EventCard event={event} index={index} />
             </Grid>
           );
         })}
