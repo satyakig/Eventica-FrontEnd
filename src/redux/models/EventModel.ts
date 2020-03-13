@@ -27,6 +27,7 @@ export interface EventType {
   start: number;
   status: number;
   type: number;
+  capacity: number;
 }
 
 export interface EventUserType {
@@ -51,6 +52,7 @@ export class EventModel {
   start = 0;
   status = EVENT_STATUS.CANCELLED;
   type = EVENT_TYPE.PRIVATE;
+  capacity = 0;
 
   constructor(event?: EventType) {
     if (event) {
@@ -69,6 +71,7 @@ export class EventModel {
       this.start = event.start;
       this.status = event.status;
       this.type = event.type;
+      this.capacity = event.capacity;
     }
   }
 

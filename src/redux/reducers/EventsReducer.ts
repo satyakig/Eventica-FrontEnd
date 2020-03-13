@@ -30,9 +30,13 @@ export const EventsReducer = (
   }
 
   if (action.type === EVENT_ACTION_CONSTANTS.SET_EVENTS) {
-    const events = action.events.map((event) => {
-      return new EventModel(event);
-    });
+    const events = action.events
+      .map((event) => {
+        return new EventModel(event);
+      })
+      .sort((a: EventModel, b: EventModel) => {
+        return b.start - a.start;
+      });
 
     return newState(state, {
       events: new GenericDataMap<string, EventModel>('eid', events),
