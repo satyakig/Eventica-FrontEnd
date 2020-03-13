@@ -68,6 +68,7 @@ const Navbar = (): JSX.Element => {
 
   function handleProfileClose() {
     setOpenProfile(false);
+    handleClose();
   }
 
   function manageEventsClick() {

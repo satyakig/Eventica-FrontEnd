@@ -1,10 +1,11 @@
-import { createStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core/styles';
 
-export const dialogTitleStyles = (theme: Theme) => {
+export const profileStyles = makeStyles((theme: Theme) => {
   return createStyles({
-    root: {
-      // margin: 0,
-      // padding: theme.spacing(2),
+    avatarPicture: {
+      height: '200px',
+      width: '200px',
     },
     closeButton: {
       position: 'absolute',
@@ -12,14 +13,8 @@ export const dialogTitleStyles = (theme: Theme) => {
       top: theme.spacing(1),
       color: theme.palette.grey[500],
     },
-  });
-};
-
-export const dialogActionsStyles = (theme: Theme) => {
-  return createStyles({
-    root: {
-      // margin: 0,
-      // padding: theme.spacing(1),
+    gridItem: {
+      padding: '12px',
     },
   });
-};
+});

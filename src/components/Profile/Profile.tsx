@@ -1,38 +1,22 @@
 import React, { useEffect } from 'react';
-import { withStyles, WithStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-import { dialogActionsStyles, dialogTitleStyles } from './Profile.styles';
-import { Avatar, FormControl, Grid, InputLabel, OutlinedInput } from '@material-ui/core';
+import { profileStyles } from './Profile.styles';
+import {
+  Avatar,
+  FormControl,
+  Grid,
+  InputLabel,
+  OutlinedInput,
+  DialogTitle,
+  DialogActions,
+  Container,
+} from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../../redux/combinedReducer';
-
-export interface DialogTitleProps extends WithStyles {
-  id: string;
-  children: React.ReactNode;
-  onClose: () => void;
-}
-
-const DialogTitle = withStyles(dialogTitleStyles)((props: DialogTitleProps) => {
-  const { children, classes, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
-      {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
-
-const DialogActions = withStyles(dialogActionsStyles)(MuiDialogActions);
 
 interface ProfileProps {
   open: boolean;
@@ -43,6 +27,7 @@ const Profile = (props: ProfileProps) => {
   const user = useSelector((state: ReduxState) => {
     return state.user;
   });
+  const classes = profileStyles();
 
   const [name, setName] = React.useState(user.name);
   const [email, setEmail] = React.useState(user.email);
@@ -87,47 +72,70 @@ const Profile = (props: ProfileProps) => {
 
   return (
     <Dialog onClose={props.handleClose} aria-labelledby="customized-dialog-title" open={props.open}>
-      <Grid container={true} direction="column" justify="center" alignItems="center">
-        <DialogTitle id="customized-dialog-title" onClose={props.handleClose}>
-          Profile
-        </DialogTitle>
-        <Avatar alt={user.name} src={user.photoURL} />
-        <FormControl variant="outlined">
-          <InputLabel htmlFor="component-outlined">Name</InputLabel>
-          <OutlinedInput
-            id="component-outlined-name"
-            value={name}
-            onChange={handleNameChange}
-            label="Name"
-            inputRef={nameInput}
-          />
-        </FormControl>
-        <FormControl variant="outlined">
-          <InputLabel htmlFor="component-outlined">Email</InputLabel>
-          <OutlinedInput
-            id="component-outlined-email"
-            value={email}
-            onChange={handleEmailChange}
-            label="Email"
-            inputRef={emailInput}
-          />
-        </FormControl>
-        <FormControl variant="outlined">
-          <InputLabel htmlFor="component-outlined">Phone</InputLabel>
-          <OutlinedInput
-            id="component-outlined-phone"
-            value={phone}
-            onChange={handlePhoneChange}
-            label="Phone"
-            inputRef={phoneInput}
-          />
-        </FormControl>
-        <DialogActions>
-          <Button autoFocus onClick={handleSaveChanges} color="primary">
-            Save changes
-          </Button>
-        </DialogActions>
-      </Grid>
+      <Container maxWidth="lg">
+        <Grid container={true} direction="column" justify="center" alignItems="center">
+          <Grid item>
+            <DialogTitle id="customized-dialog-title">
+              <Typography variant="h6">Profile</Typography>
+              {props.handleClose ? (
+                <IconButton
+                  aria-label="close"
+                  className={classes.closeButton}
+                  onClick={props.handleClose}
+                >
+                  <CloseIcon />
+                </IconButton>
+              ) : null}
+            </DialogTitle>
+          </Grid>
+          <Grid item={true} className={classes.gridItem}>
+            <Avatar alt={user.name} src={user.photoURL} className={classes.avatarPicture} />
+          </Grid>
+          <Grid item={true} className={classes.gridItem}>
+            <FormControl variant="outlined">
+              <InputLabel htmlFor="component-outlined">Name</InputLabel>
+              <OutlinedInput
+                id="component-outlined-name"
+                value={name}
+                onChange={handleNameChange}
+                label="Name"
+                inputRef={nameInput}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item={true} className={classes.gridItem}>
+            <FormControl variant="outlined">
+              <InputLabel htmlFor="component-outlined">Email</InputLabel>
+              <OutlinedInput
+                id="component-outlined-email"
+                value={email}
+                onChange={handleEmailChange}
+                label="Email"
+                inputRef={emailInput}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item={true} className={classes.gridItem}>
+            <FormControl variant="outlined">
+              <InputLabel htmlFor="component-outlined">Phone</InputLabel>
+              <OutlinedInput
+                id="component-outlined-phone"
+                value={phone}
+                onChange={handlePhoneChange}
+                label="Phone"
+                inputRef={phoneInput}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item={true} className={classes.gridItem}>
+            <DialogActions>
+              <Button autoFocus onClick={handleSaveChanges} color="primary">
+                Save changes
+              </Button>
+            </DialogActions>
+          </Grid>
+        </Grid>
+      </Container>
     </Dialog>
   );
 };
