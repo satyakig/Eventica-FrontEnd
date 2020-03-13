@@ -17,8 +17,7 @@ const EventGrid = () => {
     <Container maxWidth="xl">
       <Grid container={true} spacing={3}>
         {events.map((event, index) => {
-          console.log(search);
-          if (event.name.toUpperCase().indexOf(search.toUpperCase()) > -1) {
+          if (event.name.toUpperCase().includes(search.toUpperCase())) {
             return (
               <Grid item={true} key={index} xs={12} sm={6} md={4} lg={3}>
                 <EventCard event={event} />
