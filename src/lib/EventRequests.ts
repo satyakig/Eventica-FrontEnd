@@ -10,6 +10,7 @@ export interface CreateEventType {
   end: number;
   fee: number;
   type: number;
+  capacity: number;
 }
 
 export interface UpdateEventType extends CreateEventType {
