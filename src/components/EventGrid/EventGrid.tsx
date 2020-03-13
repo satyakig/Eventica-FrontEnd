@@ -9,15 +9,21 @@ const EventGrid = () => {
     return state.events.events.getAllData();
   });
 
+  const search = useSelector((state: ReduxState) => {
+    return state.appState.searchTerm;
+  });
+
   return (
     <Container maxWidth="xl">
       <Grid container={true} spacing={3}>
         {events.map((event, index) => {
-          return (
-            <Grid item={true} key={index} xs={12} sm={6} md={4} lg={3}>
-              <EventCard event={event} />
-            </Grid>
-          );
+          if (event.name.toUpperCase().includes(search.toUpperCase())) {
+            return (
+              <Grid item={true} key={index} xs={12} sm={6} md={4} lg={3}>
+                <EventCard event={event} />
+              </Grid>
+            );
+          }
         })}
       </Grid>
     </Container>
