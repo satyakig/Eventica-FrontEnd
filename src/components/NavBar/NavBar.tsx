@@ -63,12 +63,10 @@ const Navbar = (): JSX.Element => {
   }
 
   function profileClick() {
-    console.debug('profileClick');
     setOpenProfile(true);
   }
 
   function handleProfileClose() {
-    console.debug('handleProfileClose');
     setOpenProfile(false);
   }
 
