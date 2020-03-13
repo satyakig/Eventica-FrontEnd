@@ -7,11 +7,12 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
 
 import App from './components/App/App';
 import combinedReducer from './redux/combinedReducer';
 import * as serviceWorker from './serviceWorker';
+import { THEME } from './assets/Styles';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -31,16 +32,10 @@ const loggerMiddleware = createLogger({
 
 const store = createStore(reducer, applyMiddleware(thunkMiddleware, loggerMiddleware));
 
-const theme = createMuiTheme({
-  palette: {
-    type: 'dark',
-  },
-});
-
 const render = (Component) => {
   // eslint-disable-next-line react/no-render-return-value
   return ReactDOM.render(
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={THEME}>
       <Provider store={store}>
         <BrowserRouter basename="">
           <Component />
