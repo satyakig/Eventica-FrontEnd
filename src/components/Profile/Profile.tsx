@@ -129,7 +129,7 @@ const Profile = (props: ProfileProps) => {
           </Grid>
           <Grid item={true} className={classes.gridItem}>
             <DialogActions>
-              <Button onClick={handleSaveChanges} color="primary" variant="contained">
+              <Button onClick={handleSaveChanges} color="secondary" variant="contained">
                 Save changes
               </Button>
             </DialogActions>
