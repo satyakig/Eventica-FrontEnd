@@ -7,6 +7,8 @@ import { addNotificationAction } from '../redux/actions/NotificationActions';
 export const PATHS = {
   EVENT: 'event',
   COMMENT: 'comment',
+  USER_EVENT: 'user-event',
+  USER: 'user',
 };
 
 export type ThunkActionType = ThunkAction<void, ReduxState, null, AnyAction>;
