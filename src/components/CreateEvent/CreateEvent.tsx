@@ -114,7 +114,7 @@ export default function CreateEvent(props: CreateEventProps) {
   return (
     <Dialog onClose={props.handleClose} open={props.openCreateEvent} maxWidth="md" fullWidth={true}>
       <Container maxWidth="lg">
-        <Grid container={true} direction="column" justify="center" alignItems="center" spacing={1}>
+        <Grid container={true} direction="column" justify="center" alignItems="center">
           <Grid item>
             <DialogTitle>
               <Typography className={classes.title} variant="h6" component="span">

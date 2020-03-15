@@ -30,8 +30,8 @@ const Profile = (props: ProfileProps) => {
     return state.user;
   });
 
-  const [name, setName] = React.useState<string>(user.name);
-  const [phone, setPhone] = React.useState<string>(user.phone);
+  const [name, setName] = React.useState(user.name);
+  const [phone, setPhone] = React.useState(user.phone);
 
   useEffect(() => {
     setName(user.name);
@@ -66,7 +66,7 @@ const Profile = (props: ProfileProps) => {
     <Dialog onClose={props.handleClose} open={props.open}>
       <Container maxWidth="lg">
         <Grid container={true} direction="column" justify="center" alignItems="center">
-          <Grid item={true}>
+          <Grid item>
             <DialogTitle>
               <Typography className={classes.title} variant="h6" component="span">
                 Profile

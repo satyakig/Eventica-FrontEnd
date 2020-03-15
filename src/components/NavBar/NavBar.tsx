@@ -32,8 +32,8 @@ const useStyles = makeStyles(navbarStyles);
 const Navbar = (): JSX.Element => {
   const classes = useStyles();
   const [openCreateEvent, setCreateEvent] = useState(false);
-  const [openProfile, setOpenProfile] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [openProfile, setOpenProfile] = useState(false);
 
   const isSmall = useMediaQuery((theme: Theme) => {
     return theme.breakpoints.down('sm');
@@ -132,8 +132,8 @@ const Navbar = (): JSX.Element => {
 
   return (
     <AppBar position="static" color="default">
-      <CreateEvent openCreateEvent={openCreateEvent} handleClose={closeCreateEventModal} />
       <Profile open={openProfile} handleClose={handleProfileClose} />
+      <CreateEvent openCreateEvent={openCreateEvent} handleClose={closeCreateEventModal} />
       <Toolbar className={classes.navBar}>
         <Typography className={classes.title} variant="h6" noWrap={true}>
           Eventica
