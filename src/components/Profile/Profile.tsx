@@ -95,9 +95,16 @@ const Profile = (props: ProfileProps) => {
             </FormControl>
           </Grid>
           <Grid item={true} className={classes.gridItem}>
-            <FormControl variant="outlined" className={classes.email}>
+            <FormControl variant="outlined">
               <InputLabel>Email</InputLabel>
-              <OutlinedInput value={user.email} label="Email" disabled={true} />
+              <OutlinedInput
+                value={user.email}
+                label="Email"
+                disabled={true}
+                classes={{
+                  disabled: classes.email,
+                }}
+              />
             </FormControl>
           </Grid>
           <Grid item={true} className={classes.gridItem}>
