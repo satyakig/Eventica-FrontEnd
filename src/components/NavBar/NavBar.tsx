@@ -23,7 +23,7 @@ import { ReduxState } from 'redux/combinedReducer';
 import { ReactComponent as GoogleLogo } from 'assets/google.svg';
 import { getAuth, makeLoginPopup } from 'lib/Firebase';
 import { navbarStyles } from './NavBar.styles';
-import { setSearchTermAction } from '../../redux/actions/AppStateActions';
+import { setSearchTermAction } from 'redux/actions/AppStateActions';
 import Profile from '../Profile/Profile';
 import CreateEvent from '../CreateEvent/CreateEvent';
 
@@ -34,6 +34,7 @@ const Navbar = (): JSX.Element => {
   const [openCreateEvent, setCreateEvent] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openProfile, setOpenProfile] = useState(false);
+
   const isSmall = useMediaQuery((theme: Theme) => {
     return theme.breakpoints.down('sm');
   });
@@ -61,6 +62,7 @@ const Navbar = (): JSX.Element => {
   }
 
   function openCreateEventModal() {
+    handleClose();
     setCreateEvent(true);
   }
 
@@ -69,24 +71,24 @@ const Navbar = (): JSX.Element => {
   }
 
   function profileClick() {
+    handleClose();
     setOpenProfile(true);
   }
 
   function handleProfileClose() {
     setOpenProfile(false);
-    handleClose();
   }
 
   function manageEventsClick() {
-    console.debug('Manage Events click');
     handleClose();
+    console.debug('Manage Events click');
   }
 
   function logout() {
+    handleClose();
     getAuth()
       .signOut()
       .then();
-    handleClose();
   }
 
   function updateSearch(event: React.ChangeEvent<HTMLInputElement>) {

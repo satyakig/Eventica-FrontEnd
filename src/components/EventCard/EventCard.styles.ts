@@ -8,29 +8,28 @@ export const eventCardStyles = makeStyles(() => {
       backgroundColor: CARD_BG,
       textAlign: 'center',
       borderRadius: '5px',
-    },
-    cardClick: {
-      height: '100%',
       display: 'flex',
       flexDirection: 'column',
-      borderRadius: '5px',
       border: '1px solid transparent',
       '&:hover': {
+        cursor: 'pointer',
         border: `1px solid ${SECONDARY}`,
       },
     },
-    focusHighlight: {},
     cardMedia: {
       borderTopLeftRadius: '5px',
       borderTopRightRadius: '5px',
       height: '200px',
       flexBasis: '200px',
-      width: 'calc(100% - 2px)',
     },
     cardContent: {
       display: 'flex',
       flexDirection: 'column',
-      flexGrow: 1,
+      padding: '16px',
+
+      '&:last-child': {
+        paddingBottom: '16px',
+      },
     },
     subtitle: {
       fontSize: 14,
@@ -39,9 +38,10 @@ export const eventCardStyles = makeStyles(() => {
       fontSize: 18,
     },
     desc: {
-      flexGrow: 3,
-      maxHeight: '80px',
-      overflowY: 'auto',
+      display: '-webkit-box',
+      '-webkit-line-clamp': 3,
+      '-webkit-box-orient': 'vertical',
+      overflow: 'hidden',
     },
   });
 });

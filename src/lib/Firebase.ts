@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firebase-firestore';
+import 'firebase/storage';
 
 const firebase = app.initializeApp({
   apiKey: 'AIzaSyDGt23yzVQmF0mdIqUilPLCGNjnpX_aaMM',
@@ -27,6 +28,10 @@ export function getDb(): app.firestore.Firestore {
 
 export function getAuth(): app.auth.Auth {
   return firebase.auth();
+}
+
+export function getStorage() {
+  return firebase.storage().ref();
 }
 
 export function makeLoginPopup() {

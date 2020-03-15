@@ -16,7 +16,7 @@ import {
   Container,
 } from '@material-ui/core';
 import { useSelector } from 'react-redux';
-import { ReduxState } from '../../redux/combinedReducer';
+import { ReduxState } from 'redux/combinedReducer';
 
 interface ProfileProps {
   open: boolean;
@@ -24,31 +24,25 @@ interface ProfileProps {
 }
 
 const Profile = (props: ProfileProps) => {
+  const classes = profileStyles();
+
   const user = useSelector((state: ReduxState) => {
     return state.user;
   });
-  const classes = profileStyles();
 
   const [name, setName] = React.useState(user.name);
-  const [email, setEmail] = React.useState(user.email);
   const [phone, setPhone] = React.useState(user.phone);
 
   useEffect(() => {
     setName(user.name);
-    setEmail(user.email);
     setPhone(user.phone);
-  }, [user.name, user.email, user.phone]);
+  }, [user]);
 
-  const nameInput = React.createRef();
-  const emailInput = React.createRef();
-  const phoneInput = React.createRef();
+  const nameInput = React.createRef<string>();
+  const phoneInput = React.createRef<string>();
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
-  };
-
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
   };
 
   const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,8 +54,6 @@ const Profile = (props: ProfileProps) => {
     // @ts-ignore
     console.log(nameInput.current.value);
     // @ts-ignore
-    console.log(emailInput.current.value);
-    // @ts-ignore
     console.log(phoneInput.current.value);
 
     // Check if input changed, if not, do props.handleClose()
@@ -71,21 +63,21 @@ const Profile = (props: ProfileProps) => {
   }
 
   return (
-    <Dialog onClose={props.handleClose} aria-labelledby="customized-dialog-title" open={props.open}>
+    <Dialog onClose={props.handleClose} open={props.open}>
       <Container maxWidth="lg">
         <Grid container={true} direction="column" justify="center" alignItems="center">
           <Grid item>
-            <DialogTitle id="customized-dialog-title">
-              <Typography variant="h6">Profile</Typography>
-              {props.handleClose ? (
-                <IconButton
-                  aria-label="close"
-                  className={classes.closeButton}
-                  onClick={props.handleClose}
-                >
-                  <CloseIcon />
-                </IconButton>
-              ) : null}
+            <DialogTitle>
+              <Typography className={classes.title} variant="h6" component="span">
+                Profile
+              </Typography>
+              <IconButton
+                className={classes.closeButton}
+                onClick={props.handleClose}
+                color="secondary"
+              >
+                <CloseIcon />
+              </IconButton>
             </DialogTitle>
           </Grid>
           <Grid item={true} className={classes.gridItem}>
@@ -93,9 +85,8 @@ const Profile = (props: ProfileProps) => {
           </Grid>
           <Grid item={true} className={classes.gridItem}>
             <FormControl variant="outlined">
-              <InputLabel htmlFor="component-outlined">Name</InputLabel>
+              <InputLabel>Name</InputLabel>
               <OutlinedInput
-                id="component-outlined-name"
                 value={name}
                 onChange={handleNameChange}
                 label="Name"
@@ -105,21 +96,21 @@ const Profile = (props: ProfileProps) => {
           </Grid>
           <Grid item={true} className={classes.gridItem}>
             <FormControl variant="outlined">
-              <InputLabel htmlFor="component-outlined">Email</InputLabel>
+              <InputLabel>Email</InputLabel>
               <OutlinedInput
-                id="component-outlined-email"
-                value={email}
-                onChange={handleEmailChange}
+                value={user.email}
                 label="Email"
-                inputRef={emailInput}
+                disabled={true}
+                classes={{
+                  disabled: classes.email,
+                }}
               />
             </FormControl>
           </Grid>
           <Grid item={true} className={classes.gridItem}>
             <FormControl variant="outlined">
-              <InputLabel htmlFor="component-outlined">Phone</InputLabel>
+              <InputLabel>Phone</InputLabel>
               <OutlinedInput
-                id="component-outlined-phone"
                 value={phone}
                 onChange={handlePhoneChange}
                 label="Phone"
