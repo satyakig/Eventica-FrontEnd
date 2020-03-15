@@ -285,14 +285,7 @@ export default function CreateEvent(props: CreateEventProps) {
 
           <Grid item={true} className={classes.gridItem}>
             <DialogActions>
-              <Button
-                autoFocus
-                onClick={() => {
-                  console.log(endDate);
-                }}
-                color="primary"
-                variant="contained"
-              >
+              <Button autoFocus onClick={props.handleClose} color="primary" variant="contained">
                 Create Event
               </Button>
             </DialogActions>
