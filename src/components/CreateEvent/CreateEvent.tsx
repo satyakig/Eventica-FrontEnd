@@ -4,7 +4,6 @@ import { ReduxState } from 'redux/combinedReducer';
 import moment from 'moment-timezone';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers';
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import {
   Container,
   FormControl,
@@ -26,39 +25,15 @@ import CloseIcon from '@material-ui/icons/Close';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import { createEventStyles } from './CreateEvent.styles';
 
 type CreateEventProps = {
   openCreateEvent: boolean;
   handleClose: () => void;
 };
 
-export const profileStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    avatarPicture: {
-      height: '200px',
-      width: '200px',
-    },
-    closeButton: {
-      position: 'absolute',
-      right: theme.spacing(1),
-      top: theme.spacing(1),
-      color: theme.palette.grey[500],
-    },
-    gridItem: {
-      padding: '12px',
-    },
-    chips: {
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
-    chip: {
-      margin: 2,
-    },
-  });
-});
-
 export default function CreateEvent(props: CreateEventProps) {
-  const classes = profileStyles();
+  const classes = createEventStyles();
   const emptyArray: string[] = [];
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
