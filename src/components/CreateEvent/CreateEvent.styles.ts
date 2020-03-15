@@ -12,5 +12,11 @@ export const createEventStyles = makeStyles((theme: Theme) => {
     gridItem: {
       padding: '12px',
     },
+    title: {
+      userSelect: 'none',
+    },
+    email: {
+      color: '#ffffff !important',
+    },
   });
 });

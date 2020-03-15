@@ -23,15 +23,18 @@ import { ReduxState } from 'redux/combinedReducer';
 import { ReactComponent as GoogleLogo } from 'assets/google.svg';
 import { getAuth, makeLoginPopup } from 'lib/Firebase';
 import { navbarStyles } from './NavBar.styles';
-import { setSearchTermAction } from '../../redux/actions/AppStateActions';
+import { setSearchTermAction } from 'redux/actions/AppStateActions';
 import CreateEvent from '../CreateEvent/CreateEvent';
+import Profile from '../Profile/Profile';
 
 const useStyles = makeStyles(navbarStyles);
 
 const Navbar = (): JSX.Element => {
   const classes = useStyles();
   const [openCreateEvent, setCreateEvent] = useState(false);
+  const [openProfile, setOpenProfile] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
   const isSmall = useMediaQuery((theme: Theme) => {
     return theme.breakpoints.down('sm');
   });
@@ -67,20 +70,24 @@ const Navbar = (): JSX.Element => {
   }
 
   function profileClick() {
-    console.debug('Profile click');
     handleClose();
+    setOpenProfile(true);
+  }
+
+  function handleProfileClose() {
+    setOpenProfile(false);
   }
 
   function manageEventsClick() {
-    console.debug('Manage Events click');
     handleClose();
+    console.debug('Manage Events click');
   }
 
   function logout() {
+    handleClose();
     getAuth()
       .signOut()
       .then();
-    handleClose();
   }
 
   function updateSearch(event: React.ChangeEvent<HTMLInputElement>) {
@@ -125,6 +132,7 @@ const Navbar = (): JSX.Element => {
   return (
     <AppBar position="static" color="default">
       <CreateEvent openCreateEvent={openCreateEvent} handleClose={closeCreateEventModal} />
+      <Profile open={openProfile} handleClose={handleProfileClose} />
       <Toolbar className={classes.navBar}>
         <Typography className={classes.title} variant="h6" noWrap={true}>
           Eventica

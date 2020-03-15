@@ -16,15 +16,17 @@ const EventGrid = () => {
   return (
     <Container maxWidth="xl">
       <Grid container={true} spacing={3}>
-        {events.map((event, index) => {
-          if (event.name.toUpperCase().includes(search.toUpperCase())) {
+        {events
+          .filter((event) => {
+            return event.name.toUpperCase().includes(search.toUpperCase());
+          })
+          .map((event, index) => {
             return (
               <Grid item={true} key={index} xs={12} sm={6} md={4} lg={3}>
                 <EventCard event={event} />
               </Grid>
             );
-          }
-        })}
+          })}
       </Grid>
     </Container>
   );
