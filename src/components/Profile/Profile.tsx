@@ -71,7 +71,11 @@ const Profile = (props: ProfileProps) => {
               <Typography className={classes.title} variant="h6" component="span">
                 Profile
               </Typography>
-              <IconButton className={classes.closeButton} onClick={props.handleClose}>
+              <IconButton
+                className={classes.closeButton}
+                onClick={props.handleClose}
+                color="secondary"
+              >
                 <CloseIcon />
               </IconButton>
             </DialogTitle>

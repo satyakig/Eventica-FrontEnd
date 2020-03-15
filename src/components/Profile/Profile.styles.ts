@@ -11,10 +11,15 @@ export const profileStyles = makeStyles((theme: Theme) => {
       position: 'absolute',
       right: theme.spacing(1),
       top: theme.spacing(1),
-      color: theme.palette.grey[500],
     },
     gridItem: {
       padding: '12px',
+    },
+    title: {
+      userSelect: 'none',
+    },
+    email: {
+      color: '#ffffff !important',
     },
   });
 });
