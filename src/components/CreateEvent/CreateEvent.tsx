@@ -25,6 +25,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import { v4 } from 'uuid';
+import { getStorage } from 'lib/Firebase';
 import { createEventStyles } from './CreateEvent.styles';
 
 type CreateEventProps = {
@@ -42,9 +44,13 @@ export default function CreateEvent(props: CreateEventProps) {
   const [endDate, setEndDate] = useState(moment().valueOf());
   const [location, setLocation] = useState('');
   const [categories, setCategories] = useState(emptyArray);
-  const [eventPicture, setEventPicture] = useState('');
   const [amount, setAmount] = useState('');
   const [capacity, setCapacity] = useState(0);
+  const [photoURL, setPhotoURL] = useState('');
+
+  const user = useSelector((state: ReduxState) => {
+    return state.user;
+  });
 
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -78,10 +84,6 @@ export default function CreateEvent(props: CreateEventProps) {
     setCapacity(parseInt(event.target.value));
   };
 
-  const handlePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEventPicture(event.target.value);
-  };
-
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(event.target.value);
   };
@@ -90,23 +92,38 @@ export default function CreateEvent(props: CreateEventProps) {
     return state.appState.categoriesArray;
   });
 
+  const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.files === null || e.target.files.length !== 1) {
+      return;
+    }
+    const id = `${v4()}${user.uid}`;
+
+    const file = e.target.files[0];
+
+    const storageRef = getStorage().child(id);
+    storageRef
+      .put(file)
+      .then(() => {
+        return storageRef.getDownloadURL();
+      })
+      .then((link) => {
+        setPhotoURL(link);
+      });
+  }
+
   return (
-    <Dialog
-      onClose={props.handleClose}
-      aria-labelledby="customized-dialog-title"
-      open={props.openCreateEvent}
-      maxWidth="md"
-      fullWidth={true}
-    >
+    <Dialog onClose={props.handleClose} open={props.openCreateEvent} maxWidth="md" fullWidth={true}>
       <Container maxWidth="lg">
-        <Grid container={true} direction="column" justify="center" alignItems="center">
+        <Grid container={true} direction="column" justify="center" alignItems="center" spacing={1}>
           <Grid item>
-            <DialogTitle id="customized-dialog-title">
-              <Typography variant="h6">Create Event</Typography>
+            <DialogTitle>
+              <Typography className={classes.title} variant="h6" component="span">
+                Create Event
+              </Typography>
               <IconButton
-                aria-label="close"
                 className={classes.closeButton}
                 onClick={props.handleClose}
+                color="secondary"
               >
                 <CloseIcon />
               </IconButton>
@@ -116,22 +133,15 @@ export default function CreateEvent(props: CreateEventProps) {
           <Grid container={true} direction="column" justify="flex-start" alignItems="stretch">
             <Grid item={true} className={classes.gridItem}>
               <FormControl variant="outlined" fullWidth>
-                <InputLabel htmlFor="component-outlined">Name</InputLabel>
-                <OutlinedInput
-                  id="component-outlined-name"
-                  value={name}
-                  onChange={handleNameChange}
-                  label="Name"
-                  fullWidth
-                />
+                <InputLabel>Name</InputLabel>
+                <OutlinedInput value={name} onChange={handleNameChange} label="Name" fullWidth />
               </FormControl>
             </Grid>
 
             <Grid item={true} className={classes.gridItem}>
               <FormControl variant="outlined" fullWidth>
-                <InputLabel htmlFor="component-outlined">Description</InputLabel>
+                <InputLabel>Description</InputLabel>
                 <OutlinedInput
-                  id="component-outlined-name"
                   value={description}
                   onChange={handleDescriptionChange}
                   label="Description"
@@ -164,10 +174,9 @@ export default function CreateEvent(props: CreateEventProps) {
 
             <Grid item={true} className={classes.gridItem}>
               <FormControl variant="outlined" fullWidth>
-                <InputLabel htmlFor="component-outlined">Max Capacity</InputLabel>
+                <InputLabel>Max Capacity</InputLabel>
                 <OutlinedInput
                   type="number"
-                  id="component-outlined-name"
                   value={capacity}
                   onChange={handleCapacityChange}
                   label="Max Capacity"
@@ -205,9 +214,8 @@ export default function CreateEvent(props: CreateEventProps) {
 
             <Grid item={true} className={classes.gridItem}>
               <FormControl variant="outlined" fullWidth>
-                <InputLabel htmlFor="component-outlined">Location</InputLabel>
+                <InputLabel>Location</InputLabel>
                 <OutlinedInput
-                  id="component-outlined-name"
                   value={location}
                   onChange={handleLocationChange}
                   label="Location"
@@ -220,7 +228,6 @@ export default function CreateEvent(props: CreateEventProps) {
               <Autocomplete
                 multiple
                 disableCloseOnSelect
-                id="tags-standard"
                 options={allEventCategories}
                 getOptionLabel={(option) => {
                   return option;
@@ -255,22 +262,15 @@ export default function CreateEvent(props: CreateEventProps) {
             </Grid>
 
             <Grid item={true} className={classes.gridItem}>
-              <InputLabel htmlFor="standard-adornment-amount">Upload Event Picture</InputLabel>
-              <Input
-                disableUnderline
-                type="file"
-                onChange={(event) => {
-                  console.log(event.target.value);
-                }}
-              />
+              <InputLabel>Upload Event Picture</InputLabel>
+              <Input disableUnderline type="file" onChange={handlePictureChange} />
             </Grid>
 
             <Grid item={true} className={classes.gridItem}>
               <FormControl variant="outlined" fullWidth>
-                <InputLabel htmlFor="component-outlined">Amount</InputLabel>
+                <InputLabel>Amount</InputLabel>
                 <OutlinedInput
                   type="number"
-                  id="component-outlined-name"
                   value={amount}
                   onChange={handleAmountChange}
                   label="Amount"
@@ -283,7 +283,7 @@ export default function CreateEvent(props: CreateEventProps) {
 
           <Grid item={true} className={classes.gridItem}>
             <DialogActions>
-              <Button autoFocus onClick={props.handleClose} color="primary" variant="contained">
+              <Button autoFocus onClick={props.handleClose} color="secondary" variant="contained">
                 Create Event
               </Button>
             </DialogActions>

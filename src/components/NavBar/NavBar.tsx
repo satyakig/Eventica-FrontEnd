@@ -24,7 +24,6 @@ import { ReactComponent as GoogleLogo } from 'assets/google.svg';
 import { getAuth, makeLoginPopup } from 'lib/Firebase';
 import { navbarStyles } from './NavBar.styles';
 import { setSearchTermAction } from 'redux/actions/AppStateActions';
-import CreateEvent from '../CreateEvent/CreateEvent';
 import Profile from '../Profile/Profile';
 import CreateEvent from '../CreateEvent/CreateEvent';
 
@@ -135,7 +134,6 @@ const Navbar = (): JSX.Element => {
     <AppBar position="static" color="default">
       <CreateEvent openCreateEvent={openCreateEvent} handleClose={closeCreateEventModal} />
       <Profile open={openProfile} handleClose={handleProfileClose} />
-      <CreateEvent openCreateEvent={openCreateEvent} handleClose={closeCreateEventModal} />
       <Toolbar className={classes.navBar}>
         <Typography className={classes.title} variant="h6" noWrap={true}>
           Eventica
