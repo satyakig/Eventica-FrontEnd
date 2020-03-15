@@ -103,15 +103,13 @@ export default function CreateEvent(props: CreateEventProps) {
           <Grid item>
             <DialogTitle id="customized-dialog-title">
               <Typography variant="h6">Create Event</Typography>
-              {props.handleClose ? (
-                <IconButton
-                  aria-label="close"
-                  className={classes.closeButton}
-                  onClick={props.handleClose}
-                >
-                  <CloseIcon />
-                </IconButton>
-              ) : null}
+              <IconButton
+                aria-label="close"
+                className={classes.closeButton}
+                onClick={props.handleClose}
+              >
+                <CloseIcon />
+              </IconButton>
             </DialogTitle>
           </Grid>
 
