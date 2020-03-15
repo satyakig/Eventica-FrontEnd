@@ -3,10 +3,6 @@ import { Theme } from '@material-ui/core/styles';
 
 export const createEventStyles = makeStyles((theme: Theme) => {
   return createStyles({
-    avatarPicture: {
-      height: '200px',
-      width: '200px',
-    },
     closeButton: {
       position: 'absolute',
       right: theme.spacing(1),
