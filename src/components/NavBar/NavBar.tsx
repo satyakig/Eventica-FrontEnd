@@ -24,12 +24,14 @@ import { ReactComponent as GoogleLogo } from 'assets/google.svg';
 import { getAuth, makeLoginPopup } from 'lib/Firebase';
 import { navbarStyles } from './NavBar.styles';
 import { setSearchTermAction } from '../../redux/actions/AppStateActions';
+import Profile from '../Profile/Profile';
 
 const useStyles = makeStyles(navbarStyles);
 
 const Navbar = (): JSX.Element => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [openProfile, setOpenProfile] = useState(false);
   const isSmall = useMediaQuery((theme: Theme) => {
     return theme.breakpoints.down('sm');
   });
@@ -52,8 +54,8 @@ const Navbar = (): JSX.Element => {
     setAnchorEl(null);
   }
 
-  function sigIn() {
-    makeLoginPopup();
+  function signIn() {
+    makeLoginPopup().then();
   }
 
   function createEvent() {
@@ -61,7 +63,11 @@ const Navbar = (): JSX.Element => {
   }
 
   function profileClick() {
-    console.debug('Profile click');
+    setOpenProfile(true);
+  }
+
+  function handleProfileClose() {
+    setOpenProfile(false);
     handleClose();
   }
 
@@ -103,11 +109,11 @@ const Navbar = (): JSX.Element => {
       return (
         <div className={classes.end}>
           {isSmall ? (
-            <IconButton onClick={sigIn}>
+            <IconButton onClick={signIn}>
               <GoogleLogo />
             </IconButton>
           ) : (
-            <Button color="default" size="large" startIcon={<GoogleLogo />} onClick={sigIn}>
+            <Button color="default" size="large" startIcon={<GoogleLogo />} onClick={signIn}>
               Login
             </Button>
           )}
@@ -118,6 +124,7 @@ const Navbar = (): JSX.Element => {
 
   return (
     <AppBar position="static" color="default">
+      <Profile open={openProfile} handleClose={handleProfileClose} />
       <Toolbar className={classes.navBar}>
         <Typography className={classes.title} variant="h6" noWrap={true}>
           Eventica
