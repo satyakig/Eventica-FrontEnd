@@ -57,11 +57,12 @@ const Navbar = (): JSX.Element => {
     setAnchorEl(null);
   }
 
-  function sigIn() {
-    makeLoginPopup();
+  function signIn() {
+    makeLoginPopup().then();
   }
 
   function openCreateEventModal() {
+    handleClose();
     setCreateEvent(true);
   }
 
@@ -116,11 +117,11 @@ const Navbar = (): JSX.Element => {
       return (
         <div className={classes.end}>
           {isSmall ? (
-            <IconButton onClick={sigIn}>
+            <IconButton onClick={signIn}>
               <GoogleLogo />
             </IconButton>
           ) : (
-            <Button color="default" size="large" startIcon={<GoogleLogo />} onClick={sigIn}>
+            <Button color="default" size="large" startIcon={<GoogleLogo />} onClick={signIn}>
               Login
             </Button>
           )}

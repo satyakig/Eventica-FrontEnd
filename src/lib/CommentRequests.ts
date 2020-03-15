@@ -1,13 +1,14 @@
 import { patchRequest, PATHS, postRequest } from './HttpRequest';
 
+// At least one of message or photoURL
 export interface CreateCommentType {
-  eid: string;
+  eid: string; // event id
   message?: string;
   photoURL?: string;
 }
 
 export interface UpdateCommentType extends CreateCommentType {
-  cid: string;
+  cid: string; // comment id
 }
 
 /**
