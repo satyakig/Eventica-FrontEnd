@@ -92,7 +92,7 @@ export default function CreateEvent(props: CreateEventProps) {
     return state.appState.categoriesArray;
   });
 
-  const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) {
+  const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files === null || e.target.files.length !== 1) {
       return;
     }
@@ -109,7 +109,7 @@ export default function CreateEvent(props: CreateEventProps) {
       .then((link) => {
         setPhotoURL(link);
       });
-  }
+  };
 
   return (
     <Dialog onClose={props.handleClose} open={props.openCreateEvent} maxWidth="md" fullWidth={true}>
