@@ -47,7 +47,6 @@
     "@material-ui/lab": "4.0.0-alpha.45",
     "@material-ui/pickers": "^3.2.10",
     "@material-ui/styles": "4.9.0",
-    "@types/react-datepicker": "^2.11.0",
     "axios": "0.19.2",
     "classnames": "2.2.6",
     "core-js": "3.6.4",
