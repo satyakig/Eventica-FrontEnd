@@ -101,6 +101,23 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
 
           <S.Heading>Location</S.Heading>
           <Typography>{props.event.address}</Typography>
+
+          <S.Heading>Comments</S.Heading>
+          <S.CommentField multiline rows="4" variant="outlined" disabled style={{ width: '100%' }} />
+          <Grid container>
+            <Grid item xs={11}>
+              <TextField
+                placeholder={'Leave a comment'}
+                variant={'outlined'}
+                style={{ width: '100%' }}
+              />
+            </Grid>
+            <Grid item xs={1}>
+              <S.SendButton variant={'outlined'} fullWidth>
+                <SendIcon />
+              </S.SendButton>
+            </Grid>
+          </Grid>
         </TabPanel>
         <TabPanel value={value} index={1}>
           Participants
@@ -108,22 +125,6 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
         <TabPanel value={value} index={2}>
           Owner
         </TabPanel>
-        <S.Heading>Comments</S.Heading>
-        <S.CommentField multiline rows="4" variant="outlined" disabled style={{ width: '100%' }} />
-        <Grid container>
-          <Grid item xs={11}>
-            <TextField
-              placeholder={'Leave a comment'}
-              variant={'outlined'}
-              style={{ width: '100%' }}
-            />
-          </Grid>
-          <Grid item xs={1}>
-            <S.SendButton variant={'outlined'} fullWidth>
-              <SendIcon />
-            </S.SendButton>
-          </Grid>
-        </Grid>
       </S.StyledContainer>
     </Dialog>
   );
