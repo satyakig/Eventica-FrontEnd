@@ -10,13 +10,15 @@ import {
   Button,
   Grid,
   CardMedia,
+  IconButton,
 } from '@material-ui/core';
 import * as S from './EventModal.styles';
 import { EventModel } from 'redux/models/EventModel';
 import moment from 'moment-timezone';
 import SendIcon from '@material-ui/icons/Send';
 import { useSelector } from 'react-redux';
-import { ReduxState } from '../../redux/combinedReducer';
+import { ReduxState } from 'redux/combinedReducer';
+import CloseIcon from '@material-ui/icons/Close';
 
 type EventModalProps = {
   openEventModal: boolean;
@@ -60,7 +62,16 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
         image={props.event.photoURL}
         title={props.event.name}
       />
-      <S.Title>{props.event.name}</S.Title>
+      <Grid container>
+        <Grid item xs>
+          <S.Title>{props.event.name}</S.Title>
+        </Grid>
+        <Grid item xs={2} sm={1}>
+          <IconButton color={'secondary'} onClick={props.handleClose}>
+            <CloseIcon />
+          </IconButton>
+        </Grid>
+      </Grid>
       <AppBar position="static" color={'secondary'}>
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Description">
@@ -72,7 +83,7 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
       </AppBar>
       <S.StyledContainer maxWidth={'lg'}>
         <TabPanel value={value} index={0}>
-          <Grid container spacing={5}>
+          <Grid container spacing={3}>
             <Grid item xs>
               <Button variant={'contained'} fullWidth>
                 Going
@@ -111,14 +122,14 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
             style={{ width: '100%' }}
           />
           <Grid container>
-            <Grid item xs={11}>
+            <Grid item xs>
               <TextField
                 placeholder={'Leave a comment'}
                 variant={'outlined'}
                 style={{ width: '100%' }}
               />
             </Grid>
-            <Grid item xs={1}>
+            <Grid item xs={3} sm={2} md={1}>
               <S.SendButton variant={'outlined'} fullWidth>
                 <SendIcon />
               </S.SendButton>
