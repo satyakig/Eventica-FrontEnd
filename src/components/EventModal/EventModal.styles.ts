@@ -5,7 +5,7 @@ export const StyledContainer = styled(Container)`
   padding-top: 24px;
   padding-bottom: 24px;
   height: 60vh;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 
 export const Title = styled(Typography)`

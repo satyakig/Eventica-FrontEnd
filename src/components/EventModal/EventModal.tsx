@@ -13,12 +13,13 @@ import {
   IconButton,
 } from '@material-ui/core';
 import * as S from './EventModal.styles';
-import { EventModel } from 'redux/models/EventModel';
+import { EVENT_STATUS, EVENT_TYPE, EventModel } from 'redux/models/EventModel';
 import moment from 'moment-timezone';
 import SendIcon from '@material-ui/icons/Send';
 import { useSelector } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
 import CloseIcon from '@material-ui/icons/Close';
+import * as lodash from 'lodash';
 
 type EventModalProps = {
   openEventModal: boolean;
@@ -105,13 +106,28 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
           <Typography>{props.event.desc}</Typography>
 
           <S.Heading>Date & Time</S.Heading>
-          <Typography>{moment(props.event.start).format("ddd h:mma, MMM DD 'YY")}</Typography>
+          <Typography>
+            {moment(props.event.start).format("ddd MMM DD 'YY, h:mma")} -{' '}
+            {moment(props.event.end).format('h:mma')}
+          </Typography>
 
           <S.Heading>Price</S.Heading>
           <Typography>{props.event.fee === 0 ? 'Free' : `$${props.event.fee}`}</Typography>
 
           <S.Heading>Location</S.Heading>
           <Typography>{props.event.address}</Typography>
+
+          <S.Heading>Status</S.Heading>
+          <Typography>{lodash.startCase(EVENT_STATUS[props.event.status].toLowerCase())}</Typography>
+
+          <S.Heading>Type</S.Heading>
+          <Typography>{lodash.startCase(EVENT_TYPE[props.event.type].toLowerCase())}</Typography>
+
+          <S.Heading>Categories</S.Heading>
+          <Typography>{props.event.category.join(', ')}</Typography>
+
+          <S.Heading>Capacity</S.Heading>
+          <Typography>{props.event.capacity}</Typography>
 
           <S.Heading>Comments</S.Heading>
           <S.CommentField
