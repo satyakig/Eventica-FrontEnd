@@ -72,9 +72,7 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
       </Grid>
       <AppBar position="static" color={'secondary'}>
         <Tabs value={tabIndex} onChange={handleChange}>
-          <Tab label="Description">
-            <h1>Hello</h1>
-          </Tab>
+          <Tab label="Description" />
           <Tab label="Participants" />
           {props.event instanceof UserEventModel && props.event.isUserHost() ? (
             <Tab label="Owner" />
