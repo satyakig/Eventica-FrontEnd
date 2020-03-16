@@ -13,18 +13,16 @@ import {
   IconButton,
 } from '@material-ui/core';
 import * as S from './EventModal.styles';
-import { EVENT_STATUS, EVENT_TYPE, EventModel } from 'redux/models/EventModel';
+import { EVENT_STATUS, EVENT_TYPE, EventModel, UserEventModel } from 'redux/models/EventModel';
 import moment from 'moment-timezone';
 import SendIcon from '@material-ui/icons/Send';
-import { useSelector } from 'react-redux';
-import { ReduxState } from 'redux/combinedReducer';
 import CloseIcon from '@material-ui/icons/Close';
 import * as lodash from 'lodash';
 
 type EventModalProps = {
   openEventModal: boolean;
   handleClose: () => void;
-  event: EventModel;
+  event: EventModel | UserEventModel;
 };
 
 interface TabPanelProps {
@@ -44,14 +42,10 @@ function TabPanel(props: TabPanelProps) {
 }
 
 export const EventModal = (props: EventModalProps): JSX.Element => {
-  const userEmail = useSelector((state: ReduxState) => {
-    return state.user.email;
-  });
-
-  const [value, setValue] = useState(0);
+  const [tabIndex, setTabIndex] = useState(0);
 
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue);
+    setTabIndex(newValue);
   };
 
   return (
@@ -74,29 +68,55 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
         </Grid>
       </Grid>
       <AppBar position="static" color={'secondary'}>
-        <Tabs value={value} onChange={handleChange}>
+        <Tabs value={tabIndex} onChange={handleChange}>
           <Tab label="Description">
             <h1>Hello</h1>
           </Tab>
           <Tab label="Participants" />
-          {userEmail === props.event.createdByEmail ? <Tab label="Owner" /> : null}
+          {props.event instanceof UserEventModel && props.event.isUserHost() ? (
+            <Tab label="Owner" />
+          ) : null}
         </Tabs>
       </AppBar>
       <S.StyledContainer maxWidth={'lg'}>
-        <TabPanel value={value} index={0}>
+        <TabPanel value={tabIndex} index={0}>
           <Grid container spacing={3}>
             <Grid item xs>
-              <Button variant={'contained'} fullWidth>
+              <Button
+                color={
+                  props.event instanceof UserEventModel && props.event.isUserYes()
+                    ? 'primary'
+                    : 'secondary'
+                }
+                variant={'contained'}
+                fullWidth
+              >
                 Going
               </Button>
             </Grid>
             <Grid item xs>
-              <Button variant={'contained'} fullWidth>
+              <Button
+                color={
+                  props.event instanceof UserEventModel && props.event.isUserMaybe()
+                    ? 'primary'
+                    : 'secondary'
+                }
+                variant={'contained'}
+                fullWidth
+              >
                 Maybe
               </Button>
             </Grid>
             <Grid item xs>
-              <Button variant={'contained'} fullWidth>
+              <Button
+                color={
+                  props.event instanceof UserEventModel && props.event.isUserNo()
+                    ? 'primary'
+                    : 'secondary'
+                }
+                variant={'contained'}
+                fullWidth
+              >
                 No
               </Button>
             </Grid>
@@ -118,7 +138,9 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
           <Typography>{props.event.address}</Typography>
 
           <S.Heading>Status</S.Heading>
-          <Typography>{lodash.startCase(EVENT_STATUS[props.event.status].toLowerCase())}</Typography>
+          <Typography>
+            {lodash.startCase(EVENT_STATUS[props.event.status].toLowerCase())}
+          </Typography>
 
           <S.Heading>Type</S.Heading>
           <Typography>{lodash.startCase(EVENT_TYPE[props.event.type].toLowerCase())}</Typography>
@@ -152,11 +174,11 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
             </Grid>
           </Grid>
         </TabPanel>
-        <TabPanel value={value} index={1}>
+        <TabPanel value={tabIndex} index={1}>
           <Typography>Participants</Typography>
         </TabPanel>
-        {userEmail === props.event.createdByEmail ? (
-          <TabPanel value={value} index={2}>
+        {props.event instanceof UserEventModel && props.event.isUserHost() ? (
+          <TabPanel value={tabIndex} index={2}>
             <Typography>Owner</Typography>
           </TabPanel>
         ) : null}
