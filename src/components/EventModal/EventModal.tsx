@@ -11,13 +11,14 @@ import {
   Grid,
   CardMedia,
   IconButton,
+  Container,
 } from '@material-ui/core';
-import * as S from './EventModal.styles';
 import { EVENT_STATUS, EVENT_TYPE, EventModel, UserEventModel } from 'redux/models/EventModel';
 import moment from 'moment-timezone';
 import SendIcon from '@material-ui/icons/Send';
 import CloseIcon from '@material-ui/icons/Close';
 import * as lodash from 'lodash';
+import { eventModalStyles } from './EventModal.styles';
 
 type EventModalProps = {
   openEventModal: boolean;
@@ -42,6 +43,8 @@ function TabPanel(props: TabPanelProps) {
 }
 
 export const EventModal = (props: EventModalProps): JSX.Element => {
+  const classes = eventModalStyles();
+
   const [tabIndex, setTabIndex] = useState(0);
 
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
@@ -59,7 +62,7 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
       />
       <Grid container>
         <Grid item xs>
-          <S.Title>{props.event.name}</S.Title>
+          <Typography className={classes.title}>{props.event.name}</Typography>
         </Grid>
         <Grid item xs={2} sm={1}>
           <IconButton color={'secondary'} onClick={props.handleClose}>
@@ -78,7 +81,7 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
           ) : null}
         </Tabs>
       </AppBar>
-      <S.StyledContainer maxWidth={'lg'}>
+      <Container className={classes.container} maxWidth={'lg'}>
         <TabPanel value={tabIndex} index={0}>
           <Grid container spacing={3}>
             <Grid item xs>
@@ -122,37 +125,38 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
             </Grid>
           </Grid>
 
-          <S.Heading>Description</S.Heading>
+          <Typography className={classes.heading}>Description</Typography>
           <Typography>{props.event.desc}</Typography>
 
-          <S.Heading>Date & Time</S.Heading>
+          <Typography className={classes.heading}>Date & Time</Typography>
           <Typography>
             {moment(props.event.start).format("ddd MMM DD 'YY, h:mma")} -{' '}
             {moment(props.event.end).format('h:mma')}
           </Typography>
 
-          <S.Heading>Price</S.Heading>
+          <Typography className={classes.heading}>Price</Typography>
           <Typography>{props.event.fee === 0 ? 'Free' : `$${props.event.fee}`}</Typography>
 
-          <S.Heading>Location</S.Heading>
+          <Typography className={classes.heading}>Location</Typography>
           <Typography>{props.event.address}</Typography>
 
-          <S.Heading>Status</S.Heading>
+          <Typography className={classes.heading}>Status</Typography>
           <Typography>
             {lodash.startCase(EVENT_STATUS[props.event.status].toLowerCase())}
           </Typography>
 
-          <S.Heading>Type</S.Heading>
+          <Typography className={classes.heading}>Type</Typography>
           <Typography>{lodash.startCase(EVENT_TYPE[props.event.type].toLowerCase())}</Typography>
 
-          <S.Heading>Categories</S.Heading>
+          <Typography className={classes.heading}>Categories</Typography>
           <Typography>{props.event.category.join(', ')}</Typography>
 
-          <S.Heading>Capacity</S.Heading>
+          <Typography className={classes.heading}>Capacity</Typography>
           <Typography>{props.event.capacity}</Typography>
 
-          <S.Heading>Comments</S.Heading>
-          <S.CommentField
+          <Typography className={classes.heading}>Comments</Typography>
+          <TextField
+            className={classes.commentField}
             multiline
             rows="4"
             variant="outlined"
@@ -168,9 +172,9 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
               />
             </Grid>
             <Grid item xs={3} sm={2} md={1}>
-              <S.SendButton variant={'outlined'} fullWidth>
+              <Button className={classes.sendButton} variant={'outlined'} fullWidth>
                 <SendIcon />
-              </S.SendButton>
+              </Button>
             </Grid>
           </Grid>
         </TabPanel>
@@ -182,7 +186,7 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
             <Typography>Owner</Typography>
           </TabPanel>
         ) : null}
-      </S.StyledContainer>
+      </Container>
     </Dialog>
   );
 };

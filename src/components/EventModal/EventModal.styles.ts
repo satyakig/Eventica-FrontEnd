@@ -1,28 +1,28 @@
-import { Button, Container, TextField, Typography } from '@material-ui/core';
-import styled from 'styled-components';
+import { Theme } from '@material-ui/core';
+import { createStyles, makeStyles } from '@material-ui/styles';
 
-export const StyledContainer = styled(Container)`
-  padding-top: 24px;
-  padding-bottom: 24px;
-  height: 60vh;
-  overflow-y: auto;
-`;
-
-export const Title = styled(Typography)`
-  font-size: 25px;
-  padding: 8px;
-`;
-
-export const Heading = styled(Typography)`
-  font-size: 18px;
-  padding-top: 8px;
-  font-weight: bold;
-`;
-
-export const CommentField = styled(TextField)`
-  padding-top: 8px;
-`;
-
-export const SendButton = styled(Button)`
-  height: 100%;
-`;
+export const eventModalStyles = makeStyles((theme: Theme) => {
+  return createStyles({
+    commentField: {
+      paddingTop: 8,
+    },
+    container: {
+      paddingTop: 24,
+      paddingBottom: 24,
+      height: '60vh',
+      overflowY: 'auto',
+    },
+    heading: {
+      fontSize: 18,
+      paddingTop: 8,
+      fontWeight: 'bold',
+    },
+    sendButton: {
+      height: '100%',
+    },
+    title: {
+      fontSize: 25,
+      padding: 8,
+    },
+  });
+});
