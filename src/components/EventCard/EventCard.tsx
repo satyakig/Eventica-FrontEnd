@@ -1,31 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import moment from 'moment-timezone';
 import { Card, CardContent, CardMedia, Typography } from '@material-ui/core';
 import { eventCardStyles } from './EventCard.styles';
-import { EventModal } from '../EventModal/EventModal';
 import { EventModel } from '../../redux/models/EventModel';
+import { updateSelectedEventAction } from '../../redux/actions/EventsActions';
+import { useDispatch } from 'react-redux';
 
 export type EventCardProps = {
   event: EventModel;
 };
 
 const EventCard = (props: EventCardProps) => {
+  const dispatch = useDispatch();
+
   const classes = eventCardStyles();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   function cardClick(): void {
-    setIsModalOpen(true);
-    console.log(props.event);
-  }
-
-  function closeEventModal() {
-    setIsModalOpen(false);
+    dispatch(updateSelectedEventAction(props.event.eid));
   }
 
   return (
     <React.Fragment>
-      <EventModal openEventModal={isModalOpen} handleClose={closeEventModal} event={props.event} />
       <Card className={classes.cardContainer} onClick={cardClick}>
         <CardMedia
           className={classes.cardMedia}

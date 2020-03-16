@@ -4,6 +4,7 @@ import { EventUserType, EventType } from '../models/EventModel';
 export const EVENT_ACTION_CONSTANTS = {
   SET_USER_EVENT: 'SET_USER_EVENT',
   UPDATE_SELECTED_EVENT: 'UPDATE_SELECTED_EVENT',
+  CLEAR_SELECTED_EVENT: 'CLEAR_SELECTED_EVENT',
   RESET_EVENTS: 'RESET_EVENTS',
   SET_EVENTS: 'SET_EVENTS',
 };
@@ -25,6 +26,13 @@ export function updateSelectedEventAction(eventId: string): UpdateSelectedEventA
   return {
     type: EVENT_ACTION_CONSTANTS.UPDATE_SELECTED_EVENT,
     eventId,
+  };
+}
+
+export function clearSelectedEventAction(): UpdateSelectedEventActionType {
+  return {
+    type: EVENT_ACTION_CONSTANTS.CLEAR_SELECTED_EVENT,
+    eventId: '',
   };
 }
 

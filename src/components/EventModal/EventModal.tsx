@@ -10,7 +10,6 @@ import {
   Button,
   Grid,
   CardMedia,
-  IconButton,
 } from '@material-ui/core';
 import * as S from './EventModal.styles';
 import { EventModel } from 'redux/models/EventModel';

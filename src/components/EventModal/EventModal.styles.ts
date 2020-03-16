@@ -1,4 +1,4 @@
-import { Button, Container, Dialog, TextField, Typography } from '@material-ui/core';
+import { Button, Container, TextField, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 
 export const StyledContainer = styled(Container)`

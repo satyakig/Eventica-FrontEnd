@@ -14,7 +14,10 @@ export const EventsReducer = (
   state: EventsModel = new EventsModel(),
   action: ActionType,
 ): EventsModel => {
-  if (action.type === EVENT_ACTION_CONSTANTS.UPDATE_SELECTED_EVENT) {
+  if (
+    action.type === EVENT_ACTION_CONSTANTS.UPDATE_SELECTED_EVENT ||
+    action.type === EVENT_ACTION_CONSTANTS.CLEAR_SELECTED_EVENT
+  ) {
     return newState(state, {
       selectedEvent: action.eventId,
     });
