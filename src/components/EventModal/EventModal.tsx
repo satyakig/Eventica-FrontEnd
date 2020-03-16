@@ -15,6 +15,8 @@ import * as S from './EventModal.styles';
 import { EventModel } from 'redux/models/EventModel';
 import moment from 'moment-timezone';
 import SendIcon from '@material-ui/icons/Send';
+import { useSelector } from 'react-redux';
+import { ReduxState } from '../../redux/combinedReducer';
 
 type EventModalProps = {
   openEventModal: boolean;
@@ -45,6 +47,10 @@ function a11yProps(index: any) {
 }
 
 export const EventModal = (props: EventModalProps): JSX.Element => {
+  const userEmail = useSelector((state: ReduxState) => {
+    return state.user.email;
+  });
+
   const [value, setValue] = useState(0);
 
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
@@ -67,7 +73,9 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
             <h1>Hello</h1>
           </Tab>
           <Tab label="Participants" {...a11yProps(1)} />
-          <Tab label="Owner" {...a11yProps(2)} />
+          {userEmail === props.event.createdByEmail ? (
+            <Tab label="Owner" {...a11yProps(2)} />
+          ) : null}
         </Tabs>
       </AppBar>
       <S.StyledContainer maxWidth={'lg'}>
@@ -103,7 +111,13 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
           <Typography>{props.event.address}</Typography>
 
           <S.Heading>Comments</S.Heading>
-          <S.CommentField multiline rows="4" variant="outlined" disabled style={{ width: '100%' }} />
+          <S.CommentField
+            multiline
+            rows="4"
+            variant="outlined"
+            disabled
+            style={{ width: '100%' }}
+          />
           <Grid container>
             <Grid item xs={11}>
               <TextField
@@ -122,9 +136,11 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
         <TabPanel value={value} index={1}>
           Participants
         </TabPanel>
-        <TabPanel value={value} index={2}>
-          Owner
-        </TabPanel>
+        {userEmail === props.event.createdByEmail ? (
+          <TabPanel value={value} index={2}>
+            Owner
+          </TabPanel>
+        ) : null}
       </S.StyledContainer>
     </Dialog>
   );
