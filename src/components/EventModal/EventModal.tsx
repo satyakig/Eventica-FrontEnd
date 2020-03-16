@@ -34,16 +34,10 @@ function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
   return (
-    <Typography component="div" role="tabpanel" hidden={value !== index} {...other}>
+    <div hidden={value !== index} {...other}>
       {value === index && <Box>{children}</Box>}
-    </Typography>
+    </div>
   );
-}
-
-function a11yProps(index: any) {
-  return {
-    id: `simple-tab-${index}`,
-  };
 }
 
 export const EventModal = (props: EventModalProps): JSX.Element => {
@@ -67,15 +61,13 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
         title={props.event.name}
       />
       <S.Title>{props.event.name}</S.Title>
-      <AppBar position="static">
+      <AppBar position="static" color={'secondary'}>
         <Tabs value={value} onChange={handleChange}>
-          <Tab label="Description" {...a11yProps(0)}>
+          <Tab label="Description">
             <h1>Hello</h1>
           </Tab>
-          <Tab label="Participants" {...a11yProps(1)} />
-          {userEmail === props.event.createdByEmail ? (
-            <Tab label="Owner" {...a11yProps(2)} />
-          ) : null}
+          <Tab label="Participants" />
+          {userEmail === props.event.createdByEmail ? <Tab label="Owner" /> : null}
         </Tabs>
       </AppBar>
       <S.StyledContainer maxWidth={'lg'}>
@@ -105,7 +97,7 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
           <Typography>{moment(props.event.start).format("ddd h:mma, MMM DD 'YY")}</Typography>
 
           <S.Heading>Price</S.Heading>
-          <Typography>${props.event.fee}</Typography>
+          <Typography>{props.event.fee === 0 ? 'Free' : `$${props.event.fee}`}</Typography>
 
           <S.Heading>Location</S.Heading>
           <Typography>{props.event.address}</Typography>
@@ -134,11 +126,11 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
           </Grid>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Participants
+          <Typography>Participants</Typography>
         </TabPanel>
         {userEmail === props.event.createdByEmail ? (
           <TabPanel value={value} index={2}>
-            Owner
+            <Typography>Owner</Typography>
           </TabPanel>
         ) : null}
       </S.StyledContainer>
