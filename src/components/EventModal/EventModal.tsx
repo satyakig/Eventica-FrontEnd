@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import {
   Dialog,
   Typography,
@@ -19,12 +19,9 @@ import SendIcon from '@material-ui/icons/Send';
 import CloseIcon from '@material-ui/icons/Close';
 import * as lodash from 'lodash';
 import { eventModalStyles } from './EventModal.styles';
-
-type EventModalProps = {
-  openEventModal: boolean;
-  handleClose: () => void;
-  event: EventModel | UserEventModel;
-};
+import { clearSelectedEventAction } from '../../redux/actions/EventsActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { ReduxState } from '../../redux/combinedReducer';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -42,41 +39,75 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-export const EventModal = (props: EventModalProps): JSX.Element => {
+export const EventModal = (): JSX.Element => {
+  const dispatch = useDispatch();
+
   const classes = eventModalStyles();
 
   const [tabIndex, setTabIndex] = useState(0);
 
-  const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
+  const handleTabChange = (event: ChangeEvent<{}>, newValue: number) => {
     setTabIndex(newValue);
   };
 
+  const eventId = useSelector((state: ReduxState) => {
+    return state.events.selectedEvent;
+  });
+
+  const event = useSelector((state: ReduxState) => {
+    let rv: EventModel | UserEventModel | undefined;
+
+    if (eventId) {
+      if (state.events.userEvents.has(eventId)) {
+        rv = state.events.userEvents.get(eventId);
+      } else if (state.events.events.has(eventId)) {
+        rv = state.events.events.get(eventId);
+      } else {
+        dispatch(clearSelectedEventAction());
+      }
+    }
+
+    return rv ? rv : new EventModel();
+  });
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (eventId) {
+      setIsModalOpen(true);
+    } else {
+      setIsModalOpen(false);
+    }
+  }, [eventId]);
+
+  function closeEventModal() {
+    dispatch(clearSelectedEventAction());
+  }
+
   return (
-    <Dialog onClose={props.handleClose} open={props.openEventModal} maxWidth="md" fullWidth={true}>
+    <Dialog onClose={closeEventModal} open={isModalOpen} maxWidth="md" fullWidth={true}>
       <CardMedia
         style={{ height: 200, flexBasis: 200 }}
         component="img"
-        alt={props.event.name}
-        image={props.event.photoURL}
-        title={props.event.name}
+        alt={event.name}
+        image={event.photoURL}
+        title={event.name}
       />
       <Grid container>
         <Grid item xs>
-          <Typography className={classes.title}>{props.event.name}</Typography>
+          <Typography className={classes.title}>{event.name}</Typography>
         </Grid>
         <Grid item xs={2} sm={1}>
-          <IconButton color={'secondary'} onClick={props.handleClose}>
+          <IconButton color={'secondary'} onClick={closeEventModal}>
             <CloseIcon />
           </IconButton>
         </Grid>
       </Grid>
       <AppBar position="static" color={'secondary'}>
-        <Tabs value={tabIndex} onChange={handleChange}>
+        <Tabs value={tabIndex} onChange={handleTabChange}>
           <Tab label="Description" />
           <Tab label="Participants" />
-          {props.event instanceof UserEventModel && props.event.isUserHost() ? (
-            <Tab label="Owner" />
-          ) : null}
+          {event instanceof UserEventModel && event.isUserHost() ? <Tab label="Owner" /> : null}
         </Tabs>
       </AppBar>
       <Container className={classes.container} maxWidth={'lg'}>
@@ -85,9 +116,7 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
             <Grid item xs>
               <Button
                 color={
-                  props.event instanceof UserEventModel && props.event.isUserYes()
-                    ? 'primary'
-                    : 'secondary'
+                  event instanceof UserEventModel && event.isUserYes() ? 'primary' : 'secondary'
                 }
                 variant={'contained'}
                 fullWidth
@@ -98,9 +127,7 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
             <Grid item xs>
               <Button
                 color={
-                  props.event instanceof UserEventModel && props.event.isUserMaybe()
-                    ? 'primary'
-                    : 'secondary'
+                  event instanceof UserEventModel && event.isUserMaybe() ? 'primary' : 'secondary'
                 }
                 variant={'contained'}
                 fullWidth
@@ -111,9 +138,7 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
             <Grid item xs>
               <Button
                 color={
-                  props.event instanceof UserEventModel && props.event.isUserNo()
-                    ? 'primary'
-                    : 'secondary'
+                  event instanceof UserEventModel && event.isUserNo() ? 'primary' : 'secondary'
                 }
                 variant={'contained'}
                 fullWidth
@@ -124,33 +149,31 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
           </Grid>
 
           <Typography className={classes.heading}>Description</Typography>
-          <Typography>{props.event.desc}</Typography>
+          <Typography>{event.desc}</Typography>
 
           <Typography className={classes.heading}>Date & Time</Typography>
           <Typography>
-            {moment(props.event.start).format("ddd MMM DD 'YY, h:mma")} -{' '}
-            {moment(props.event.end).format('h:mma')}
+            {moment(event.start).format("ddd MMM DD 'YY, h:mma")} -{' '}
+            {moment(event.end).format('h:mma')}
           </Typography>
 
           <Typography className={classes.heading}>Price</Typography>
-          <Typography>{props.event.fee === 0 ? 'Free' : `$${props.event.fee}`}</Typography>
+          <Typography>{event.fee === 0 ? 'Free' : `$${event.fee}`}</Typography>
 
           <Typography className={classes.heading}>Location</Typography>
-          <Typography>{props.event.address}</Typography>
+          <Typography>{event.address}</Typography>
 
           <Typography className={classes.heading}>Status</Typography>
-          <Typography>
-            {lodash.startCase(EVENT_STATUS[props.event.status].toLowerCase())}
-          </Typography>
+          <Typography>{lodash.startCase(EVENT_STATUS[event.status].toLowerCase())}</Typography>
 
           <Typography className={classes.heading}>Type</Typography>
-          <Typography>{lodash.startCase(EVENT_TYPE[props.event.type].toLowerCase())}</Typography>
+          <Typography>{lodash.startCase(EVENT_TYPE[event.type].toLowerCase())}</Typography>
 
           <Typography className={classes.heading}>Categories</Typography>
-          <Typography>{props.event.category.join(', ')}</Typography>
+          <Typography>{event.category.join(', ')}</Typography>
 
           <Typography className={classes.heading}>Capacity</Typography>
-          <Typography>{props.event.capacity}</Typography>
+          <Typography>{event.capacity}</Typography>
 
           <Typography className={classes.heading}>Comments</Typography>
           <TextField
@@ -179,7 +202,7 @@ export const EventModal = (props: EventModalProps): JSX.Element => {
         <TabPanel value={tabIndex} index={1}>
           <Typography>Participants</Typography>
         </TabPanel>
-        {props.event instanceof UserEventModel && props.event.isUserHost() ? (
+        {event instanceof UserEventModel && event.isUserHost() ? (
           <TabPanel value={tabIndex} index={2}>
             <Typography>Owner</Typography>
           </TabPanel>
