@@ -199,7 +199,12 @@ const EventGrid = () => {
 
   return (
     <Grid container={true} className={classes.container}>
-      <Dialog open={filterDialog} onClose={closeFilterDialog} fullWidth={true}>
+      <Dialog
+        open={filterDialog}
+        onClose={closeFilterDialog}
+        fullWidth={true}
+        disableEscapeKeyDown={false}
+      >
         {filterCompo}
       </Dialog>
 

@@ -63,7 +63,7 @@ const Profile = (props: ProfileProps) => {
   }
 
   return (
-    <Dialog onClose={props.handleClose} open={props.open}>
+    <Dialog onClose={props.handleClose} open={props.open} disableEscapeKeyDown={false}>
       <Container maxWidth="lg">
         <Grid container={true} direction="column" justify="center" alignItems="center">
           <Grid item>
