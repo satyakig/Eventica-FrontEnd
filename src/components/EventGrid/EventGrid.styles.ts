@@ -13,6 +13,8 @@ export const eventGridStyles = makeStyles(({ spacing }: Theme) => {
     },
     drawerContainer: {
       paddingRight: '8px',
+      height: `calc(100vh - ${NAV_BAR_HEIGHT} - 5px)`,
+      overflowY: 'auto',
     },
     drawer: {
       width: '100%',

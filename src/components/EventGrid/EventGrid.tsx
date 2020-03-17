@@ -65,7 +65,7 @@ const EventGrid = () => {
   }, [search]);
 
   useEffect(() => {
-    const max = events
+    let max = events
       .getAllData()
       .map((event) => {
         return event.fee;
@@ -74,7 +74,9 @@ const EventGrid = () => {
         return current > prev ? current : prev;
       }, 0);
 
-    setMaxFee(Math.ceil(max));
+    max = Math.ceil(max);
+    setMaxFee(max);
+    setPriceRange([0, max]);
   }, [events]);
 
   useEffect(() => {
@@ -87,7 +89,6 @@ const EventGrid = () => {
     let filtered = events.getAllData().filter((event) => {
       return event.name.toUpperCase().includes(search.toUpperCase());
     });
-    console.log(filtered);
 
     if (isSearching) {
       filtered = filtered.filter((event) => {
@@ -141,7 +142,6 @@ const EventGrid = () => {
               { value: 0, label: '$ 0' },
               { value: maxFee > 0 ? maxFee : 1, label: maxFee > 0 ? `$ ${maxFee}` : '$ 1' },
             ]}
-            defaultValue={[0, maxFee]}
             valueLabelDisplay="auto"
             value={priceRange}
             onChange={changePriceRange}
@@ -158,7 +158,6 @@ const EventGrid = () => {
               format="MMMM Do, YYYY"
               value={selectedDate ? moment(selectedDate) : null}
               onChange={(date) => {
-                console.log('change');
                 setSelectedDate(date ? date.valueOf() : null);
               }}
             />
