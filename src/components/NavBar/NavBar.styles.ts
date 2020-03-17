@@ -1,9 +1,10 @@
 import { createStyles, fade, Theme } from '@material-ui/core';
-import { BACKGROUND } from 'assets/Styles';
+import { BACKGROUND, NAV_BAR_HEIGHT, SECONDARY } from 'assets/Styles';
 
 export const navbarStyles = ({ spacing, breakpoints, shape, palette, transitions }: Theme) => {
   return createStyles({
     navBar: {
+      height: NAV_BAR_HEIGHT,
       background: `linear-gradient(${BACKGROUND}, ${BACKGROUND})`,
       transition: 'all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1)',
       alignItems: 'space-evenly',
@@ -20,6 +21,7 @@ export const navbarStyles = ({ spacing, breakpoints, shape, palette, transitions
       userSelect: 'none',
       textTransform: 'uppercase',
       fontWeight: 500,
+      color: SECONDARY,
     },
     search: {
       position: 'relative',

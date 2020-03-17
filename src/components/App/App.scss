@@ -31,6 +31,42 @@ body {
   *::-webkit-scrollbar-corner {
     background: transparent;
   }
+
+  .MuiPickersToolbar-toolbar,
+  .MuiPickerDTTabs-tabs,
+  .MuiDialog-paper,
+  .MuiPickersCalendarHeader-iconButton {
+    background: linear-gradient(#1e1e2f, #1e1e2f); // BACKGROUND
+  }
+
+  .MuiAutocomplete-paper {
+    background: linear-gradient(#212529, #212529); // DARK
+  }
+
+  .MuiChip-root {
+    background-color: #000000; // DARKER
+    color: #f4f5f7; // SECONDARY
+  }
+
+  .MuiChip-deleteIcon {
+    &:hover {
+      color: #f4f5f7; // SECONDARY
+    }
+  }
+
+  .MuiPickersBasePicker-pickerView,
+  .MuiDialogActions-root {
+    background-color: #27293d; // CARD_BG
+  }
+
+  .MuiPickersSlideTransition-transitionContainer,
+  .MuiPickersCalendarHeader-daysHeader {
+    user-select: none;
+  }
+
+  span[class^='PrivateValueLabel-offset-'] {
+    color: #000000; // DARK
+  }
 }
 
 main {
