@@ -112,7 +112,13 @@ export default function CreateEvent(props: CreateEventProps) {
   };
 
   return (
-    <Dialog onClose={props.handleClose} open={props.openCreateEvent} maxWidth="md" fullWidth={true}>
+    <Dialog
+      onClose={props.handleClose}
+      open={props.openCreateEvent}
+      maxWidth="md"
+      fullWidth={true}
+      disableEscapeKeyDown={false}
+    >
       <Container maxWidth="lg">
         <Grid container={true} direction="column" justify="center" alignItems="center">
           <Grid item>
