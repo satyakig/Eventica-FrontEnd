@@ -145,6 +145,9 @@ const EventGrid = () => {
             valueLabelDisplay="auto"
             value={priceRange}
             onChange={changePriceRange}
+            valueLabelFormat={(val) => {
+              return `$${val}`;
+            }}
           />
         </ListItem>
         <ListItem>
