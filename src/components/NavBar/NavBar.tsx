@@ -100,11 +100,20 @@ const Navbar = (): JSX.Element => {
       return (
         <div className={classes.end}>
           {isSmall ? (
-            <IconButton className={classes.smallEvent} onClick={openCreateEventModal}>
+            <IconButton
+              color="secondary"
+              className={classes.smallEvent}
+              onClick={openCreateEventModal}
+            >
               <EventIcon />
             </IconButton>
           ) : (
-            <Button size="large" onClick={openCreateEventModal} startIcon={<EventIcon />}>
+            <Button
+              color="secondary"
+              size="large"
+              onClick={openCreateEventModal}
+              startIcon={<EventIcon />}
+            >
               Create
             </Button>
           )}
@@ -121,7 +130,7 @@ const Navbar = (): JSX.Element => {
               <GoogleLogo />
             </IconButton>
           ) : (
-            <Button color="default" size="large" startIcon={<GoogleLogo />} onClick={signIn}>
+            <Button color="secondary" size="large" startIcon={<GoogleLogo />} onClick={signIn}>
               Login
             </Button>
           )}
@@ -140,7 +149,7 @@ const Navbar = (): JSX.Element => {
         </Typography>
         <div className={classes.search}>
           <div className={classes.searchIcon}>
-            <SearchIcon />
+            <SearchIcon color="secondary" />
           </div>
           <InputBase
             value={searchTerm}
@@ -171,19 +180,19 @@ const Navbar = (): JSX.Element => {
         >
           <MenuItem onClick={profileClick}>
             <ListItemIcon className={classes.listIcon}>
-              <ProfileIcon fontSize="small" />
+              <ProfileIcon color="secondary" fontSize="small" />
             </ListItemIcon>
             <Typography>Profile</Typography>
           </MenuItem>
           <MenuItem onClick={manageEventsClick}>
             <ListItemIcon className={classes.listIcon}>
-              <ManageEventIcon fontSize="small" />
+              <ManageEventIcon color="secondary" fontSize="small" />
             </ListItemIcon>
             <Typography>Manage Events</Typography>
           </MenuItem>
           <MenuItem onClick={logout}>
             <ListItemIcon className={classes.listIcon}>
-              <LogoutIcon fontSize="small" />
+              <LogoutIcon color="secondary" fontSize="small" />
             </ListItemIcon>
             <Typography>Logout</Typography>
           </MenuItem>
