@@ -34,6 +34,7 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import { updateEvent } from '../../lib/EventRequests';
 import { updateUserEvent } from '../../lib/EventCommentRequests';
+import { useLoggedIn } from '../../lib/useLoggedIn';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -191,7 +192,7 @@ export const EventModal = (): JSX.Element => {
       <Container className={classes.container} maxWidth={'lg'}>
         <TabPanel value={tabIndex} index={0}>
           <Grid container direction="column" justify="flex-start" alignItems="stretch">
-            {event instanceof UserEventModel && event.isUserHost() ? null : (
+            {!useLoggedIn() || (event instanceof UserEventModel && event.isUserHost()) ? null : (
               <Grid item className={classes.gridItem}>
                 <Grid container spacing={3}>
                   <Grid item xs>
@@ -427,20 +428,22 @@ export const EventModal = (): JSX.Element => {
                 disabled
                 style={{ width: '100%' }}
               />
-              <Grid container>
-                <Grid item xs>
-                  <TextField
-                    placeholder={'Leave a comment'}
-                    variant={'outlined'}
-                    style={{ width: '100%' }}
-                  />
+              {useLoggedIn() ? (
+                <Grid container>
+                  <Grid item xs>
+                    <TextField
+                      placeholder={'Leave a comment'}
+                      variant={'outlined'}
+                      style={{ width: '100%' }}
+                    />
+                  </Grid>
+                  <Grid item xs={3} sm={2} md={1}>
+                    <Button className={classes.sendButton} variant={'outlined'} fullWidth>
+                      <SendIcon />
+                    </Button>
+                  </Grid>
                 </Grid>
-                <Grid item xs={3} sm={2} md={1}>
-                  <Button className={classes.sendButton} variant={'outlined'} fullWidth>
-                    <SendIcon />
-                  </Button>
-                </Grid>
-              </Grid>
+              ) : null}
             </Grid>
 
             {event instanceof UserEventModel && event.isUserHost() ? (
