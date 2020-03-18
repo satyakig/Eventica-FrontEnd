@@ -18,6 +18,7 @@ import {
   Select,
   InputLabel,
   FormControl,
+  Input,
 } from '@material-ui/core';
 import { EventModel, getUserEventStatus, UserEventModel } from 'redux/models/EventModel';
 import moment from 'moment-timezone';
@@ -35,6 +36,9 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import { updateEvent } from 'lib/EventRequests';
 import { updateUserEvent } from 'lib/EventCommentRequests';
 import { useLoggedIn } from 'lib/useLoggedIn';
+import EditIcon from '@material-ui/icons/Edit';
+import { v4 } from 'uuid';
+import { getStorage } from '../../lib/Firebase';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -58,6 +62,10 @@ export const EventModal = (): JSX.Element => {
   const loggedIn = useLoggedIn();
 
   const classes = eventModalStyles();
+
+  const user = useSelector((state: ReduxState) => {
+    return state.user;
+  });
 
   const eventId = useSelector((state: ReduxState) => {
     return state.events.selectedEvent;
@@ -135,6 +143,25 @@ export const EventModal = (): JSX.Element => {
     setTabIndex(newValue);
   }
 
+  const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files === null || e.target.files.length !== 1) {
+      return;
+    }
+    const id = `${v4()}${user.uid}`;
+
+    const file = e.target.files[0];
+
+    const storageRef = getStorage().child(id);
+    storageRef
+      .put(file)
+      .then(() => {
+        return storageRef.getDownloadURL();
+      })
+      .then((link) => {
+        setPhotoURL(link);
+      });
+  };
+
   function handleSubmit() {
     const updatedData = {
       eid: eventId,
@@ -178,6 +205,28 @@ export const EventModal = (): JSX.Element => {
             <Typography className={classes.title}>{eventTitle}</Typography>
           )}
         </Grid>
+        {event instanceof UserEventModel && event.isUserHost() ? (
+          <Grid item xs={2} sm={1}>
+            <Input
+              id="fileInput"
+              type="file"
+              onChange={handlePictureChange}
+              style={{ display: 'none' }}
+            />
+            <IconButton
+              color={'secondary'}
+              onClick={() => {
+                const element = document.getElementById('fileInput');
+                if (element) {
+                  element.click();
+                }
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+          </Grid>
+        ) : null}
+
         <Grid item xs={2} sm={1}>
           <IconButton color={'secondary'} onClick={closeEventModal}>
             <CloseIcon />
