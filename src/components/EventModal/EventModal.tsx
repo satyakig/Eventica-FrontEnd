@@ -19,7 +19,7 @@ import {
   InputLabel,
   FormControl,
 } from '@material-ui/core';
-import { EventModel, UserEventModel } from 'redux/models/EventModel';
+import { EventModel, getUserEventStatus, UserEventModel } from 'redux/models/EventModel';
 import moment from 'moment-timezone';
 import SendIcon from '@material-ui/icons/Send';
 import CloseIcon from '@material-ui/icons/Close';
@@ -33,6 +33,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import { updateEvent } from '../../lib/EventRequests';
+import { updateUserEvent } from '../../lib/EventCommentRequests';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -162,7 +163,17 @@ export const EventModal = (): JSX.Element => {
       />
       <Grid container>
         <Grid item xs>
-          <Typography className={classes.title}>{eventTitle}</Typography>
+          {event instanceof UserEventModel && event.isUserHost() ? (
+            <TextField
+              InputProps={{ className: classes.title }}
+              value={eventTitle}
+              onChange={(changeEvent) => {
+                setEventTitle(changeEvent.target.value);
+              }}
+            />
+          ) : (
+            <Typography className={classes.title}>{eventTitle}</Typography>
+          )}
         </Grid>
         <Grid item xs={2} sm={1}>
           <IconButton color={'secondary'} onClick={closeEventModal}>
@@ -180,45 +191,76 @@ export const EventModal = (): JSX.Element => {
       <Container className={classes.container} maxWidth={'lg'}>
         <TabPanel value={tabIndex} index={0}>
           <Grid container direction="column" justify="flex-start" alignItems="stretch">
-            <Grid item className={classes.gridItem}>
-              <Grid container spacing={3}>
-                <Grid item xs>
-                  <Button
-                    color={
-                      event instanceof UserEventModel && event.isUserYes() ? 'primary' : 'secondary'
-                    }
-                    variant={'contained'}
-                    fullWidth
-                  >
-                    Going
-                  </Button>
-                </Grid>
-                <Grid item xs>
-                  <Button
-                    color={
-                      event instanceof UserEventModel && event.isUserMaybe()
-                        ? 'primary'
-                        : 'secondary'
-                    }
-                    variant={'contained'}
-                    fullWidth
-                  >
-                    Maybe
-                  </Button>
-                </Grid>
-                <Grid item xs>
-                  <Button
-                    color={
-                      event instanceof UserEventModel && event.isUserNo() ? 'primary' : 'secondary'
-                    }
-                    variant={'contained'}
-                    fullWidth
-                  >
-                    No
-                  </Button>
+            {event instanceof UserEventModel && event.isUserHost() ? null : (
+              <Grid item className={classes.gridItem}>
+                <Grid container spacing={3}>
+                  <Grid item xs>
+                    <Button
+                      color={
+                        event instanceof UserEventModel && event.isUserYes()
+                          ? 'primary'
+                          : 'secondary'
+                      }
+                      onClick={() => {
+                        dispatch(
+                          updateUserEvent({
+                            eid: eventId,
+                            status: getUserEventStatus('Attending'),
+                          }),
+                        );
+                      }}
+                      variant={'contained'}
+                      fullWidth
+                    >
+                      Attending
+                    </Button>
+                  </Grid>
+                  <Grid item xs>
+                    <Button
+                      color={
+                        event instanceof UserEventModel && event.isUserMaybe()
+                          ? 'primary'
+                          : 'secondary'
+                      }
+                      onClick={() => {
+                        console.log(eventId);
+                        dispatch(
+                          updateUserEvent({
+                            eid: eventId,
+                            status: getUserEventStatus('Maybe'),
+                          }),
+                        );
+                      }}
+                      variant={'contained'}
+                      fullWidth
+                    >
+                      Maybe
+                    </Button>
+                  </Grid>
+                  <Grid item xs>
+                    <Button
+                      color={
+                        event instanceof UserEventModel && event.isUserNo()
+                          ? 'primary'
+                          : 'secondary'
+                      }
+                      onClick={() => {
+                        dispatch(
+                          updateUserEvent({
+                            eid: eventId,
+                            status: getUserEventStatus('No'),
+                          }),
+                        );
+                      }}
+                      variant={'contained'}
+                      fullWidth
+                    >
+                      No
+                    </Button>
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
+            )}
 
             <Grid item className={classes.gridItem}>
               <TextField

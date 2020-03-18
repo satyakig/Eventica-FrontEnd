@@ -11,5 +11,5 @@ export interface UpdateUserEventType {
  * @returns {ThunkActionType}
  */
 export function updateUserEvent(data: UpdateUserEventType) {
-  return postRequest(PATHS.COMMENT, data);
+  return postRequest(PATHS.USER_EVENT, data);
 }
