@@ -22,6 +22,7 @@ export const navbarStyles = ({ spacing, breakpoints, shape, palette, transitions
       textTransform: 'uppercase',
       fontWeight: 500,
       color: SECONDARY,
+      cursor: 'pointer',
     },
     search: {
       position: 'relative',

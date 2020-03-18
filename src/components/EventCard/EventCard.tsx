@@ -1,14 +1,14 @@
 import React from 'react';
 import moment from 'moment-timezone';
 import { Card, CardContent, CardMedia, Typography } from '@material-ui/core';
+import { EventModel, UserEventModel } from 'redux/models/EventModel';
 import { eventCardStyles } from './EventCard.styles';
-import { EventModel } from '../../redux/models/EventModel';
 import { updateSelectedEventAction } from '../../redux/actions/EventsActions';
 import { useDispatch } from 'react-redux';
 
-export type EventCardProps = {
-  event: EventModel;
-};
+interface EventCardProps {
+  event: EventModel | UserEventModel;
+}
 
 const EventCard = (props: EventCardProps) => {
   const dispatch = useDispatch();

@@ -11,7 +11,6 @@ export const LIGHT = '#adb5bd';
 export const DARK = '#212529';
 export const DEFAULT = '#344675';
 export const WHITE = '#ffffff';
-export const NEUTRAL = '#ffffff';
 export const DARKER = '#000000';
 
 export const BACKGROUND = '#1e1e2f';

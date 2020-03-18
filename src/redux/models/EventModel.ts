@@ -1,23 +1,41 @@
 import { GenericDataMap } from 'lib/GenericDataMap';
 
-export enum USER_EVENT_STATUS {
-  HOST = 0,
-  ATTENDING = 1,
-  MAYBE = 2,
-  NO = 3,
-  INVITED = 4,
+export const USER_EVENT_STATUS: Record<string, number> = {
+  HOST: 0,
+  ATTENDING: 1,
+  MAYBE: 2,
+  NO: 3,
+  INVITED: 4,
+};
+
+export const EVENT_STATUS: Record<string, number> = { ACTIVE: 0, POSTPONED: 1, CANCELLED: 2 };
+
+export const EVENT_STATUS_OPTIONS_LABELS = ['Active', 'Postponed', 'Cancelled'];
+
+export const USER_EVENT_STATUS_OPTIONS_LABELS = [
+  'Host',
+  'Invited',
+  'Attending',
+  'Maybe',
+  'Not Attending',
+];
+
+export function getEventStatus(inp: string): number {
+  const val = EVENT_STATUS[inp.toUpperCase()];
+
+  return val !== undefined ? val : -1;
 }
 
-export enum EVENT_STATUS {
-  ACTIVE = 0,
-  POSTPONED = 1,
-  CANCELLED = 2,
+export function getUserEventStatus(inp: string): number {
+  const val = USER_EVENT_STATUS[inp.toUpperCase()];
+
+  return val !== undefined ? val : -1;
 }
 
-export enum EVENT_TYPE {
-  PUBLIC = 0,
-  PRIVATE = 1,
-}
+export const EVENT_TYPE = {
+  PUBLIC: 0,
+  PRIVATE: 1,
+};
 
 export interface EventType {
   address: string;
