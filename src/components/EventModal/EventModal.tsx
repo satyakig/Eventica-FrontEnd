@@ -55,6 +55,8 @@ function TabPanel(props: TabPanelProps) {
 export const EventModal = (): JSX.Element => {
   const dispatch = useDispatch();
 
+  const loggedIn = useLoggedIn();
+
   const classes = eventModalStyles();
 
   const eventId = useSelector((state: ReduxState) => {
@@ -192,7 +194,7 @@ export const EventModal = (): JSX.Element => {
       <Container className={classes.container} maxWidth={'lg'}>
         <TabPanel value={tabIndex} index={0}>
           <Grid container direction="column" justify="flex-start" alignItems="stretch">
-            {!useLoggedIn() || (event instanceof UserEventModel && event.isUserHost()) ? null : (
+            {!loggedIn || (event instanceof UserEventModel && event.isUserHost()) ? null : (
               <Grid item className={classes.gridItem}>
                 <Grid container spacing={3}>
                   <Grid item xs>
@@ -428,7 +430,7 @@ export const EventModal = (): JSX.Element => {
                 disabled
                 style={{ width: '100%' }}
               />
-              {useLoggedIn() ? (
+              {loggedIn ? (
                 <Grid container>
                   <Grid item xs>
                     <TextField
