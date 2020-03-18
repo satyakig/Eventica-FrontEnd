@@ -23,7 +23,8 @@ import { ReduxState } from 'redux/combinedReducer';
 import { ReactComponent as GoogleLogo } from 'assets/google.svg';
 import { getAuth, makeLoginPopup } from 'lib/Firebase';
 import { navbarStyles } from './NavBar.styles';
-import { setSearchTermAction } from 'redux/actions/AppStateActions';
+import { setRouteAction, setSearchTermAction } from 'redux/actions/AppStateActions';
+import { HOMEPAGE, MANAGE_EVENTS } from 'redux/models/AppStateModel';
 import Profile from '../Profile/Profile';
 import CreateEvent from '../CreateEvent/CreateEvent';
 
@@ -81,7 +82,7 @@ const Navbar = (): JSX.Element => {
 
   function manageEventsClick() {
     handleClose();
-    console.debug('Manage Events click');
+    dispatch(setRouteAction(MANAGE_EVENTS));
   }
 
   function logout() {
@@ -93,6 +94,10 @@ const Navbar = (): JSX.Element => {
 
   function updateSearch(event: React.ChangeEvent<HTMLInputElement>) {
     dispatch(setSearchTermAction(event.target.value));
+  }
+
+  function homePageClick() {
+    dispatch(setRouteAction(HOMEPAGE));
   }
 
   function getEndComponents() {
@@ -144,7 +149,7 @@ const Navbar = (): JSX.Element => {
       <Profile open={openProfile} handleClose={handleProfileClose} />
       <CreateEvent openCreateEvent={openCreateEvent} handleClose={closeCreateEventModal} />
       <Toolbar className={classes.navBar}>
-        <Typography className={classes.title} variant="h6" noWrap={true}>
+        <Typography className={classes.title} variant="h6" noWrap={true} onClick={homePageClick}>
           Eventica
         </Typography>
         <div className={classes.search}>

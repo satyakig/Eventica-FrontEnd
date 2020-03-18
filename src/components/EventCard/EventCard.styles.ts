@@ -5,7 +5,7 @@ export const eventCardStyles = makeStyles(() => {
   return createStyles({
     cardContainer: {
       height: '100%',
-      maxHeight: '375px',
+      maxHeight: '400px',
       backgroundColor: CARD_BG,
       textAlign: 'center',
       borderRadius: '5px',
@@ -38,7 +38,7 @@ export const eventCardStyles = makeStyles(() => {
     title: {
       fontSize: 18,
       display: '-webkit-box',
-      '-webkit-line-clamp': 2,
+      '-webkit-line-clamp': 3,
       '-webkit-box-orient': 'vertical',
       overflow: 'hidden',
     },

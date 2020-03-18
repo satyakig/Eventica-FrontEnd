@@ -22,9 +22,17 @@ import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import { useSelector } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
+import {
+  EventModel,
+  EVENT_STATUS_OPTIONS_LABELS,
+  USER_EVENT_STATUS_OPTIONS_LABELS,
+  getEventStatus,
+  getUserEventStatus,
+  UserEventModel,
+} from 'redux/models/EventModel';
+import { HOMEPAGE } from 'redux/models/AppStateModel';
 import EventCard from '../EventCard/EventCard';
 import { eventGridStyles } from './EventGrid.styles';
-import { EventModel } from '../../redux/models/EventModel';
 
 const EventGrid = () => {
   const classes = eventGridStyles();
@@ -34,8 +42,12 @@ const EventGrid = () => {
     return state.appState.categoriesArray;
   });
 
-  const events = useSelector((state: ReduxState) => {
-    return state.events.events;
+  const isHomepage = useSelector((state: ReduxState) => {
+    return state.appState.route === HOMEPAGE;
+  });
+
+  const eventsMap = useSelector((state: ReduxState) => {
+    return !isHomepage ? state.events.userEvents : state.events.events;
   });
 
   const search = useSelector((state: ReduxState) => {
@@ -46,9 +58,11 @@ const EventGrid = () => {
   const [filterDialog, setFilterDialog] = useState(false);
 
   const [maxFee, setMaxFee] = useState(0);
-  const [priceRange, setPriceRange] = useState<number[]>([0, 10]);
+  const [priceRange, setPriceRange] = useState<number[]>([0, 1]);
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
+  const [eventStatus, setEventStatus] = useState<string[]>([]);
+  const [userEventStatus, setUserEventStatus] = useState<string[]>([]);
 
   const [filteredEvents, setFilteredEvents] = useState<EventModel[]>([]);
 
@@ -60,12 +74,32 @@ const EventGrid = () => {
     setFilterDialog(false);
   }
 
+  function getMarks() {
+    const marks = [
+      { value: 0, label: '$0' },
+      { value: maxFee > 0 ? maxFee : 1, label: maxFee > 0 ? `$${maxFee}` : '$1' },
+    ];
+
+    const min = priceRange[0];
+    const max = priceRange[1];
+
+    if (min !== 0) {
+      marks.push({ value: min, label: `$${min}` });
+    }
+
+    if (max !== maxFee) {
+      marks.push({ value: max, label: `$${max}` });
+    }
+
+    return marks;
+  }
+
   useEffect(() => {
     setIsSearching(search.length > 0);
   }, [search]);
 
   useEffect(() => {
-    let max = events
+    let max = eventsMap
       .getAllData()
       .map((event) => {
         return event.fee;
@@ -77,7 +111,7 @@ const EventGrid = () => {
     max = Math.ceil(max);
     setMaxFee(max);
     setPriceRange([0, max]);
-  }, [events]);
+  }, [eventsMap]);
 
   useEffect(() => {
     if (!isSmDown) {
@@ -86,7 +120,7 @@ const EventGrid = () => {
   }, [isSmDown]);
 
   useEffect(() => {
-    let filtered = events.getAllData().filter((event) => {
+    let filtered = eventsMap.getAllData().filter((event) => {
       return event.name.toUpperCase().includes(search.toUpperCase());
     });
 
@@ -115,10 +149,44 @@ const EventGrid = () => {
           });
         });
       }
+
+      if (eventStatus.length > 0) {
+        const evStatus = eventStatus.map((ev) => {
+          return getEventStatus(ev);
+        });
+
+        filtered = filtered.filter((event) => {
+          return evStatus.includes(event.status);
+        });
+      }
+
+      if (userEventStatus.length > 0 && !isHomepage) {
+        const usEvStatus = userEventStatus.map((ev) => {
+          return getUserEventStatus(ev);
+        });
+
+        filtered = filtered.filter((event) => {
+          return usEvStatus.includes((event as UserEventModel).eventUserStatus);
+        });
+      }
     }
 
+    filtered = filtered.sort((a, b) => {
+      return b.start - a.start;
+    });
+
     setFilteredEvents(filtered);
-  }, [events, search, isSearching, priceRange, selectedDate, categories]);
+  }, [
+    eventsMap,
+    search,
+    isSearching,
+    priceRange,
+    selectedDate,
+    categories,
+    eventStatus,
+    userEventStatus,
+    isHomepage,
+  ]);
 
   const filterCompo = (
     <Paper className={classes.drawer} elevation={10} variant="elevation">
@@ -138,10 +206,7 @@ const EventGrid = () => {
             min={0}
             max={maxFee}
             step={1}
-            marks={[
-              { value: 0, label: '$ 0' },
-              { value: maxFee > 0 ? maxFee : 1, label: maxFee > 0 ? `$ ${maxFee}` : '$ 1' },
-            ]}
+            marks={getMarks()}
             valueLabelDisplay="auto"
             value={priceRange}
             onChange={changePriceRange}
@@ -173,9 +238,6 @@ const EventGrid = () => {
             disableCloseOnSelect={true}
             value={categories}
             options={allEventCategories}
-            getOptionLabel={(option) => {
-              return option;
-            }}
             renderOption={(option, { selected }) => {
               return (
                 <Fragment>
@@ -196,6 +258,60 @@ const EventGrid = () => {
             }}
           />
         </ListItem>
+        <ListItem>
+          <Autocomplete
+            className={classes.width100}
+            multiple={true}
+            value={eventStatus}
+            options={EVENT_STATUS_OPTIONS_LABELS}
+            renderOption={(option, { selected }) => {
+              return (
+                <Fragment>
+                  <Checkbox
+                    icon={<CheckBoxOutlineBlankIcon fontSize="small" color="secondary" />}
+                    checkedIcon={<CheckBoxIcon fontSize="small" color="secondary" />}
+                    checked={selected}
+                  />
+                  {option}
+                </Fragment>
+              );
+            }}
+            renderInput={(params) => {
+              return <TextField {...params} variant="outlined" label="Event Status" />;
+            }}
+            onChange={(event, value) => {
+              setEventStatus(value);
+            }}
+          />
+        </ListItem>
+        {!isHomepage ? (
+          <ListItem>
+            <Autocomplete
+              className={classes.width100}
+              multiple={true}
+              value={userEventStatus}
+              options={USER_EVENT_STATUS_OPTIONS_LABELS}
+              renderOption={(option, { selected }) => {
+                return (
+                  <Fragment>
+                    <Checkbox
+                      icon={<CheckBoxOutlineBlankIcon fontSize="small" color="secondary" />}
+                      checkedIcon={<CheckBoxIcon fontSize="small" color="secondary" />}
+                      checked={selected}
+                    />
+                    {option}
+                  </Fragment>
+                );
+              }}
+              renderInput={(params) => {
+                return <TextField {...params} variant="outlined" label="RSVP Status" />;
+              }}
+              onChange={(event, value) => {
+                setUserEventStatus(value);
+              }}
+            />
+          </ListItem>
+        ) : null}
       </List>
     </Paper>
   );

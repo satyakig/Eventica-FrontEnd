@@ -29,6 +29,7 @@ export const eventGridStyles = makeStyles(({ spacing }: Theme) => {
       width: '100%',
     },
     filters: {
+      paddingLeft: '8px',
       textTransform: 'lowercase',
       letterSpacing: '1.5px',
     },
