@@ -32,6 +32,7 @@ import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import { updateEvent } from '../../lib/EventRequests';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -85,8 +86,8 @@ export const EventModal = (): JSX.Element => {
   const [description, setDescription] = useState('');
   const [eventType, setEventType] = useState(0);
   const [eventStatus, setEventStatus] = useState(0);
-  const [startDate, setStartDate] = useState(moment());
-  const [endDate, setEndDate] = useState(moment());
+  const [startDate, setStartDate] = useState(moment().valueOf());
+  const [endDate, setEndDate] = useState(moment().valueOf());
   const [location, setLocation] = useState('');
   const [categories, setCategories] = useState<string[]>([]);
   const [amount, setAmount] = useState(0);
@@ -99,8 +100,8 @@ export const EventModal = (): JSX.Element => {
       setDescription(event.desc);
       setEventType(event.type);
       setEventStatus(event.status);
-      setStartDate(moment(event.start));
-      setEndDate(moment(event.end));
+      setStartDate(event.start);
+      setEndDate(event.end);
       setLocation(event.address);
       setCategories(event.category);
       setAmount(event.fee);
@@ -130,8 +131,24 @@ export const EventModal = (): JSX.Element => {
     setTabIndex(newValue);
   }
 
-  function updateEvent() {
-    console.log(event);
+  function handleSubmit() {
+    const updatedData = {
+      eid: eventId,
+      status: eventStatus,
+
+      name: eventTitle,
+      address: location,
+      category: categories,
+      photoURL: photoURL,
+      desc: description,
+      start: startDate,
+      end: endDate,
+      fee: amount,
+      type: eventType,
+      capacity: capacity,
+    };
+
+    dispatch(updateEvent(updatedData));
   }
 
   return (
@@ -222,9 +239,9 @@ export const EventModal = (): JSX.Element => {
                 <DateTimePicker
                   style={{ marginRight: 20 }}
                   inputVariant="outlined"
-                  value={startDate}
+                  value={moment(startDate)}
                   onChange={(date) => {
-                    setStartDate(date ? date : moment());
+                    setStartDate(date ? date.valueOf() : moment().valueOf());
                   }}
                   label="Start"
                   showTodayButton
@@ -233,9 +250,9 @@ export const EventModal = (): JSX.Element => {
 
                 <DateTimePicker
                   inputVariant="outlined"
-                  value={endDate}
+                  value={moment(endDate)}
                   onChange={(date) => {
-                    setEndDate(date ? date : moment());
+                    setEndDate(date ? date.valueOf() : moment().valueOf());
                   }}
                   label="End"
                   showTodayButton
@@ -249,11 +266,7 @@ export const EventModal = (): JSX.Element => {
                 <TextField
                   variant={'outlined'}
                   type="number"
-                  value={
-                    amount === 0 && !(event instanceof UserEventModel && event.isUserHost())
-                      ? 'Free'
-                      : amount
-                  }
+                  value={amount} // TODO: Make value "Free" if 0}
                   onChange={(changeEvent) => {
                     setAmount(parseInt(changeEvent.target.value));
                   }}
@@ -390,7 +403,7 @@ export const EventModal = (): JSX.Element => {
 
             {event instanceof UserEventModel && event.isUserHost() ? (
               <Grid item className={classes.gridItem}>
-                <Button variant={'outlined'} onClick={updateEvent}>
+                <Button variant={'outlined'} onClick={handleSubmit}>
                   Update Event
                 </Button>
               </Grid>
