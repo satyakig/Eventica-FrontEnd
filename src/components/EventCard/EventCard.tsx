@@ -1,9 +1,14 @@
 import React from 'react';
 import moment from 'moment-timezone';
 import { Card, CardContent, CardMedia, Typography } from '@material-ui/core';
+import { EventModel, UserEventModel } from 'redux/models/EventModel';
 import { eventCardStyles } from './EventCard.styles';
 
-const EventCard = (props: any) => {
+interface EventCardProps {
+  event: EventModel | UserEventModel;
+}
+
+const EventCard = (props: EventCardProps) => {
   const classes = eventCardStyles();
 
   function cardClick(): void {

@@ -3,10 +3,11 @@ import {
   APP_STATE_ACTION_CONSTANTS,
   SetCategoriesActionType,
   SetSearchTermActionType,
+  SetRouteActionType,
 } from '../actions/AppStateActions';
-import { AppStateModel } from '../models/AppStateModel';
+import { AppStateModel, ROUTES } from '../models/AppStateModel';
 
-type ActionType = SetSearchTermActionType & SetCategoriesActionType;
+type ActionType = SetSearchTermActionType & SetCategoriesActionType & SetRouteActionType;
 
 export const AppStateReducer = (
   state: AppStateModel = new AppStateModel(),
@@ -27,6 +28,16 @@ export const AppStateReducer = (
       categoriesArray: array,
       categoriesMap: catClone,
     });
+  }
+
+  if (action.type === APP_STATE_ACTION_CONSTANTS.SET_ROUTE) {
+    const route = action.route;
+
+    if (ROUTES.includes(route)) {
+      return newState(state, {
+        route,
+      });
+    }
   }
 
   return state;

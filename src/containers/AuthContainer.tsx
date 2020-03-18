@@ -8,6 +8,8 @@ import {
 } from 'redux/actions/UserActions';
 import { UserType } from 'redux/models/UserModel';
 import { resetEventsAction } from 'redux/actions/EventsActions';
+import { setRouteAction } from 'redux/actions/AppStateActions';
+import { HOMEPAGE } from 'redux/models/AppStateModel';
 
 const AuthContainer = (): JSX.Element | null => {
   const dispatch = useDispatch();
@@ -30,6 +32,7 @@ const AuthContainer = (): JSX.Element | null => {
             },
           );
       } else {
+        dispatch(setRouteAction(HOMEPAGE));
         dispatch(resetUserAction());
         dispatch(resetEventsAction());
       }
