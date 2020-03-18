@@ -24,17 +24,17 @@ import moment from 'moment-timezone';
 import SendIcon from '@material-ui/icons/Send';
 import CloseIcon from '@material-ui/icons/Close';
 import { eventModalStyles } from './EventModal.styles';
-import { clearSelectedEventAction } from '../../redux/actions/EventsActions';
+import { clearSelectedEventAction } from 'redux/actions/EventsActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { ReduxState } from '../../redux/combinedReducer';
+import { ReduxState } from 'redux/combinedReducer';
 import MomentUtils from '@date-io/moment';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import { updateEvent } from '../../lib/EventRequests';
-import { updateUserEvent } from '../../lib/EventCommentRequests';
-import { useLoggedIn } from '../../lib/useLoggedIn';
+import { updateEvent } from 'lib/EventRequests';
+import { updateUserEvent } from 'lib/EventCommentRequests';
+import { useLoggedIn } from 'lib/useLoggedIn';
 
 interface TabPanelProps {
   children?: React.ReactNode;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
 import moment from 'moment-timezone';
@@ -241,33 +241,6 @@ export default function CreateEvent(props: CreateEventProps) {
             </MuiPickersUtilsProvider>
           </Grid>
 
-          <Grid item={true} xs={12}>
-            <Autocomplete
-              multiple={true}
-              disableCloseOnSelect={true}
-              value={categories}
-              options={allEventCategories}
-              renderOption={(option, { selected }) => {
-                return (
-                  <React.Fragment>
-                    <Checkbox
-                      icon={<CheckBoxOutlineBlankIcon fontSize="small" color="secondary" />}
-                      checkedIcon={<CheckBoxIcon fontSize="small" color="secondary" />}
-                      checked={selected}
-                    />
-                    {option}
-                  </React.Fragment>
-                );
-              }}
-              renderInput={(params) => {
-                return <TextField {...params} variant="outlined" label="Categories" />;
-              }}
-              onChange={(event, value) => {
-                handleCategoryChange(value);
-              }}
-            />
-          </Grid>
-
           <Grid item={true} xs={6}>
             <FormControl variant="outlined" fullWidth={true}>
               <InputLabel>Amount</InputLabel>
@@ -290,6 +263,33 @@ export default function CreateEvent(props: CreateEventProps) {
               type="file"
               onChange={handlePictureChange}
               fullWidth={true}
+            />
+          </Grid>
+
+          <Grid item={true} xs={12}>
+            <Autocomplete
+              multiple={true}
+              disableCloseOnSelect={true}
+              value={categories}
+              options={allEventCategories}
+              renderOption={(option, { selected }) => {
+                return (
+                  <Fragment>
+                    <Checkbox
+                      icon={<CheckBoxOutlineBlankIcon fontSize="small" color="secondary" />}
+                      checkedIcon={<CheckBoxIcon fontSize="small" color="secondary" />}
+                      checked={selected}
+                    />
+                    {option}
+                  </Fragment>
+                );
+              }}
+              renderInput={(params) => {
+                return <TextField {...params} variant="outlined" label="Categories" />;
+              }}
+              onChange={(event, value) => {
+                handleCategoryChange(value);
+              }}
             />
           </Grid>
         </Grid>
