@@ -31,6 +31,8 @@ import {
   UserEventModel,
 } from 'redux/models/EventModel';
 import { HOMEPAGE } from 'redux/models/AppStateModel';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import EventCard from '../EventCard/EventCard';
 import { eventGridStyles } from './EventGrid.styles';
 
@@ -115,7 +117,7 @@ const EventGrid = () => {
 
   useEffect(() => {
     if (!isSmDown) {
-      setFilterDialog(false);
+      closeFilterDialog();
     }
   }, [isSmDown]);
 
@@ -322,9 +324,18 @@ const EventGrid = () => {
         open={filterDialog}
         onClose={closeFilterDialog}
         fullWidth={true}
+        disableBackdropClick={true}
         disableEscapeKeyDown={false}
       >
         {filterCompo}
+        <IconButton
+          className={classes.closeButton}
+          color="secondary"
+          size="medium"
+          onClick={closeFilterDialog}
+        >
+          <CloseIcon />
+        </IconButton>
       </Dialog>
 
       {!isSmDown && isSearching ? (
@@ -356,7 +367,7 @@ const EventGrid = () => {
           color="secondary"
           size="medium"
           onClick={() => {
-            setFilterDialog(!filterDialog);
+            setFilterDialog(true);
           }}
         >
           <FilterListIcon />

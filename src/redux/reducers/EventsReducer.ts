@@ -17,7 +17,11 @@ export const EventsReducer = (
   if (action.type === EVENT_ACTION_CONSTANTS.UPDATE_SELECTED_EVENT) {
     const selectedEvent = action.eventId;
 
-    if (!state.events.get(selectedEvent) && !state.userEvents.get(selectedEvent)) {
+    if (
+      selectedEvent.length > 0 &&
+      !state.events.get(selectedEvent) &&
+      !state.userEvents.get(selectedEvent)
+    ) {
       return state;
     }
 

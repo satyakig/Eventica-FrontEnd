@@ -113,10 +113,10 @@ export default function CreateEvent(props: CreateEventProps) {
 
   return (
     <Dialog
-      onClose={props.handleClose}
       open={props.openCreateEvent}
-      maxWidth="md"
+      onClose={props.handleClose}
       fullWidth={true}
+      disableBackdropClick={true}
       disableEscapeKeyDown={false}
     >
       <Container maxWidth="lg">

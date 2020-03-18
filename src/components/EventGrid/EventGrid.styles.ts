@@ -2,7 +2,7 @@ import { createStyles, makeStyles } from '@material-ui/styles';
 import { NAV_BAR_HEIGHT } from 'assets/Styles';
 import { Theme } from '@material-ui/core';
 
-export const eventGridStyles = makeStyles(({ spacing }: Theme) => {
+export const eventGridStyles = makeStyles(({ spacing, zIndex }: Theme) => {
   return createStyles({
     container: {
       overflow: 'hidden',
@@ -33,6 +33,7 @@ export const eventGridStyles = makeStyles(({ spacing }: Theme) => {
       marginLeft: 'auto',
       marginRight: 'auto',
       letterSpacing: '1.5px',
+      userSelect: 'none',
     },
     priceRange: {
       flexDirection: 'column',
@@ -48,6 +49,11 @@ export const eventGridStyles = makeStyles(({ spacing }: Theme) => {
       position: 'absolute',
       bottom: spacing(2),
       right: spacing(2),
+    },
+    closeButton: {
+      position: 'absolute',
+      top: spacing(1),
+      right: spacing(1),
     },
   });
 });
