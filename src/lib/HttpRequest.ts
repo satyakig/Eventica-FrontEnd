@@ -13,9 +13,9 @@ export const PATHS = {
 
 export type ThunkActionType = ThunkAction<void, ReduxState, null, AnyAction>;
 
-// https://seng-513.appspot.com/
+// http://localhost:3001/
 const CLIENT: AxiosInstance = axios.create({
-  baseURL: 'http://localhost:3001/',
+  baseURL: 'https://seng-513.appspot.com/',
 });
 
 export function postRequest(path: string, data: any): ThunkActionType {
