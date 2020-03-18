@@ -1,5 +1,10 @@
 import { GenericDataMap } from 'lib/GenericDataMap';
 
+export const EVENT_TYPE: Record<string, number> = {
+  PUBLIC: 0,
+  PRIVATE: 1,
+};
+
 export const USER_EVENT_STATUS: Record<string, number> = {
   HOST: 0,
   ATTENDING: 1,
@@ -10,6 +15,8 @@ export const USER_EVENT_STATUS: Record<string, number> = {
 
 export const EVENT_STATUS: Record<string, number> = { ACTIVE: 0, POSTPONED: 1, CANCELLED: 2 };
 
+export const EVENT_TYPE_LABELS = ['Public', 'Private'];
+
 export const EVENT_STATUS_OPTIONS_LABELS = ['Active', 'Postponed', 'Cancelled'];
 
 export const USER_EVENT_STATUS_OPTIONS_LABELS = [
@@ -19,6 +26,12 @@ export const USER_EVENT_STATUS_OPTIONS_LABELS = [
   'Maybe',
   'Not Attending',
 ];
+
+export function getEventType(inp: string): number {
+  const val = EVENT_TYPE[inp.toUpperCase()];
+
+  return val !== undefined ? val : -1;
+}
 
 export function getEventStatus(inp: string): number {
   const val = EVENT_STATUS[inp.toUpperCase()];
@@ -31,11 +44,6 @@ export function getUserEventStatus(inp: string): number {
 
   return val !== undefined ? val : -1;
 }
-
-export const EVENT_TYPE = {
-  PUBLIC: 0,
-  PRIVATE: 1,
-};
 
 export interface EventType {
   address: string;

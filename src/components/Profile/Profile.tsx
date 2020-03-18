@@ -73,7 +73,7 @@ const Profile = (props: ProfileProps) => {
         <Grid container={true} direction="column" justify="center" alignItems="center">
           <Grid item>
             <DialogTitle>
-              <Typography className={classes.title} variant="h6" component="span">
+              <Typography className={classes.title} variant="h6" component="span" display="block">
                 Profile
               </Typography>
               <IconButton
@@ -126,7 +126,7 @@ const Profile = (props: ProfileProps) => {
           <Grid item={true} className={classes.gridItem}>
             <DialogActions>
               <Button onClick={handleSaveChanges} color="secondary" variant="contained">
-                Save changes
+                Save
               </Button>
             </DialogActions>
           </Grid>

@@ -27,8 +27,9 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { v4 } from 'uuid';
 import { getStorage } from 'lib/Firebase';
+import { CreateEventType, createEvent } from 'lib/EventRequests';
+import { EVENT_TYPE_LABELS, getEventType } from 'redux/models/EventModel';
 import { createEventStyles } from './CreateEvent.styles';
-import { CreateEventType, createEvent } from '../../lib/EventRequests';
 
 type CreateEventProps = {
   openCreateEvent: boolean;
@@ -38,14 +39,14 @@ type CreateEventProps = {
 export default function CreateEvent(props: CreateEventProps) {
   const classes = createEventStyles();
   const dispatch = useDispatch();
-  const emptyArray: string[] = [];
+
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [eventType, setEventType] = useState(0);
+  const [eventType, setEventType] = useState(EVENT_TYPE_LABELS[0]);
   const [startDate, setStartDate] = useState(moment().valueOf());
   const [endDate, setEndDate] = useState(moment().valueOf());
   const [location, setLocation] = useState('');
-  const [categories, setCategories] = useState(emptyArray);
+  const [categories, setCategories] = useState<string[]>([]);
   const [amount, setAmount] = useState(0);
   const [capacity, setCapacity] = useState(0);
   const [photoURL, setPhotoURL] = useState('');
@@ -53,14 +54,6 @@ export default function CreateEvent(props: CreateEventProps) {
   const user = useSelector((state: ReduxState) => {
     return state.user;
   });
-
-  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-  const checkedIcon = <CheckBoxIcon fontSize="small" />;
-
-  const allEventTypes = [
-    { label: 'Public', value: 0 },
-    { label: 'Private', value: 1 },
-  ];
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -76,10 +69,6 @@ export default function CreateEvent(props: CreateEventProps) {
 
   const handleCategoryChange = (values: string[]) => {
     setCategories(values);
-  };
-
-  const handleEventTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEventType(parseInt(event.target.value));
   };
 
   const handleCapacityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,7 +112,7 @@ export default function CreateEvent(props: CreateEventProps) {
       start: startDate,
       end: endDate,
       fee: amount,
-      type: eventType,
+      type: getEventType(eventType),
       capacity: capacity,
     };
     dispatch(createEvent(data));
@@ -132,178 +121,189 @@ export default function CreateEvent(props: CreateEventProps) {
 
   return (
     <Dialog
+      className={classes.dialog}
       open={props.openCreateEvent}
       onClose={props.handleClose}
       fullWidth={true}
       disableBackdropClick={true}
       disableEscapeKeyDown={false}
     >
+      <IconButton className={classes.closeButton} onClick={props.handleClose} color="secondary">
+        <CloseIcon />
+      </IconButton>
       <Container maxWidth="lg">
-        <Grid container={true} direction="column" justify="center" alignItems="center">
-          <Grid item>
-            <DialogTitle>
-              <Typography className={classes.title} variant="h6" component="span">
-                Create Event
-              </Typography>
-              <IconButton
-                className={classes.closeButton}
-                onClick={props.handleClose}
-                color="secondary"
-              >
-                <CloseIcon />
-              </IconButton>
-            </DialogTitle>
+        <DialogTitle>
+          <Typography className={classes.title} variant="h6" component="span" display="block">
+            Create Event
+          </Typography>
+        </DialogTitle>
+        <Grid className={classes.grid} container={true} spacing={2}>
+          <Grid item={true} xs={12}>
+            <FormControl variant="outlined" fullWidth={true}>
+              <InputLabel>Name</InputLabel>
+              <OutlinedInput value={name} onChange={handleNameChange} label="Name" fullWidth />
+            </FormControl>
           </Grid>
 
-          <Grid container={true} direction="column" justify="flex-start" alignItems="stretch">
-            <Grid item={true} className={classes.gridItem}>
-              <FormControl variant="outlined" fullWidth>
-                <InputLabel>Name</InputLabel>
-                <OutlinedInput value={name} onChange={handleNameChange} label="Name" fullWidth />
-              </FormControl>
-            </Grid>
-
-            <Grid item={true} className={classes.gridItem}>
-              <FormControl variant="outlined" fullWidth>
-                <InputLabel>Description</InputLabel>
-                <OutlinedInput
-                  value={description}
-                  onChange={handleDescriptionChange}
-                  label="Description"
-                  fullWidth
-                />
-              </FormControl>
-            </Grid>
-
-            <Grid item={true} className={classes.gridItem}>
-              <TextField
-                style={{ marginRight: 20 }}
-                select
-                label="Event Type"
-                value={eventType}
-                onChange={handleEventTypeChange}
-                SelectProps={{
-                  native: true,
-                }}
-                variant="outlined"
-              >
-                {allEventTypes.map((option) => {
-                  return (
-                    <option key={option.label} value={option.value}>
-                      {option.label}
-                    </option>
-                  );
-                })}
-              </TextField>
-
-              <FormControl variant="outlined">
-                <InputLabel>Max Capacity</InputLabel>
-                <OutlinedInput
-                  type="number"
-                  value={capacity}
-                  onChange={handleCapacityChange}
-                  label="Max Capacity"
-                />
-              </FormControl>
-            </Grid>
-
-            <Grid item={true} className={classes.gridItem}>
-              <MuiPickersUtilsProvider utils={MomentUtils}>
-                <DateTimePicker
-                  style={{ marginRight: 20 }}
-                  inputVariant="outlined"
-                  value={moment(startDate)}
-                  disablePast
-                  onChange={(date) => {
-                    setStartDate(date ? date.valueOf() : moment().valueOf());
-                  }}
-                  label="Start"
-                  showTodayButton
-                />
-
-                <DateTimePicker
-                  inputVariant="outlined"
-                  value={moment(endDate)}
-                  disablePast
-                  onChange={(date) => {
-                    setEndDate(date ? date.valueOf() : moment().valueOf());
-                  }}
-                  label="End"
-                  showTodayButton
-                />
-              </MuiPickersUtilsProvider>
-            </Grid>
-
-            <Grid item={true} className={classes.gridItem}>
-              <FormControl variant="outlined" fullWidth>
-                <InputLabel>Location</InputLabel>
-                <OutlinedInput
-                  value={location}
-                  onChange={handleLocationChange}
-                  label="Location"
-                  fullWidth
-                />
-              </FormControl>
-            </Grid>
-
-            <Grid item={true} className={classes.gridItem}>
-              <Autocomplete
-                multiple
-                disableCloseOnSelect
-                options={allEventCategories}
-                getOptionLabel={(option) => {
-                  return option;
-                }}
-                renderOption={(option, { selected }) => {
-                  return (
-                    <React.Fragment>
-                      <Checkbox
-                        icon={icon}
-                        checkedIcon={checkedIcon}
-                        style={{ marginRight: 8 }}
-                        checked={selected}
-                      />
-                      {option}
-                    </React.Fragment>
-                  );
-                }}
-                renderInput={(params) => {
-                  return <TextField {...params} variant="standard" label="Categories" />;
-                }}
-                onChange={(event, value) => {
-                  handleCategoryChange(value);
-                }}
+          <Grid item={true} xs={12}>
+            <FormControl variant="outlined" fullWidth={true}>
+              <InputLabel>Description</InputLabel>
+              <OutlinedInput
+                value={description}
+                onChange={handleDescriptionChange}
+                label="Description"
+                fullWidth={true}
               />
-            </Grid>
-
-            <Grid item={true} className={classes.gridItem}>
-              <InputLabel>Upload Event Picture</InputLabel>
-              <Input disableUnderline type="file" onChange={handlePictureChange} />
-            </Grid>
-
-            <Grid item={true} className={classes.gridItem}>
-              <FormControl variant="outlined" fullWidth>
-                <InputLabel>Amount</InputLabel>
-                <OutlinedInput
-                  type="number"
-                  value={amount}
-                  onChange={handleAmountChange}
-                  label="Amount"
-                  fullWidth
-                  startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                />
-              </FormControl>
-            </Grid>
+            </FormControl>
           </Grid>
 
-          <Grid item={true} className={classes.gridItem}>
-            <DialogActions>
-              <Button autoFocus onClick={onSubmit} color="secondary" variant="contained">
-                Create Event
-              </Button>
-            </DialogActions>
+          <Grid item={true} xs={12}>
+            <FormControl variant="outlined" fullWidth={true}>
+              <InputLabel>Location</InputLabel>
+              <OutlinedInput
+                value={location}
+                onChange={handleLocationChange}
+                label="Location"
+                fullWidth={true}
+              />
+            </FormControl>
+          </Grid>
+
+          <Grid item={true} xs={6}>
+            <Autocomplete
+              multiple={false}
+              disableCloseOnSelect={false}
+              value={eventType}
+              disableClearable={true}
+              options={EVENT_TYPE_LABELS}
+              renderOption={(option, { selected }) => {
+                return (
+                  <React.Fragment>
+                    <Checkbox
+                      icon={<CheckBoxOutlineBlankIcon fontSize="small" color="secondary" />}
+                      checkedIcon={<CheckBoxIcon fontSize="small" color="secondary" />}
+                      checked={selected}
+                    />
+                    {option}
+                  </React.Fragment>
+                );
+              }}
+              renderInput={(params) => {
+                return <TextField {...params} variant="outlined" label="Event Type" />;
+              }}
+              onChange={(event, value) => {
+                if (value) {
+                  setEventType(value);
+                }
+              }}
+            />
+          </Grid>
+
+          <Grid item={true} xs={6}>
+            <FormControl variant="outlined">
+              <InputLabel>Max Capacity</InputLabel>
+              <OutlinedInput
+                type="number"
+                value={capacity}
+                onChange={handleCapacityChange}
+                label="Max Capacity"
+              />
+            </FormControl>
+          </Grid>
+
+          <Grid item={true} xs={6}>
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+              <DateTimePicker
+                inputVariant="outlined"
+                value={moment(startDate)}
+                disablePast={true}
+                onChange={(date) => {
+                  setStartDate(date ? date.valueOf() : moment().valueOf());
+                }}
+                label="Start"
+                showTodayButton={true}
+              />
+            </MuiPickersUtilsProvider>
+          </Grid>
+
+          <Grid item={true} xs={6}>
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+              <DateTimePicker
+                inputVariant="outlined"
+                value={moment(endDate)}
+                disablePast={true}
+                onChange={(date) => {
+                  setEndDate(date ? date.valueOf() : moment().valueOf());
+                }}
+                label="End"
+                showTodayButton={true}
+              />
+            </MuiPickersUtilsProvider>
+          </Grid>
+
+          <Grid item={true} xs={12}>
+            <Autocomplete
+              multiple={true}
+              disableCloseOnSelect={true}
+              value={categories}
+              options={allEventCategories}
+              renderOption={(option, { selected }) => {
+                return (
+                  <React.Fragment>
+                    <Checkbox
+                      icon={<CheckBoxOutlineBlankIcon fontSize="small" color="secondary" />}
+                      checkedIcon={<CheckBoxIcon fontSize="small" color="secondary" />}
+                      checked={selected}
+                    />
+                    {option}
+                  </React.Fragment>
+                );
+              }}
+              renderInput={(params) => {
+                return <TextField {...params} variant="outlined" label="Categories" />;
+              }}
+              onChange={(event, value) => {
+                handleCategoryChange(value);
+              }}
+            />
+          </Grid>
+
+          <Grid item={true} xs={6}>
+            <FormControl variant="outlined" fullWidth={true}>
+              <InputLabel>Amount</InputLabel>
+              <OutlinedInput
+                type="number"
+                value={amount}
+                onChange={handleAmountChange}
+                label="Amount"
+                fullWidth={true}
+                startAdornment={<InputAdornment position="start">$</InputAdornment>}
+              />
+            </FormControl>
+          </Grid>
+
+          <Grid item={true} xs={6}>
+            <InputLabel>Upload Event Picture</InputLabel>
+            <Input
+              className={classes.upload}
+              disableUnderline={true}
+              type="file"
+              onChange={handlePictureChange}
+              fullWidth={true}
+            />
           </Grid>
         </Grid>
+
+        <DialogActions className={classes.actions}>
+          <Button
+            onClick={onSubmit}
+            color="secondary"
+            variant="contained"
+            className={classes.submit}
+          >
+            Create
+          </Button>
+        </DialogActions>
       </Container>
     </Dialog>
   );

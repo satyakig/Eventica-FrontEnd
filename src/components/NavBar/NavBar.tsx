@@ -145,7 +145,7 @@ const Navbar = (): JSX.Element => {
   }
 
   return (
-    <AppBar position="static" color="default">
+    <AppBar position="static">
       <Profile open={openProfile} handleClose={handleProfileClose} />
       <CreateEvent openCreateEvent={openCreateEvent} handleClose={closeCreateEventModal} />
       <Toolbar className={classes.navBar}>

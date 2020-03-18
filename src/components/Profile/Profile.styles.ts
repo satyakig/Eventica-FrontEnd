@@ -16,6 +16,7 @@ export const profileStyles = makeStyles((theme: Theme) => {
       padding: '12px',
     },
     title: {
+      textTransform: 'lowercase',
       userSelect: 'none',
     },
     email: {
