@@ -192,13 +192,13 @@ const EventGrid = () => {
     <Paper className={classes.drawer} elevation={10} variant="elevation">
       <List>
         <ListItem>
-          <Typography className={classes.filters} variant="body1">
-            Filters
+          <Typography className={classes.title} variant="body1">
+            {isHomepage ? 'public events' : 'manage events'}
           </Typography>
         </ListItem>
         <ListItem className={classes.priceRange}>
-          <Typography className={classes.priceRangeTitle} gutterBottom={true} variant="body2">
-            Price Range
+          <Typography className={classes.priceRangeTitle} variant="body2">
+            price
           </Typography>
           <Slider
             className={classes.slider}

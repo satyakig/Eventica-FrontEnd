@@ -28,9 +28,10 @@ export const eventGridStyles = makeStyles(({ spacing }: Theme) => {
     width100: {
       width: '100%',
     },
-    filters: {
-      paddingLeft: '8px',
+    title: {
       textTransform: 'lowercase',
+      marginLeft: 'auto',
+      marginRight: 'auto',
       letterSpacing: '1.5px',
     },
     priceRange: {
@@ -38,6 +39,7 @@ export const eventGridStyles = makeStyles(({ spacing }: Theme) => {
     },
     priceRangeTitle: {
       userSelect: 'none',
+      textTransform: 'lowercase',
     },
     slider: {
       width: '80%',
