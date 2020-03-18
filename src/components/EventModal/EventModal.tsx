@@ -430,7 +430,7 @@ export const EventModal = (): JSX.Element => {
                 disabled
                 style={{ width: '100%' }}
               />
-              {loggedIn ? (
+              {event instanceof UserEventModel ? (
                 <Grid container>
                   <Grid item xs>
                     <TextField
