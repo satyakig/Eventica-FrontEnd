@@ -30,6 +30,12 @@ export const EventsReducer = (
     });
   }
 
+  if (action.type === EVENT_ACTION_CONSTANTS.CLEAR_SELECTED_EVENT) {
+    return newState(state, {
+      selectedEvent: action.eventId,
+    });
+  }
+
   if (action.type === EVENT_ACTION_CONSTANTS.SET_USER_EVENT) {
     const event = new UserEventModel(action.event, action.userEvent);
     state.userEvents.set(event.eid, event);
