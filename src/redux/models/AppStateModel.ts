@@ -11,5 +11,5 @@ export class AppStateModel {
   searchTerm = '';
   categoriesArray: string[] = [];
   categoriesMap: Record<string, string> = {};
-  route: string = '';
+  route: string = HOMEPAGE;
 }
