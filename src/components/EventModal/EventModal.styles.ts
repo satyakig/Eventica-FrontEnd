@@ -12,10 +12,8 @@ export const eventModalStyles = makeStyles((theme: Theme) => {
       height: '60vh',
       overflowY: 'auto',
     },
-    heading: {
-      fontSize: 18,
-      paddingTop: 8,
-      fontWeight: 'bold',
+    gridItem: {
+      padding: '8px',
     },
     sendButton: {
       height: '100%',

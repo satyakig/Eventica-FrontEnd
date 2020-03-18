@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import {
   Dialog,
   Typography,
@@ -12,16 +12,26 @@ import {
   CardMedia,
   IconButton,
   Container,
+  Checkbox,
+  InputAdornment,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
 } from '@material-ui/core';
-import { EVENT_STATUS, EVENT_TYPE, EventModel, UserEventModel } from 'redux/models/EventModel';
+import { EventModel, UserEventModel } from 'redux/models/EventModel';
 import moment from 'moment-timezone';
 import SendIcon from '@material-ui/icons/Send';
 import CloseIcon from '@material-ui/icons/Close';
-import * as lodash from 'lodash';
 import { eventModalStyles } from './EventModal.styles';
 import { clearSelectedEventAction } from '../../redux/actions/EventsActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../redux/combinedReducer';
+import MomentUtils from '@date-io/moment';
+import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -44,17 +54,11 @@ export const EventModal = (): JSX.Element => {
 
   const classes = eventModalStyles();
 
-  const [tabIndex, setTabIndex] = useState(0);
-
-  const handleTabChange = (event: ChangeEvent<{}>, newValue: number) => {
-    setTabIndex(newValue);
-  };
-
   const eventId = useSelector((state: ReduxState) => {
     return state.events.selectedEvent;
   });
 
-  const event = useSelector((state: ReduxState) => {
+  const event: EventModel | UserEventModel = useSelector((state: ReduxState) => {
     let rv: EventModel | UserEventModel | undefined;
 
     if (eventId) {
@@ -70,18 +74,64 @@ export const EventModal = (): JSX.Element => {
     return rv ? rv : new EventModel();
   });
 
+  const allEventCategories = useSelector((state: ReduxState) => {
+    return state.appState.categoriesArray;
+  });
+
+  const [tabIndex, setTabIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [eventTitle, setEventTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [eventType, setEventType] = useState(0);
+  const [eventStatus, setEventStatus] = useState(0);
+  const [startDate, setStartDate] = useState(moment());
+  const [endDate, setEndDate] = useState(moment());
+  const [location, setLocation] = useState('');
+  const [categories, setCategories] = useState<string[]>([]);
+  const [amount, setAmount] = useState(0);
+  const [capacity, setCapacity] = useState(0);
+  const [photoURL, setPhotoURL] = useState('');
 
   useEffect(() => {
     if (eventId) {
+      setEventTitle(event.name);
+      setDescription(event.desc);
+      setEventType(event.type);
+      setEventStatus(event.status);
+      setStartDate(moment(event.start));
+      setEndDate(moment(event.end));
+      setLocation(event.address);
+      setCategories(event.category);
+      setAmount(event.fee);
+      setCapacity(event.capacity);
+      setPhotoURL(event.photoURL);
+
       setIsModalOpen(true);
     } else {
       setIsModalOpen(false);
     }
-  }, [eventId]);
+  }, [eventId, event]);
+
+  // Used for Select Component label
+  const inputLabel = useRef<HTMLLabelElement>(null);
+  const [labelWidth, setLabelWidth] = React.useState(0);
+  useEffect(() => {
+    if (inputLabel && inputLabel.current) {
+      setLabelWidth(inputLabel.current.offsetWidth);
+    }
+  }, []);
 
   function closeEventModal() {
     dispatch(clearSelectedEventAction());
+  }
+
+  function handleTabChange(e: ChangeEvent<{}>, newValue: number) {
+    setTabIndex(newValue);
+  }
+
+  function updateEvent() {
+    console.log(event);
   }
 
   return (
@@ -89,13 +139,13 @@ export const EventModal = (): JSX.Element => {
       <CardMedia
         style={{ height: 200, flexBasis: 200 }}
         component="img"
-        alt={event.name}
-        image={event.photoURL}
-        title={event.name}
+        alt={eventTitle}
+        image={photoURL}
+        title={eventTitle}
       />
       <Grid container>
         <Grid item xs>
-          <Typography className={classes.title}>{event.name}</Typography>
+          <Typography className={classes.title}>{eventTitle}</Typography>
         </Grid>
         <Grid item xs={2} sm={1}>
           <IconButton color={'secondary'} onClick={closeEventModal}>
@@ -112,91 +162,239 @@ export const EventModal = (): JSX.Element => {
       </AppBar>
       <Container className={classes.container} maxWidth={'lg'}>
         <TabPanel value={tabIndex} index={0}>
-          <Grid container spacing={3}>
-            <Grid item xs>
-              <Button
-                color={
-                  event instanceof UserEventModel && event.isUserYes() ? 'primary' : 'secondary'
-                }
-                variant={'contained'}
-                fullWidth
-              >
-                Going
-              </Button>
+          <Grid container direction="column" justify="flex-start" alignItems="stretch">
+            <Grid item className={classes.gridItem}>
+              <Grid container spacing={3}>
+                <Grid item xs>
+                  <Button
+                    color={
+                      event instanceof UserEventModel && event.isUserYes() ? 'primary' : 'secondary'
+                    }
+                    variant={'contained'}
+                    fullWidth
+                  >
+                    Going
+                  </Button>
+                </Grid>
+                <Grid item xs>
+                  <Button
+                    color={
+                      event instanceof UserEventModel && event.isUserMaybe()
+                        ? 'primary'
+                        : 'secondary'
+                    }
+                    variant={'contained'}
+                    fullWidth
+                  >
+                    Maybe
+                  </Button>
+                </Grid>
+                <Grid item xs>
+                  <Button
+                    color={
+                      event instanceof UserEventModel && event.isUserNo() ? 'primary' : 'secondary'
+                    }
+                    variant={'contained'}
+                    fullWidth
+                  >
+                    No
+                  </Button>
+                </Grid>
+              </Grid>
             </Grid>
-            <Grid item xs>
-              <Button
-                color={
-                  event instanceof UserEventModel && event.isUserMaybe() ? 'primary' : 'secondary'
-                }
-                variant={'contained'}
-                fullWidth
-              >
-                Maybe
-              </Button>
-            </Grid>
-            <Grid item xs>
-              <Button
-                color={
-                  event instanceof UserEventModel && event.isUserNo() ? 'primary' : 'secondary'
-                }
-                variant={'contained'}
-                fullWidth
-              >
-                No
-              </Button>
-            </Grid>
-          </Grid>
 
-          <Typography className={classes.heading}>Description</Typography>
-          <Typography>{event.desc}</Typography>
-
-          <Typography className={classes.heading}>Date & Time</Typography>
-          <Typography>
-            {moment(event.start).format("ddd MMM DD 'YY, h:mma")} -{' '}
-            {moment(event.end).format('h:mma')}
-          </Typography>
-
-          <Typography className={classes.heading}>Price</Typography>
-          <Typography>{event.fee === 0 ? 'Free' : `$${event.fee}`}</Typography>
-
-          <Typography className={classes.heading}>Location</Typography>
-          <Typography>{event.address}</Typography>
-
-          <Typography className={classes.heading}>Status</Typography>
-          <Typography>{lodash.startCase(EVENT_STATUS[event.status].toLowerCase())}</Typography>
-
-          <Typography className={classes.heading}>Type</Typography>
-          <Typography>{lodash.startCase(EVENT_TYPE[event.type].toLowerCase())}</Typography>
-
-          <Typography className={classes.heading}>Categories</Typography>
-          <Typography>{event.category.join(', ')}</Typography>
-
-          <Typography className={classes.heading}>Capacity</Typography>
-          <Typography>{event.capacity}</Typography>
-
-          <Typography className={classes.heading}>Comments</Typography>
-          <TextField
-            className={classes.commentField}
-            multiline
-            rows="4"
-            variant="outlined"
-            disabled
-            style={{ width: '100%' }}
-          />
-          <Grid container>
-            <Grid item xs>
+            <Grid item className={classes.gridItem}>
               <TextField
-                placeholder={'Leave a comment'}
                 variant={'outlined'}
-                style={{ width: '100%' }}
+                value={description}
+                onChange={(changeEvent) => {
+                  setDescription(changeEvent.target.value);
+                }}
+                label="Description"
+                fullWidth
+                multiline
+                disabled={!(event instanceof UserEventModel && event.isUserHost())}
               />
             </Grid>
-            <Grid item xs={3} sm={2} md={1}>
-              <Button className={classes.sendButton} variant={'outlined'} fullWidth>
-                <SendIcon />
-              </Button>
+
+            <Grid item className={classes.gridItem}>
+              <MuiPickersUtilsProvider utils={MomentUtils}>
+                <DateTimePicker
+                  style={{ marginRight: 20 }}
+                  inputVariant="outlined"
+                  value={startDate}
+                  onChange={(date) => {
+                    setStartDate(date ? date : moment());
+                  }}
+                  label="Start"
+                  showTodayButton
+                  disabled={!(event instanceof UserEventModel && event.isUserHost())}
+                />
+
+                <DateTimePicker
+                  inputVariant="outlined"
+                  value={endDate}
+                  onChange={(date) => {
+                    setEndDate(date ? date : moment());
+                  }}
+                  label="End"
+                  showTodayButton
+                  disabled={!(event instanceof UserEventModel && event.isUserHost())}
+                />
+              </MuiPickersUtilsProvider>
             </Grid>
+
+            <Grid item className={classes.gridItem}>
+              <Grid item>
+                <TextField
+                  variant={'outlined'}
+                  type="number"
+                  value={
+                    amount === 0 && !(event instanceof UserEventModel && event.isUserHost())
+                      ? 'Free'
+                      : amount
+                  }
+                  onChange={(changeEvent) => {
+                    setAmount(parseInt(changeEvent.target.value));
+                  }}
+                  label="Price"
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                  }}
+                  disabled={!(event instanceof UserEventModel && event.isUserHost())}
+                />
+              </Grid>
+            </Grid>
+
+            <Grid item className={classes.gridItem}>
+              <TextField
+                variant={'outlined'}
+                value={location}
+                onChange={(changeEvent) => {
+                  setLocation(changeEvent.target.value);
+                }}
+                label="Location"
+                disabled={!(event instanceof UserEventModel && event.isUserHost())}
+                fullWidth
+                multiline
+              />
+            </Grid>
+
+            <Grid item className={classes.gridItem}>
+              <FormControl variant="outlined">
+                {/* TOD0: Outline goes through Label name*/}
+                <InputLabel ref={inputLabel}>Status</InputLabel>
+                <Select
+                  value={eventStatus}
+                  onChange={(changeEvent) => {
+                    setEventStatus(changeEvent.target.value as number);
+                  }}
+                  labelWidth={labelWidth}
+                  disabled={!(event instanceof UserEventModel && event.isUserHost())}
+                >
+                  <MenuItem value={0}>Active</MenuItem>
+                  <MenuItem value={1}>Postponed</MenuItem>
+                  <MenuItem value={2}>Cancelled</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item className={classes.gridItem}>
+              <FormControl variant="outlined">
+                {/* TOD0: Outline goes through Label name*/}
+                <InputLabel ref={inputLabel}>Type</InputLabel>
+                <Select
+                  value={eventType}
+                  onChange={(changeEvent) => {
+                    setEventType(changeEvent.target.value as number);
+                  }}
+                  labelWidth={labelWidth}
+                  disabled={!(event instanceof UserEventModel && event.isUserHost())}
+                >
+                  <MenuItem value={0}>Public</MenuItem>
+                  <MenuItem value={1}>Private</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item={true} className={classes.gridItem}>
+              <Autocomplete
+                multiple
+                disableCloseOnSelect
+                options={allEventCategories}
+                getOptionLabel={(option) => {
+                  return option;
+                }}
+                value={categories}
+                disabled={!(event instanceof UserEventModel && event.isUserHost())}
+                renderOption={(option, { selected }) => {
+                  return (
+                    <React.Fragment>
+                      <Checkbox
+                        icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+                        checkedIcon={<CheckBoxIcon fontSize="small" />}
+                        style={{ marginRight: 8 }}
+                        checked={selected}
+                      />
+                      {option}
+                    </React.Fragment>
+                  );
+                }}
+                renderInput={(params) => {
+                  return <TextField {...params} variant={'outlined'} label="Categories" />;
+                }}
+                onChange={(changeEvent, value) => {
+                  setCategories(value);
+                }}
+              />
+            </Grid>
+
+            <Grid item className={classes.gridItem}>
+              <TextField
+                variant={'outlined'}
+                type={'number'}
+                value={capacity}
+                onChange={(changeEvent) => {
+                  setCapacity(parseInt(changeEvent.target.value));
+                }}
+                label="Capacity"
+                disabled={!(event instanceof UserEventModel && event.isUserHost())}
+              />
+            </Grid>
+
+            <Grid item className={classes.gridItem}>
+              <Typography>Comments</Typography>
+              <TextField
+                className={classes.commentField}
+                multiline
+                rows="4"
+                variant="outlined"
+                disabled
+                style={{ width: '100%' }}
+              />
+              <Grid container>
+                <Grid item xs>
+                  <TextField
+                    placeholder={'Leave a comment'}
+                    variant={'outlined'}
+                    style={{ width: '100%' }}
+                  />
+                </Grid>
+                <Grid item xs={3} sm={2} md={1}>
+                  <Button className={classes.sendButton} variant={'outlined'} fullWidth>
+                    <SendIcon />
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            {event instanceof UserEventModel && event.isUserHost() ? (
+              <Grid item className={classes.gridItem}>
+                <Button variant={'outlined'} onClick={updateEvent}>
+                  Update Event
+                </Button>
+              </Grid>
+            ) : null}
           </Grid>
         </TabPanel>
         <TabPanel value={tabIndex} index={1}>
