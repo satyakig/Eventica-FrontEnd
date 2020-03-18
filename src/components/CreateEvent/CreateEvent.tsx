@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
 import moment from 'moment-timezone';
 import MomentUtils from '@date-io/moment';
@@ -28,6 +28,7 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import { v4 } from 'uuid';
 import { getStorage } from 'lib/Firebase';
 import { createEventStyles } from './CreateEvent.styles';
+import { CreateEventType, createEvent } from '../../lib/EventRequests';
 
 type CreateEventProps = {
   openCreateEvent: boolean;
@@ -36,6 +37,7 @@ type CreateEventProps = {
 
 export default function CreateEvent(props: CreateEventProps) {
   const classes = createEventStyles();
+  const dispatch = useDispatch();
   const emptyArray: string[] = [];
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -44,7 +46,7 @@ export default function CreateEvent(props: CreateEventProps) {
   const [endDate, setEndDate] = useState(moment().valueOf());
   const [location, setLocation] = useState('');
   const [categories, setCategories] = useState(emptyArray);
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState(0);
   const [capacity, setCapacity] = useState(0);
   const [photoURL, setPhotoURL] = useState('');
 
@@ -85,7 +87,7 @@ export default function CreateEvent(props: CreateEventProps) {
   };
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(event.target.value);
+    setAmount(parseInt(event.target.value));
   };
 
   const allEventCategories = useSelector((state: ReduxState) => {
@@ -109,6 +111,23 @@ export default function CreateEvent(props: CreateEventProps) {
       .then((link) => {
         setPhotoURL(link);
       });
+  };
+
+  const onSubmit = () => {
+    const data: CreateEventType = {
+      name: name,
+      address: location,
+      category: categories,
+      photoURL: photoURL,
+      desc: description,
+      start: startDate,
+      end: endDate,
+      fee: amount,
+      type: eventType,
+      capacity: capacity,
+    };
+    dispatch(createEvent(data));
+    props.handleClose();
   };
 
   return (
@@ -158,7 +177,7 @@ export default function CreateEvent(props: CreateEventProps) {
 
             <Grid item={true} className={classes.gridItem}>
               <TextField
-                fullWidth
+                style={{ marginRight: 20 }}
                 select
                 label="Event Type"
                 value={eventType}
@@ -176,17 +195,14 @@ export default function CreateEvent(props: CreateEventProps) {
                   );
                 })}
               </TextField>
-            </Grid>
 
-            <Grid item={true} className={classes.gridItem}>
-              <FormControl variant="outlined" fullWidth>
+              <FormControl variant="outlined">
                 <InputLabel>Max Capacity</InputLabel>
                 <OutlinedInput
                   type="number"
                   value={capacity}
                   onChange={handleCapacityChange}
                   label="Max Capacity"
-                  fullWidth
                 />
               </FormControl>
             </Grid>
@@ -252,14 +268,7 @@ export default function CreateEvent(props: CreateEventProps) {
                   );
                 }}
                 renderInput={(params) => {
-                  return (
-                    <TextField
-                      {...params}
-                      variant="standard"
-                      label="Categories"
-                      placeholder="Categories"
-                    />
-                  );
+                  return <TextField {...params} variant="standard" label="Categories" />;
                 }}
                 onChange={(event, value) => {
                   handleCategoryChange(value);
@@ -289,7 +298,7 @@ export default function CreateEvent(props: CreateEventProps) {
 
           <Grid item={true} className={classes.gridItem}>
             <DialogActions>
-              <Button autoFocus onClick={props.handleClose} color="secondary" variant="contained">
+              <Button autoFocus onClick={onSubmit} color="secondary" variant="contained">
                 Create Event
               </Button>
             </DialogActions>
