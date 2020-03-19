@@ -157,6 +157,8 @@ export const EventModal = (): JSX.Element => {
       setCapacity(event.capacity);
       setPhotoURL(event.photoURL);
     }
+
+    setTabIndex(0);
   }, [event, eventId]);
 
   const partOfEvent = loggedIn && event instanceof UserEventModel;
@@ -177,7 +179,7 @@ export const EventModal = (): JSX.Element => {
               <FormControl variant="outlined" fullWidth={true}>
                 <InputLabel>Description</InputLabel>
                 <OutlinedInput
-                  className={classes.disabledCheck}
+                  className={classes.commonInputStyles}
                   value={description}
                   onChange={(changeEvent) => {
                     setDescription(changeEvent.target.value);
@@ -194,7 +196,7 @@ export const EventModal = (): JSX.Element => {
               <FormControl variant="outlined" fullWidth={true}>
                 <InputLabel>Location</InputLabel>
                 <OutlinedInput
-                  className={classes.disabledCheck}
+                  className={classes.commonInputStyles}
                   value={location}
                   onChange={(changeEvent) => {
                     setLocation(changeEvent.target.value);
@@ -209,7 +211,7 @@ export const EventModal = (): JSX.Element => {
 
             <Grid item={true} xs={6}>
               <Autocomplete
-                className={classes.disabledCheck}
+                className={classes.commonInputStyles}
                 multiple={false}
                 disableCloseOnSelect={false}
                 value={eventType}
@@ -241,7 +243,7 @@ export const EventModal = (): JSX.Element => {
 
             <Grid item={true} xs={6}>
               <Autocomplete
-                className={classes.disabledCheck}
+                className={classes.commonInputStyles}
                 multiple={false}
                 disableCloseOnSelect={false}
                 value={eventStatus}
@@ -274,7 +276,8 @@ export const EventModal = (): JSX.Element => {
             <Grid item={true} xs={6}>
               <MuiPickersUtilsProvider utils={MomentUtils}>
                 <DateTimePicker
-                  className={classes.disabledCheck}
+                  format="h:mm a MMM Do, YYYY"
+                  className={classes.commonInputStyles}
                   inputVariant="outlined"
                   value={moment(startDate)}
                   onChange={(date) => {
@@ -290,7 +293,8 @@ export const EventModal = (): JSX.Element => {
             <Grid item={true} xs={6}>
               <MuiPickersUtilsProvider utils={MomentUtils}>
                 <DateTimePicker
-                  className={classes.disabledCheck}
+                  format="h:mm a MMM Do, YYYY"
+                  className={classes.commonInputStyles}
                   inputVariant="outlined"
                   value={moment(endDate)}
                   onChange={(date) => {
@@ -307,7 +311,7 @@ export const EventModal = (): JSX.Element => {
               <FormControl variant="outlined" fullWidth={true}>
                 <InputLabel>Amount</InputLabel>
                 <OutlinedInput
-                  className={classes.disabledCheck}
+                  className={classes.commonInputStyles}
                   type="number"
                   value={amount} // TODO: Make value "Free" if 0
                   onChange={(changeEvent) => {
@@ -325,7 +329,7 @@ export const EventModal = (): JSX.Element => {
               <FormControl variant="outlined">
                 <InputLabel>Max Capacity</InputLabel>
                 <OutlinedInput
-                  className={classes.disabledCheck}
+                  className={classes.commonInputStyles}
                   type="number"
                   value={capacity}
                   onChange={(changeEvent) => {
@@ -339,7 +343,7 @@ export const EventModal = (): JSX.Element => {
 
             <Grid item={true} xs={12}>
               <Autocomplete
-                className={classes.disabledCheck}
+                className={classes.commonInputStyles}
                 multiple={true}
                 disableCloseOnSelect={true}
                 value={categories}
@@ -508,6 +512,7 @@ export const EventModal = (): JSX.Element => {
                   }}
                   label="Name"
                   fullWidth={true}
+                  multiline={true}
                 />
               </FormControl>
             ) : (

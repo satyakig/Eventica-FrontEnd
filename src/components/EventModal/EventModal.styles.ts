@@ -9,6 +9,9 @@ export const eventModalStyles = makeStyles((theme: Theme) => {
     },
     image: {
       height: '200px',
+      cursor: (props: any) => {
+        return props.isHost ? 'pointer' : 'auto';
+      },
     },
     topGrid: {
       marginTop: '10px',
@@ -44,8 +47,13 @@ export const eventModalStyles = makeStyles((theme: Theme) => {
       right: theme.spacing(1),
       top: theme.spacing(1),
     },
-    disabledCheck: {
-      '& .Mui-disabled': {
+    commonInputStyles: {
+      width: '100%',
+
+      '& .MuiInputBase-input': {
+        color: '#ffffff',
+      },
+      '& .MuiChip-root': {
         color: '#ffffff',
       },
       '& .MuiOutlinedInput-notchedOutline': {
@@ -54,6 +62,11 @@ export const eventModalStyles = makeStyles((theme: Theme) => {
         },
       },
       '& .MuiAutocomplete-endAdornment': {
+        display: (props: any) => {
+          return props.isHost ? '' : 'none';
+        },
+      },
+      '& .MuiChip-deleteIcon': {
         display: (props: any) => {
           return props.isHost ? '' : 'none';
         },
