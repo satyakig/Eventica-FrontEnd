@@ -1,8 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import {
   Grid,
-  useMediaQuery,
-  useTheme,
   Paper,
   List,
   ListItem,
@@ -24,8 +22,8 @@ import { useSelector } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
 import {
   EventModel,
-  EVENT_STATUS_OPTIONS_LABELS,
-  USER_EVENT_STATUS_OPTIONS_LABELS,
+  EVENT_STATUS_LABELS,
+  USER_EVENT_STATUS_LABELS,
   getEventStatus,
   getUserEventStatus,
   UserEventModel,
@@ -35,10 +33,11 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import EventCard from '../EventCard/EventCard';
 import { eventGridStyles } from './EventGrid.styles';
+import { isSmallDown } from 'lib/useBreakPoints';
 
 const EventGrid = () => {
   const classes = eventGridStyles();
-  const isSmDown = useMediaQuery(useTheme().breakpoints.down('sm'));
+  const isSmDown = isSmallDown();
 
   const allEventCategories = useSelector((state: ReduxState) => {
     return state.appState.categoriesArray;
@@ -265,7 +264,7 @@ const EventGrid = () => {
             className={classes.width100}
             multiple={true}
             value={eventStatus}
-            options={EVENT_STATUS_OPTIONS_LABELS}
+            options={EVENT_STATUS_LABELS}
             renderOption={(option, { selected }) => {
               return (
                 <Fragment>
@@ -292,7 +291,7 @@ const EventGrid = () => {
               className={classes.width100}
               multiple={true}
               value={userEventStatus}
-              options={USER_EVENT_STATUS_OPTIONS_LABELS}
+              options={USER_EVENT_STATUS_LABELS}
               renderOption={(option, { selected }) => {
                 return (
                   <Fragment>

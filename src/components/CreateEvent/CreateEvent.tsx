@@ -115,6 +115,7 @@ export default function CreateEvent(props: CreateEventProps) {
       type: getEventType(eventType),
       capacity: capacity,
     };
+
     dispatch(createEvent(data));
     props.handleClose();
   };
@@ -153,6 +154,7 @@ export default function CreateEvent(props: CreateEventProps) {
                 onChange={handleDescriptionChange}
                 label="Description"
                 fullWidth={true}
+                multiline={true}
               />
             </FormControl>
           </Grid>
@@ -165,6 +167,7 @@ export default function CreateEvent(props: CreateEventProps) {
                 onChange={handleLocationChange}
                 label="Location"
                 fullWidth={true}
+                multiline={true}
               />
             </FormControl>
           </Grid>
@@ -178,18 +181,18 @@ export default function CreateEvent(props: CreateEventProps) {
               options={EVENT_TYPE_LABELS}
               renderOption={(option, { selected }) => {
                 return (
-                  <React.Fragment>
+                  <Fragment>
                     <Checkbox
                       icon={<CheckBoxOutlineBlankIcon fontSize="small" color="secondary" />}
                       checkedIcon={<CheckBoxIcon fontSize="small" color="secondary" />}
                       checked={selected}
                     />
                     {option}
-                  </React.Fragment>
+                  </Fragment>
                 );
               }}
               renderInput={(params) => {
-                return <TextField {...params} variant="outlined" label="Event Type" />;
+                return <TextField {...params} variant="outlined" label="Type" />;
               }}
               onChange={(event, value) => {
                 if (value) {
@@ -220,7 +223,7 @@ export default function CreateEvent(props: CreateEventProps) {
                 onChange={(date) => {
                   setStartDate(date ? date.valueOf() : moment().valueOf());
                 }}
-                label="Start"
+                label="Start Time"
                 showTodayButton={true}
               />
             </MuiPickersUtilsProvider>
@@ -235,7 +238,7 @@ export default function CreateEvent(props: CreateEventProps) {
                 onChange={(date) => {
                   setEndDate(date ? date.valueOf() : moment().valueOf());
                 }}
-                label="End"
+                label="End Time"
                 showTodayButton={true}
               />
             </MuiPickersUtilsProvider>
@@ -301,7 +304,7 @@ export default function CreateEvent(props: CreateEventProps) {
             variant="contained"
             className={classes.submit}
           >
-            Create
+            Create Event
           </Button>
         </DialogActions>
       </Container>

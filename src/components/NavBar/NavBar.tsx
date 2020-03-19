@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   AppBar,
   Toolbar,
@@ -9,7 +9,6 @@ import {
   MenuItem,
   Menu,
   Button,
-  useMediaQuery,
   Avatar,
   ListItemIcon,
 } from '@material-ui/core';
@@ -22,6 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
 import { ReactComponent as GoogleLogo } from 'assets/google.svg';
 import { getAuth, makeLoginPopup } from 'lib/Firebase';
+import { isSmallDown } from 'lib/useBreakPoints';
 import { navbarStyles } from './NavBar.styles';
 import { setRouteAction, setSearchTermAction } from 'redux/actions/AppStateActions';
 import { HOMEPAGE, MANAGE_EVENTS } from 'redux/models/AppStateModel';
@@ -36,9 +36,7 @@ const Navbar = (): JSX.Element => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openProfile, setOpenProfile] = useState(false);
 
-  const isSmall = useMediaQuery((theme: Theme) => {
-    return theme.breakpoints.down('sm');
-  });
+  const isSmall = isSmallDown();
 
   const dispatch = useDispatch();
 
@@ -169,6 +167,7 @@ const Navbar = (): JSX.Element => {
         </div>
         {getEndComponents()}
         <Menu
+          className={classes.menuList}
           anchorEl={anchorEl}
           keepMounted={true}
           getContentAnchorEl={null}

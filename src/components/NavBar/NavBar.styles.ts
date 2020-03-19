@@ -18,7 +18,6 @@ export const navbarStyles = ({ spacing, breakpoints, shape, palette, transitions
     title: {
       flexBasis: '10ch',
       minWidth: '10ch',
-      userSelect: 'none',
       textTransform: 'uppercase',
       fontWeight: 500,
       color: SECONDARY,
@@ -85,6 +84,9 @@ export const navbarStyles = ({ spacing, breakpoints, shape, palette, transitions
     },
     listIcon: {
       minWidth: '40px',
+    },
+    menuList: {
+      textTransform: 'lowercase',
     },
   });
 };

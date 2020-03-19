@@ -5,6 +5,8 @@ export const EVENT_TYPE: Record<string, number> = {
   PRIVATE: 1,
 };
 
+export const EVENT_STATUS: Record<string, number> = { ACTIVE: 0, POSTPONED: 1, CANCELLED: 2 };
+
 export const USER_EVENT_STATUS: Record<string, number> = {
   HOST: 0,
   ATTENDING: 1,
@@ -13,36 +15,68 @@ export const USER_EVENT_STATUS: Record<string, number> = {
   INVITED: 4,
 };
 
-export const EVENT_STATUS: Record<string, number> = { ACTIVE: 0, POSTPONED: 1, CANCELLED: 2 };
-
 export const EVENT_TYPE_LABELS = ['Public', 'Private'];
 
-export const EVENT_STATUS_OPTIONS_LABELS = ['Active', 'Postponed', 'Cancelled'];
+export const EVENT_STATUS_LABELS = ['Active', 'Postponed', 'Cancelled'];
 
-export const USER_EVENT_STATUS_OPTIONS_LABELS = [
-  'Host',
-  'Invited',
-  'Attending',
-  'Maybe',
-  'Not Attending',
-];
+export const USER_EVENT_STATUS_LABELS = ['Host', 'Attending', 'Maybe', 'Not Attending', 'Invited'];
 
+/**
+ * Get the Event Type from the display string
+ */
 export function getEventType(inp: string): number {
   const val = EVENT_TYPE[inp.toUpperCase()];
 
   return val !== undefined ? val : -1;
 }
 
+/**
+ * Get the Event Status from the display value
+ */
 export function getEventStatus(inp: string): number {
   const val = EVENT_STATUS[inp.toUpperCase()];
 
   return val !== undefined ? val : -1;
 }
 
+/**
+ * Get the User Event Status from the display value
+ */
 export function getUserEventStatus(inp: string): number {
+  if (inp.toLowerCase().includes('not')) {
+    return USER_EVENT_STATUS.NO;
+  }
+
   const val = USER_EVENT_STATUS[inp.toUpperCase()];
 
   return val !== undefined ? val : -1;
+}
+
+/**
+ * Get the Event Type label from the value
+ */
+export function getEventTypeLabel(inp: number): string {
+  const val = EVENT_TYPE_LABELS[inp];
+
+  return val !== undefined ? val : EVENT_TYPE_LABELS[0];
+}
+
+/**
+ * Get the Event Status label from the value
+ */
+export function getEventStatusLabel(inp: number): string {
+  const val = EVENT_STATUS_LABELS[inp];
+
+  return val !== undefined ? val : EVENT_STATUS_LABELS[2];
+}
+
+/**
+ * Get the User Event Status label from the value
+ */
+export function getUserEventStatusLabel(inp: number): string {
+  const val = USER_EVENT_STATUS_LABELS[inp];
+
+  return val !== undefined ? val : USER_EVENT_STATUS_LABELS[4];
 }
 
 export interface EventType {

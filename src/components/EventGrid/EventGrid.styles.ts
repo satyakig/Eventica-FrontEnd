@@ -33,13 +33,11 @@ export const eventGridStyles = makeStyles(({ spacing, zIndex }: Theme) => {
       marginLeft: 'auto',
       marginRight: 'auto',
       letterSpacing: '1.5px',
-      userSelect: 'none',
     },
     priceRange: {
       flexDirection: 'column',
     },
     priceRangeTitle: {
-      userSelect: 'none',
       textTransform: 'lowercase',
     },
     slider: {

@@ -32,7 +32,7 @@ export const EventsReducer = (
 
   if (action.type === EVENT_ACTION_CONSTANTS.CLEAR_SELECTED_EVENT) {
     return newState(state, {
-      selectedEvent: action.eventId,
+      selectedEvent: '',
     });
   }
 
