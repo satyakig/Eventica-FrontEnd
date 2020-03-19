@@ -46,6 +46,7 @@ import { useLoggedIn } from 'lib/useLoggedIn';
 import { v4 } from 'uuid';
 import { getStorage } from 'lib/Firebase';
 import { isExtraSmallDown } from 'lib/useBreakPoints';
+import { EventModalParticipants } from './EventModalParticipants';
 
 const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
 
@@ -439,7 +440,7 @@ export const EventModal = (): JSX.Element => {
       case 1: // Participants
         return (
           <Fragment>
-            <span>Participants</span>
+            <EventModalParticipants />
           </Fragment>
         );
 
