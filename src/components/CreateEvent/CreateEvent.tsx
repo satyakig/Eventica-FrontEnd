@@ -142,7 +142,13 @@ export default function CreateEvent(props: CreateEventProps) {
           <Grid item={true} xs={12}>
             <FormControl variant="outlined" fullWidth={true}>
               <InputLabel>Name</InputLabel>
-              <OutlinedInput value={name} onChange={handleNameChange} label="Name" fullWidth />
+              <OutlinedInput
+                value={name}
+                onChange={handleNameChange}
+                label="Name"
+                fullWidth={true}
+                multiline={true}
+              />
             </FormControl>
           </Grid>
 
