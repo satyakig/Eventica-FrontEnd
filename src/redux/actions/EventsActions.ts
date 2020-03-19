@@ -29,10 +29,9 @@ export function updateSelectedEventAction(eventId: string): UpdateSelectedEventA
   };
 }
 
-export function clearSelectedEventAction(): UpdateSelectedEventActionType {
+export function clearSelectedEventAction(): Action {
   return {
     type: EVENT_ACTION_CONSTANTS.CLEAR_SELECTED_EVENT,
-    eventId: '',
   };
 }
 

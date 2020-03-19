@@ -2,9 +2,6 @@ steps:
   # Install App
   - name: 'gcr.io/cloud-builders/npm'
     args: ['ci']
-  # Test App
-  - name: 'gcr.io/cloud-builders/npm'
-    args: ['run', 'lint']
   # Build App
   - name: 'gcr.io/cloud-builders/npm'
     args: ['run', 'build']

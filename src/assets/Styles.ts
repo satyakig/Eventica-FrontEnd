@@ -1,6 +1,6 @@
 import { createMuiTheme } from '@material-ui/core';
 
-export const PRIMARY = '#e14eca';
+export const PRIMARY = '#ff165d';
 export const SECONDARY = '#f4f5f7';
 export const DANGER = '#fd5d93';
 export const WARNING = '#ff8d72';
