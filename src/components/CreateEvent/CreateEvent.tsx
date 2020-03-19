@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
 import moment from 'moment-timezone';
@@ -30,6 +30,7 @@ import { getStorage } from 'lib/Firebase';
 import { CreateEventType, createEvent } from 'lib/EventRequests';
 import { EVENT_TYPE_LABELS, getEventType } from 'redux/models/EventModel';
 import { createEventStyles } from './CreateEvent.styles';
+import { isValidEvent } from '../../validation/EventValidation';
 
 type CreateEventProps = {
   openCreateEvent: boolean;
@@ -50,10 +51,39 @@ export default function CreateEvent(props: CreateEventProps) {
   const [amount, setAmount] = useState(0);
   const [capacity, setCapacity] = useState(0);
   const [photoURL, setPhotoURL] = useState('');
+  const [validEvent, setValidEvent] = useState(false);
 
   const user = useSelector((state: ReduxState) => {
     return state.user;
   });
+
+  useEffect(() => {
+    const data: CreateEventType = {
+      name: name,
+      address: location,
+      category: categories,
+      photoURL: photoURL,
+      desc: description,
+      start: startDate,
+      end: endDate,
+      fee: amount,
+      type: getEventType(eventType),
+      capacity: capacity,
+    };
+
+    setValidEvent(isValidEvent(data));
+  }, [
+    name,
+    description,
+    eventType,
+    startDate,
+    endDate,
+    location,
+    categories,
+    amount,
+    capacity,
+    photoURL,
+  ]);
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -104,11 +134,11 @@ export default function CreateEvent(props: CreateEventProps) {
 
   const onSubmit = () => {
     const data: CreateEventType = {
-      name: name,
-      address: location,
+      name: name.trim(),
+      address: location.trim(),
       category: categories,
       photoURL: photoURL,
-      desc: description,
+      desc: description.trim(),
       start: startDate,
       end: endDate,
       fee: amount,
@@ -305,6 +335,7 @@ export default function CreateEvent(props: CreateEventProps) {
 
         <DialogActions className={classes.actions}>
           <Button
+            disabled={!validEvent}
             onClick={onSubmit}
             color="secondary"
             variant="contained"

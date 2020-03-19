@@ -40,12 +40,13 @@ import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import { updateEvent, UpdateEventType } from 'lib/EventRequests';
+import { updateEvent, UpdateEventType, CreateEventType } from 'lib/EventRequests';
 import { updateUserEvent } from 'lib/EventCommentRequests';
 import { useLoggedIn } from 'lib/useLoggedIn';
 import { v4 } from 'uuid';
 import { getStorage } from 'lib/Firebase';
 import { isExtraSmallDown } from 'lib/useBreakPoints';
+import { isValidEvent } from '../../validation/EventValidation';
 
 const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
 
@@ -88,6 +89,7 @@ export const EventModal = (): JSX.Element => {
   const [amount, setAmount] = useState(0);
   const [capacity, setCapacity] = useState(0);
   const [photoURL, setPhotoURL] = useState('');
+  const [validEventUpdate, setValidEventUpdate] = useState(false);
 
   function closeEventModal() {
     dispatch(clearSelectedEventAction());
@@ -127,11 +129,11 @@ export const EventModal = (): JSX.Element => {
     const updatedData: UpdateEventType = {
       eid: eventId,
       status: getEventStatus(eventStatus),
-      name: name,
-      address: location,
+      name: name.trim(),
+      address: location.trim(),
       category: categories,
       photoURL: photoURL,
-      desc: description,
+      desc: description.trim(),
       start: startDate,
       end: endDate,
       fee: amount,
@@ -159,6 +161,34 @@ export const EventModal = (): JSX.Element => {
 
     setTabIndex(0);
   }, [event, eventId]);
+
+  useEffect(() => {
+    const updatedData: CreateEventType = {
+      name: name,
+      address: location,
+      category: categories,
+      photoURL: photoURL,
+      desc: description,
+      start: startDate,
+      end: endDate,
+      fee: amount,
+      type: getEventType(eventType),
+      capacity: capacity,
+    };
+
+    setValidEventUpdate(isValidEvent(updatedData));
+  }, [
+    name,
+    location,
+    categories,
+    photoURL,
+    description,
+    startDate,
+    endDate,
+    amount,
+    eventType,
+    capacity,
+  ]);
 
   const partOfEvent = loggedIn && event instanceof UserEventModel;
   const isHost = partOfEvent && (event as UserEventModel).isUserHost();
@@ -432,7 +462,12 @@ export const EventModal = (): JSX.Element => {
 
             {isHost ? (
               <Grid item={true} xs={12} className={classes.updateButton}>
-                <Button variant="contained" color="secondary" onClick={handleSubmit}>
+                <Button
+                  disabled={!validEventUpdate}
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleSubmit}
+                >
                   Update Event
                 </Button>
               </Grid>
