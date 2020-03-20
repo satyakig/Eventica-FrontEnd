@@ -241,13 +241,14 @@ export default function CreateEvent(props: CreateEventProps) {
           </Grid>
 
           <Grid item={true} xs={6}>
-            <FormControl variant="outlined">
+            <FormControl variant="outlined" fullWidth={true}>
               <InputLabel>Max Capacity</InputLabel>
               <OutlinedInput
                 type="number"
                 value={capacity}
                 onChange={handleCapacityChange}
                 label="Max Capacity"
+                fullWidth={true}
               />
             </FormControl>
           </Grid>

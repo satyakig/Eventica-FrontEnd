@@ -9,6 +9,7 @@ export const PATHS = {
   COMMENT: 'comment',
   USER_EVENT: 'user-event',
   USER: 'user',
+  ADD_USER: 'add-user',
 };
 
 export type ThunkActionType = ThunkAction<void, ReduxState, null, AnyAction>;
