@@ -30,7 +30,7 @@ const EventCard = (props: EventCardProps) => {
       />
       <CardContent className={classes.cardContent}>
         <Typography className={classes.subtitle} color="textSecondary" gutterBottom={true}>
-          {moment(props.event.start).format("ddd h:mma, MMM DD 'YY")}
+          {moment(props.event.start).format('ddd, MMM DD, h:mm A')}
         </Typography>
         <Typography
           className={classes.title}

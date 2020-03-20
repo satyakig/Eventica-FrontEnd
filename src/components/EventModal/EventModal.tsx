@@ -49,6 +49,7 @@ import { isExtraSmallDown } from 'lib/useBreakPoints';
 import { isValidEvent } from '../../validation/EventValidation';
 
 const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
+const EVENT_TIME_FORMAT = 'h:mm a, MMMM D, YYYY';
 
 export const EventModal = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -305,7 +306,7 @@ export const EventModal = (): JSX.Element => {
             <Grid item={true} xs={6}>
               <MuiPickersUtilsProvider utils={MomentUtils}>
                 <DateTimePicker
-                  format="h:mm a MMM Do, YYYY"
+                  format={EVENT_TIME_FORMAT}
                   className={classes.commonInputStyles}
                   inputVariant="outlined"
                   value={moment(startDate)}
@@ -322,7 +323,7 @@ export const EventModal = (): JSX.Element => {
             <Grid item={true} xs={6}>
               <MuiPickersUtilsProvider utils={MomentUtils}>
                 <DateTimePicker
-                  format="h:mm a MMM Do, YYYY"
+                  format={EVENT_TIME_FORMAT}
                   className={classes.commonInputStyles}
                   inputVariant="outlined"
                   value={moment(endDate)}

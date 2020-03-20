@@ -32,6 +32,8 @@ import { EVENT_TYPE_LABELS, getEventType } from 'redux/models/EventModel';
 import { createEventStyles } from './CreateEvent.styles';
 import { isValidEvent } from '../../validation/EventValidation';
 
+const EVENT_TIME_FORMAT = 'MMMM D h:mm a';
+
 type CreateEventProps = {
   openCreateEvent: boolean;
   handleClose: () => void;
@@ -253,6 +255,7 @@ export default function CreateEvent(props: CreateEventProps) {
           <Grid item={true} xs={6}>
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <DateTimePicker
+                format={EVENT_TIME_FORMAT}
                 inputVariant="outlined"
                 value={moment(startDate)}
                 disablePast={true}
@@ -268,6 +271,7 @@ export default function CreateEvent(props: CreateEventProps) {
           <Grid item={true} xs={6}>
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <DateTimePicker
+                format={EVENT_TIME_FORMAT}
                 inputVariant="outlined"
                 value={moment(endDate)}
                 disablePast={true}
