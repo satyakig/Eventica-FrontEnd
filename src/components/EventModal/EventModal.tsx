@@ -46,7 +46,7 @@ import { useLoggedIn } from 'lib/useLoggedIn';
 import { v4 } from 'uuid';
 import { getStorage } from 'lib/Firebase';
 import { isExtraSmallDown } from 'lib/useBreakPoints';
-import { isValidEvent } from '../../validation/EventValidation';
+import { isValidEvent } from 'validation/EventValidation';
 
 const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
 
@@ -355,7 +355,7 @@ export const EventModal = (): JSX.Element => {
             </Grid>
 
             <Grid item={true} xs={6}>
-              <FormControl variant="outlined">
+              <FormControl variant="outlined" fullWidth={true}>
                 <InputLabel>Max Capacity</InputLabel>
                 <OutlinedInput
                   className={classes.commonInputStyles}
@@ -366,6 +366,7 @@ export const EventModal = (): JSX.Element => {
                   }}
                   label="Max Capacity"
                   disabled={!isHost}
+                  fullWidth={true}
                 />
               </FormControl>
             </Grid>
