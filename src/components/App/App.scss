@@ -102,6 +102,14 @@ body {
   .MuiTypography-root {
     user-select: none;
   }
+
+  .StripeElement {
+    padding: 15px 10px;
+    box-shadow: rgba(50, 50, 93, 0.14902) 0 1px 3px, rgba(0, 0, 0, 0.0196078) 0 1px 0;
+    border-radius: 5px;
+    background: #f4f5f7;
+    text-transform: lowercase;
+  }
 }
 
 main {

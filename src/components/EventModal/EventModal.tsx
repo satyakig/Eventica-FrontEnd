@@ -4,14 +4,10 @@ import {
   Typography,
   Tabs,
   Tab,
-  TextField,
-  Button,
   Grid,
   CardMedia,
   IconButton,
   Container,
-  Checkbox,
-  InputAdornment,
   InputLabel,
   FormControl,
   Input,
@@ -25,23 +21,21 @@ import {
   getEventStatusLabel,
   getEventType,
   getEventTypeLabel,
-  getUserEventStatus,
-  USER_EVENT_STATUS_LABELS,
   UserEventModel,
 } from 'redux/models/EventModel';
 import moment from 'moment-timezone';
 import CloseIcon from '@material-ui/icons/Close';
-import { eventModalStyles } from './EventModal.styles';
-import { clearSelectedEventAction } from 'redux/actions/EventsActions';
 import { useDispatch, useSelector } from 'react-redux';
+import { v4 } from 'uuid';
+import { clearSelectedEventAction } from 'redux/actions/EventsActions';
 import { ReduxState } from 'redux/combinedReducer';
 import { updateEvent, UpdateEventType, CreateEventType } from 'lib/EventRequests';
 import { useLoggedIn } from 'lib/useLoggedIn';
-import { v4 } from 'uuid';
 import { getStorage } from 'lib/Firebase';
 import { isExtraSmallDown } from 'lib/useBreakPoints';
 import { isValidEvent } from 'validation/EventValidation';
 import EventDetails from './EventDetails';
+import { eventModalStyles } from './EventModal.styles';
 
 const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
 

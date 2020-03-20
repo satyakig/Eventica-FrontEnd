@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment-timezone';
 import MomentUtils from '@date-io/moment';
@@ -19,12 +19,13 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import {
   EVENT_STATUS_LABELS,
   EVENT_TYPE_LABELS,
-  getUserEventStatus,
+  USER_EVENT_STATUS,
   USER_EVENT_STATUS_LABELS,
 } from 'redux/models/EventModel';
 import { updateUserEvent } from 'lib/EventCommentRequests';
 import { useLoggedIn } from 'lib/useLoggedIn';
 import { ReduxState } from 'redux/combinedReducer';
+import CheckoutDialog from '../Checkout/Checkout';
 
 const EventDetails = (props: any): JSX.Element => {
   const dispatch = useDispatch();
@@ -33,6 +34,8 @@ const EventDetails = (props: any): JSX.Element => {
   const allEventCategories = useSelector((state: ReduxState) => {
     return state.appState.categoriesArray;
   });
+
+  const [openPayment, setOpenPayment] = useState(false);
 
   const {
     eventId,
@@ -71,8 +74,59 @@ const EventDetails = (props: any): JSX.Element => {
     ...rest
   } = props;
 
+  function processPaymentClose(status: boolean) {
+    if (status) {
+      dispatch(
+        updateUserEvent({
+          eid: eventId,
+          status: USER_EVENT_STATUS.ATTENDING,
+        }),
+      );
+    }
+
+    setOpenPayment(false);
+  }
+
+  function attendingClick() {
+    if (!attending) {
+      if (amount > 0) {
+        setOpenPayment(true);
+      } else {
+        dispatch(
+          updateUserEvent({
+            eid: eventId,
+            status: USER_EVENT_STATUS.ATTENDING,
+          }),
+        );
+      }
+    }
+  }
+
+  function maybeClick() {
+    if (!maybe) {
+      dispatch(
+        updateUserEvent({
+          eid: eventId,
+          status: USER_EVENT_STATUS.MAYBE,
+        }),
+      );
+    }
+  }
+
+  function noClick() {
+    if (!no) {
+      dispatch(
+        updateUserEvent({
+          eid: eventId,
+          status: USER_EVENT_STATUS.NO,
+        }),
+      );
+    }
+  }
+
   return (
     <Fragment>
+      <CheckoutDialog open={openPayment} handleClose={processPaymentClose} amount={10} />
       <Grid item={true} xs={12}>
         <FormControl variant="outlined" fullWidth={true}>
           <InputLabel>Description</InputLabel>
@@ -275,14 +329,7 @@ const EventDetails = (props: any): JSX.Element => {
             <Button
               className={classes.userEventButtons}
               color={attending ? 'primary' : 'secondary'}
-              onClick={() => {
-                dispatch(
-                  updateUserEvent({
-                    eid: eventId,
-                    status: getUserEventStatus(USER_EVENT_STATUS_LABELS[1]),
-                  }),
-                );
-              }}
+              onClick={attendingClick}
               variant="outlined"
               fullWidth={true}
             >
@@ -294,14 +341,7 @@ const EventDetails = (props: any): JSX.Element => {
             <Button
               className={classes.userEventButtons}
               color={maybe ? 'primary' : 'secondary'}
-              onClick={() => {
-                dispatch(
-                  updateUserEvent({
-                    eid: eventId,
-                    status: getUserEventStatus(USER_EVENT_STATUS_LABELS[2]),
-                  }),
-                );
-              }}
+              onClick={maybeClick}
               variant="outlined"
               fullWidth={true}
             >
@@ -312,14 +352,7 @@ const EventDetails = (props: any): JSX.Element => {
           <Grid item={true} xs={4}>
             <Button
               color={no ? 'primary' : 'secondary'}
-              onClick={() => {
-                dispatch(
-                  updateUserEvent({
-                    eid: eventId,
-                    status: getUserEventStatus(USER_EVENT_STATUS_LABELS[3]),
-                  }),
-                );
-              }}
+              onClick={noClick}
               variant="outlined"
               fullWidth={true}
               className={classes.userEventButtons}

@@ -47,6 +47,8 @@
     "@material-ui/lab": "4.0.0-alpha.45",
     "@material-ui/pickers": "^3.2.10",
     "@material-ui/styles": "4.9.0",
+    "@stripe/react-stripe-js": "^1.1.0",
+    "@stripe/stripe-js": "^1.2.0",
     "axios": "0.19.2",
     "classnames": "2.2.6",
     "core-js": "3.6.4",
