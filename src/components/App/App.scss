@@ -55,7 +55,7 @@ body {
     }
   }
 
-  @media only screen and (max-height: 600px) {
+  @media only screen and (max-height: 500px) {
     .MuiDialog-paper {
       margin-top: 0;
       margin-bottom: 0;
@@ -78,6 +78,14 @@ body {
   .MuiPickersBasePicker-pickerView,
   .MuiPickersModal-withAdditionalAction {
     background-color: #27293d; // CARD_BG
+  }
+
+  .MuiDialog-paper {
+    overflow-x: hidden;
+  }
+
+  .MuiInputBase-input {
+    text-overflow: ellipsis;
   }
 
   span[class^='PrivateValueLabel-offset-'] {

@@ -4,10 +4,14 @@ import {
   SetCategoriesActionType,
   SetSearchTermActionType,
   SetRouteActionType,
+  SetRequestExecutingAction,
 } from '../actions/AppStateActions';
 import { AppStateModel, ROUTES } from '../models/AppStateModel';
 
-type ActionType = SetSearchTermActionType & SetCategoriesActionType & SetRouteActionType;
+type ActionType = SetSearchTermActionType &
+  SetCategoriesActionType &
+  SetRouteActionType &
+  SetRequestExecutingAction;
 
 export const AppStateReducer = (
   state: AppStateModel = new AppStateModel(),
@@ -38,6 +42,12 @@ export const AppStateReducer = (
         route,
       });
     }
+  }
+
+  if (action.type === APP_STATE_ACTION_CONSTANTS.REQUEST_EXECUTING) {
+    return newState(state, {
+      requestExecuting: action.state,
+    });
   }
 
   return state;

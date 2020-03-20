@@ -25,14 +25,17 @@ import {
 } from 'redux/models/EventModel';
 import { updateUserEvent } from 'lib/EventCommentRequests';
 import { useLoggedIn } from 'lib/useLoggedIn';
+import { isSuperExtraSmallDown } from 'lib/useBreakPoints';
 import { ReduxState } from 'redux/combinedReducer';
 import CheckoutDialog from '../Checkout/Checkout';
 
 const EVENT_TIME_FORMAT = 'MMM D YYYY, h:mm a';
+const SMALL_FORMAT = 'D/MM/YYYY H:m';
 
 const EventDetails = (props: any): JSX.Element => {
   const dispatch = useDispatch();
   const loggedIn = useLoggedIn();
+  const isSXs = isSuperExtraSmallDown();
 
   const allEventCategories = useSelector((state: ReduxState) => {
     return state.appState.categoriesArray;
@@ -41,16 +44,16 @@ const EventDetails = (props: any): JSX.Element => {
   const [openPayment, setOpenPayment] = useState(false);
 
   const {
+    classes,
     user,
     eventId,
-    classes,
     partOfEvent,
     isHost,
     attending,
     maybe,
     no,
     invited,
-    name,
+    paid,
     setName,
     description,
     setDescription,
@@ -93,7 +96,7 @@ const EventDetails = (props: any): JSX.Element => {
 
   function attendingClick() {
     if (!attending) {
-      if (amount > 0) {
+      if (amount > 0 && !paid) {
         setOpenPayment(true);
       } else {
         dispatch(
@@ -232,7 +235,7 @@ const EventDetails = (props: any): JSX.Element => {
       <Grid item={true} xs={6}>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <DateTimePicker
-            format={EVENT_TIME_FORMAT}
+            format={isSXs ? SMALL_FORMAT : EVENT_TIME_FORMAT}
             className={classes.commonInputStyles}
             inputVariant="outlined"
             value={moment(startDate)}
@@ -249,7 +252,7 @@ const EventDetails = (props: any): JSX.Element => {
       <Grid item={true} xs={6}>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <DateTimePicker
-            format={EVENT_TIME_FORMAT}
+            format={isSXs ? SMALL_FORMAT : EVENT_TIME_FORMAT}
             className={classes.commonInputStyles}
             inputVariant="outlined"
             value={moment(endDate)}

@@ -4,6 +4,7 @@ export const APP_STATE_ACTION_CONSTANTS = {
   SET_SEARCH_TERM: 'SET_SEARCH_TERM',
   SET_CATEGORIES: 'SET_CATEGORIES',
   SET_ROUTE: 'SET_ROUTE',
+  REQUEST_EXECUTING: 'REQUEST_EXECUTING',
 };
 
 export type SetSearchTermActionType = {
@@ -16,6 +17,10 @@ export type SetCategoriesActionType = {
 
 export type SetRouteActionType = {
   route: string;
+} & Action;
+
+export type SetRequestExecutingAction = {
+  state: boolean;
 } & Action;
 
 export function setSearchTermAction(searchTerm: string): SetSearchTermActionType {
@@ -36,5 +41,12 @@ export function setRouteAction(route: string): SetRouteActionType {
   return {
     type: APP_STATE_ACTION_CONSTANTS.SET_ROUTE,
     route,
+  };
+}
+
+export function setRequestExecutingAction(state: boolean): SetRequestExecutingAction {
+  return {
+    type: APP_STATE_ACTION_CONSTANTS.REQUEST_EXECUTING,
+    state,
   };
 }

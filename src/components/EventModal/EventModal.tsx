@@ -38,7 +38,6 @@ import EventDetails from './EventDetails';
 import { eventModalStyles } from './EventModal.styles';
 
 const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
-const EVENT_TIME_FORMAT = 'h:mm a, MMMM D, YYYY';
 
 export const EventModal = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -182,19 +181,21 @@ export const EventModal = (): JSX.Element => {
   const maybe = partOfEvent && (event as UserEventModel).isUserMaybe();
   const no = partOfEvent && (event as UserEventModel).isUserNo();
   const invited = partOfEvent && (event as UserEventModel).isUserInvited();
+  const paid = partOfEvent && (event as UserEventModel).hasUserPaid();
 
   const classes = eventModalStyles({ isHost });
 
   const childProps = {
+    classes,
     user,
     eventId,
-    classes,
     partOfEvent,
     isHost,
     attending,
     maybe,
     no,
     invited,
+    paid,
     name,
     setName,
     description,

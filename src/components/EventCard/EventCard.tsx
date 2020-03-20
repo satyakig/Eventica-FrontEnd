@@ -14,7 +14,6 @@ const EVENT_TIME_FORMAT = 'ddd MMM D, h:mm a';
 
 const EventCard = (props: EventCardProps) => {
   const dispatch = useDispatch();
-
   const classes = eventCardStyles();
 
   function cardClick(): void {

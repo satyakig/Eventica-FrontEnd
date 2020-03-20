@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, createRef, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
@@ -30,16 +30,16 @@ const ProfileModal = (props: ProfileProps) => {
     return state.user;
   });
 
-  const [name, setName] = React.useState(user.name);
-  const [phone, setPhone] = React.useState(user.phone);
+  const [name, setName] = useState(user.name);
+  const [phone, setPhone] = useState(user.phone);
 
   useEffect(() => {
     setName(user.name);
     setPhone(user.phone);
   }, [user]);
 
-  const nameInput = React.createRef<string>();
-  const phoneInput = React.createRef<string>();
+  const nameInput = createRef<string>();
+  const phoneInput = createRef<string>();
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -48,6 +48,13 @@ const ProfileModal = (props: ProfileProps) => {
   const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPhone(event.target.value);
   };
+
+  function close() {
+    setName(user.name);
+    setPhone(user.phone);
+
+    props.handleClose();
+  }
 
   function handleSaveChanges() {
     // Read values
@@ -59,17 +66,16 @@ const ProfileModal = (props: ProfileProps) => {
     // Check if input changed, if not, do props.handleClose()
     // Validate input
     // Send to API to update Firebase
-    props.handleClose();
   }
 
   return (
     <Dialog
       open={props.open}
-      onClose={props.handleClose}
+      onClose={close}
       disableBackdropClick={false}
       disableEscapeKeyDown={false}
     >
-      <IconButton className={classes.closeButton} onClick={props.handleClose} color="secondary">
+      <IconButton className={classes.closeButton} onClick={close} color="secondary">
         <CloseIcon />
       </IconButton>
       <Container maxWidth="lg">
