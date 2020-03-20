@@ -14,7 +14,7 @@ service cloud.firestore {
     }
 
     match /users/{u=**} {
-      allow read: if request.auth != null && request.auth.uid == resource.data.uid;
+      allow read: if request.auth != null;
     }
 
     match /{document=**} {
