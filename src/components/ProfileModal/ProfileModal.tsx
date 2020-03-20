@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
@@ -14,9 +14,15 @@ import {
   DialogTitle,
   DialogActions,
   Container,
+  Input,
 } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
+import { patchRequest, PATHS } from '../../lib/HttpRequest';
+import { v4 } from 'uuid';
+import { getStorage } from '../../lib/Firebase';
+
+const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
 
 interface ProfileProps {
   open: boolean;
@@ -30,12 +36,14 @@ const ProfileModal = (props: ProfileProps) => {
     return state.user;
   });
 
-  const [name, setName] = React.useState(user.name);
-  const [phone, setPhone] = React.useState(user.phone);
+  const [name, setName] = useState(user.name);
+  const [phone, setPhone] = useState(user.phone);
+  const [photoUrl, setPhotoUrl] = useState(user.photoURL);
 
   useEffect(() => {
     setName(user.name);
     setPhone(user.phone);
+    setPhotoUrl(user.photoURL);
   }, [user]);
 
   const nameInput = React.createRef<string>();
@@ -49,16 +57,61 @@ const ProfileModal = (props: ProfileProps) => {
     setPhone(event.target.value);
   };
 
-  function handleSaveChanges() {
-    // Read values
-    // @ts-ignore
-    console.log(nameInput.current.value);
-    // @ts-ignore
-    console.log(phoneInput.current.value);
+  function imageClick() {
+    const element = document.getElementById(FILE_UPLOAD_EL);
+    if (element) {
+      element.click();
+    }
+  }
 
-    // Check if input changed, if not, do props.handleClose()
-    // Validate input
-    // Send to API to update Firebase
+  const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files === null || e.target.files.length !== 1) {
+      return;
+    }
+    const id = `${v4()}${user.uid}`;
+
+    const file = e.target.files[0];
+
+    const storageRef = getStorage().child(id);
+    storageRef
+      .put(file)
+      .then(() => {
+        return storageRef.getDownloadURL();
+      })
+      .then((link) => {
+        setPhotoUrl(link);
+      });
+  };
+
+  function handleSaveChanges() {
+    const oldUser = {
+      name: user.name,
+      phone: user.phone,
+      photoURL: user.photoURL,
+    };
+
+    const newUser = {
+      // @ts-ignore
+      name: nameInput.current.value,
+      // @ts-ignore
+      phone: phoneInput.current.value,
+      photoURL: photoUrl,
+    };
+    console.log(JSON.stringify(oldUser));
+    console.log(JSON.stringify(newUser));
+    console.log(JSON.stringify(oldUser) !== JSON.stringify(newUser));
+
+    if (JSON.stringify(oldUser) !== JSON.stringify(newUser)) {
+      console.log('Updating user');
+      patchRequest(PATHS.USER, newUser);
+    }
+    handleClose();
+  }
+
+  function handleClose() {
+    setName(user.name);
+    setPhone(user.phone);
+    setPhotoUrl(user.photoURL);
     props.handleClose();
   }
 
@@ -72,6 +125,12 @@ const ProfileModal = (props: ProfileProps) => {
       <IconButton className={classes.closeButton} onClick={props.handleClose} color="secondary">
         <CloseIcon />
       </IconButton>
+      <Input
+        id={FILE_UPLOAD_EL}
+        type="file"
+        onChange={handlePictureChange}
+        style={{ display: 'none' }}
+      />
       <Container maxWidth="lg">
         <DialogTitle>
           <Typography className={classes.title} variant="h6" component="span" display="block">
@@ -80,7 +139,12 @@ const ProfileModal = (props: ProfileProps) => {
         </DialogTitle>
         <Grid container={true} direction="column" justify="center" alignItems="center">
           <Grid item={true} className={classes.gridItem}>
-            <Avatar alt={user.name} src={user.photoURL} className={classes.avatarPicture} />
+            <Avatar
+              alt={name}
+              src={photoUrl}
+              className={classes.avatarPicture}
+              onClick={imageClick}
+            />
           </Grid>
           <Grid item={true} className={classes.gridItem}>
             <FormControl variant="outlined">
