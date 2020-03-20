@@ -221,7 +221,6 @@ export const EventModal = (): JSX.Element => {
                 />
               </FormControl>
             </Grid>
-
             <Grid item={true} xs={12}>
               <FormControl variant="outlined" fullWidth={true}>
                 <InputLabel>Location</InputLabel>
@@ -238,7 +237,6 @@ export const EventModal = (): JSX.Element => {
                 />
               </FormControl>
             </Grid>
-
             <Grid item={true} xs={6}>
               <Autocomplete
                 className={classes.commonInputStyles}
@@ -270,7 +268,6 @@ export const EventModal = (): JSX.Element => {
                 disabled={!isHost}
               />
             </Grid>
-
             <Grid item={true} xs={6}>
               <Autocomplete
                 className={classes.commonInputStyles}
@@ -302,7 +299,6 @@ export const EventModal = (): JSX.Element => {
                 disabled={!isHost}
               />
             </Grid>
-
             <Grid item={true} xs={6}>
               <MuiPickersUtilsProvider utils={MomentUtils}>
                 <DateTimePicker
@@ -319,7 +315,6 @@ export const EventModal = (): JSX.Element => {
                 />
               </MuiPickersUtilsProvider>
             </Grid>
-
             <Grid item={true} xs={6}>
               <MuiPickersUtilsProvider utils={MomentUtils}>
                 <DateTimePicker
@@ -336,7 +331,6 @@ export const EventModal = (): JSX.Element => {
                 />
               </MuiPickersUtilsProvider>
             </Grid>
-
             <Grid item={true} xs={6}>
               <FormControl variant="outlined" fullWidth={true}>
                 <InputLabel>Amount</InputLabel>
@@ -354,7 +348,6 @@ export const EventModal = (): JSX.Element => {
                 />
               </FormControl>
             </Grid>
-
             <Grid item={true} xs={6}>
               <FormControl variant="outlined" fullWidth={true}>
                 <InputLabel>Max Capacity</InputLabel>
@@ -371,7 +364,6 @@ export const EventModal = (): JSX.Element => {
                 />
               </FormControl>
             </Grid>
-
             <Grid item={true} xs={12}>
               <Autocomplete
                 className={classes.commonInputStyles}
@@ -400,7 +392,6 @@ export const EventModal = (): JSX.Element => {
                 disabled={!isHost}
               />
             </Grid>
-
             {loggedIn && !isHost ? (
               <Fragment>
                 <Grid item={true} xs={4}>
@@ -461,7 +452,6 @@ export const EventModal = (): JSX.Element => {
                 </Grid>
               </Fragment>
             ) : null}
-
             {isHost ? (
               <Grid item={true} xs={12} className={classes.updateButton}>
                 <Button
@@ -472,6 +462,26 @@ export const EventModal = (): JSX.Element => {
                 >
                   Update Event
                 </Button>
+              </Grid>
+            ) : null}
+            {!isHost && (attending || maybe) ? (
+              <Grid
+                xs={12}
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                justify="center"
+              >
+                <QRCode
+                  renderAs="svg"
+                  value={JSON.stringify({
+                    uid: user.uid,
+                    eventId: eventId,
+                    attending: attending,
+                    maybe: maybe,
+                  })}
+                />
               </Grid>
             ) : null}
           </Fragment>
