@@ -130,7 +130,7 @@ const EventDetails = (props: any): JSX.Element => {
 
   return (
     <Fragment>
-      <CheckoutDialog open={openPayment} handleClose={processPaymentClose} amount={10} />
+      <CheckoutDialog open={openPayment} handleClose={processPaymentClose} amount={amount} />
       <Grid item={true} xs={12}>
         <FormControl variant="outlined" fullWidth={true}>
           <InputLabel>Description</InputLabel>

@@ -29,10 +29,10 @@ import { v4 } from 'uuid';
 import { getStorage } from 'lib/Firebase';
 import { CreateEventType, createEvent } from 'lib/EventRequests';
 import { EVENT_TYPE_LABELS, getEventType } from 'redux/models/EventModel';
+import { isValidEvent } from 'validation/EventValidation';
 import { createEventStyles } from './CreateEvent.styles';
-import { isValidEvent } from '../../validation/EventValidation';
 
-const EVENT_TIME_FORMAT = 'MMMM D h:mm a';
+const EVENT_TIME_FORMAT = 'MMM D, h:mm a';
 
 type CreateEventProps = {
   openCreateEvent: boolean;
