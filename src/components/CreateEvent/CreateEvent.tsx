@@ -265,6 +265,7 @@ export default function CreateEvent(props: CreateEventProps) {
                 }}
                 label="Start Time"
                 showTodayButton={true}
+                fullWidth={true}
               />
             </MuiPickersUtilsProvider>
           </Grid>
@@ -281,6 +282,7 @@ export default function CreateEvent(props: CreateEventProps) {
                 }}
                 label="End Time"
                 showTodayButton={true}
+                fullWidth={true}
               />
             </MuiPickersUtilsProvider>
           </Grid>
