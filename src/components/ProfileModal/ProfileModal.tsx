@@ -69,22 +69,16 @@ const ProfileModal = (props: ProfileProps) => {
       disableBackdropClick={false}
       disableEscapeKeyDown={false}
     >
+      <IconButton className={classes.closeButton} onClick={props.handleClose} color="secondary">
+        <CloseIcon />
+      </IconButton>
       <Container maxWidth="lg">
+        <DialogTitle>
+          <Typography className={classes.title} variant="h6" component="span" display="block">
+            Profile
+          </Typography>
+        </DialogTitle>
         <Grid container={true} direction="column" justify="center" alignItems="center">
-          <Grid item>
-            <DialogTitle>
-              <Typography className={classes.title} variant="h6" component="span" display="block">
-                Profile
-              </Typography>
-              <IconButton
-                className={classes.closeButton}
-                onClick={props.handleClose}
-                color="secondary"
-              >
-                <CloseIcon />
-              </IconButton>
-            </DialogTitle>
-          </Grid>
           <Grid item={true} className={classes.gridItem}>
             <Avatar alt={user.name} src={user.photoURL} className={classes.avatarPicture} />
           </Grid>
@@ -102,14 +96,7 @@ const ProfileModal = (props: ProfileProps) => {
           <Grid item={true} className={classes.gridItem}>
             <FormControl variant="outlined">
               <InputLabel>Email</InputLabel>
-              <OutlinedInput
-                value={user.email}
-                label="Email"
-                disabled={true}
-                classes={{
-                  disabled: classes.email,
-                }}
-              />
+              <OutlinedInput value={user.email} label="Email" disabled={true} />
             </FormControl>
           </Grid>
           <Grid item={true} className={classes.gridItem}>
@@ -123,14 +110,17 @@ const ProfileModal = (props: ProfileProps) => {
               />
             </FormControl>
           </Grid>
-          <Grid item={true} className={classes.gridItem}>
-            <DialogActions>
-              <Button onClick={handleSaveChanges} color="secondary" variant="contained">
-                Save
-              </Button>
-            </DialogActions>
-          </Grid>
         </Grid>
+        <DialogActions className={classes.actions}>
+          <Button
+            onClick={handleSaveChanges}
+            color="secondary"
+            variant="contained"
+            className={classes.submit}
+          >
+            Save
+          </Button>
+        </DialogActions>
       </Container>
     </Dialog>
   );

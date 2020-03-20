@@ -17,9 +17,16 @@ export const profileModalStyles = makeStyles((theme: Theme) => {
     },
     title: {
       textTransform: 'lowercase',
+      userSelect: 'none',
+      margin: '0 auto',
+      textAlign: 'center',
+      width: '100%',
     },
-    email: {
-      color: '#ffffff !important',
+    actions: {
+      padding: '15px 0 20px 0',
+    },
+    submit: {
+      margin: '0 auto',
     },
   });
 });
