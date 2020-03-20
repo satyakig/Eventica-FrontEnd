@@ -568,10 +568,10 @@ export const EventModal = (): JSX.Element => {
               textColor="secondary"
               scrollButtons={isXs ? 'on' : 'auto'}
             >
-              <Tab label="Details" />
-              <Tab label="Participants" />
-              <Tab label="Chat" />
-              {isHost ? <Tab label="Owner" /> : null}
+              <Tab label="Details" className={classes.tab} />
+              <Tab label="Participants" className={classes.tab} />
+              <Tab label="Chat" className={classes.tab} />
+              {isHost ? <Tab label="Owner" className={classes.tab} /> : null}
             </Tabs>
           </Grid>
         </Grid>

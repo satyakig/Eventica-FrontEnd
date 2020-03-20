@@ -24,6 +24,9 @@ export const eventModalStyles = makeStyles((theme: Theme) => {
       backgroundColor: DARKER,
       borderRadius: '5px',
     },
+    tab: {
+      flexGrow: 1,
+    },
     bottomGrid: {
       marginTop: '10px',
       marginBottom: '12px',
