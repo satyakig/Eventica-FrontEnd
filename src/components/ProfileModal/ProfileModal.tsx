@@ -16,9 +16,9 @@ import {
   Container,
   Input,
 } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
-import { patchRequest, PATHS } from '../../lib/HttpRequest';
+import { updateUser } from '../../lib/UserRequests';
 import { v4 } from 'uuid';
 import { getStorage } from '../../lib/Firebase';
 
@@ -30,6 +30,7 @@ interface ProfileProps {
 }
 
 const ProfileModal = (props: ProfileProps) => {
+  const dispatch = useDispatch();
   const classes = profileModalStyles();
 
   const user = useSelector((state: ReduxState) => {
@@ -84,12 +85,6 @@ const ProfileModal = (props: ProfileProps) => {
   };
 
   function handleSaveChanges() {
-    const oldUser = {
-      name: user.name,
-      phone: user.phone,
-      photoURL: user.photoURL,
-    };
-
     const newUser = {
       // @ts-ignore
       name: nameInput.current.value,
@@ -97,14 +92,9 @@ const ProfileModal = (props: ProfileProps) => {
       phone: phoneInput.current.value,
       photoURL: photoUrl,
     };
-    console.log(JSON.stringify(oldUser));
-    console.log(JSON.stringify(newUser));
-    console.log(JSON.stringify(oldUser) !== JSON.stringify(newUser));
 
-    if (JSON.stringify(oldUser) !== JSON.stringify(newUser)) {
-      console.log('Updating user');
-      patchRequest(PATHS.USER, newUser);
-    }
+    dispatch(updateUser(newUser));
+
     handleClose();
   }
 
