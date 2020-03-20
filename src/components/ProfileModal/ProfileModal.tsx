@@ -4,7 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-import { profileStyles } from './Profile.styles';
+import { profileModalStyles } from './ProfileModal.styles';
 import {
   Avatar,
   FormControl,
@@ -23,8 +23,8 @@ interface ProfileProps {
   handleClose: () => void;
 }
 
-const Profile = (props: ProfileProps) => {
-  const classes = profileStyles();
+const ProfileModal = (props: ProfileProps) => {
+  const classes = profileModalStyles();
 
   const user = useSelector((state: ReduxState) => {
     return state.user;
@@ -136,4 +136,4 @@ const Profile = (props: ProfileProps) => {
   );
 };
 
-export default Profile;
+export default ProfileModal;

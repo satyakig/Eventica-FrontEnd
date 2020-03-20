@@ -25,7 +25,7 @@ import { isSmallDown } from 'lib/useBreakPoints';
 import { navbarStyles } from './NavBar.styles';
 import { setRouteAction, setSearchTermAction } from 'redux/actions/AppStateActions';
 import { HOMEPAGE, MANAGE_EVENTS } from 'redux/models/AppStateModel';
-import Profile from '../Profile/Profile';
+import ProfileModal from '../ProfileModal/ProfileModal';
 import CreateEvent from '../CreateEvent/CreateEvent';
 
 const useStyles = makeStyles(navbarStyles);
@@ -144,7 +144,7 @@ const Navbar = (): JSX.Element => {
 
   return (
     <AppBar position="static">
-      <Profile open={openProfile} handleClose={handleProfileClose} />
+      <ProfileModal open={openProfile} handleClose={handleProfileClose} />
       <CreateEvent openCreateEvent={openCreateEvent} handleClose={closeCreateEventModal} />
       <Toolbar className={classes.navBar}>
         <Typography className={classes.title} variant="h6" noWrap={true} onClick={homePageClick}>

@@ -1,7 +1,7 @@
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core/styles';
 
-export const profileStyles = makeStyles((theme: Theme) => {
+export const profileModalStyles = makeStyles((theme: Theme) => {
   return createStyles({
     avatarPicture: {
       height: '200px',
