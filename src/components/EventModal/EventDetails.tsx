@@ -28,6 +28,8 @@ import { useLoggedIn } from 'lib/useLoggedIn';
 import { ReduxState } from 'redux/combinedReducer';
 import CheckoutDialog from '../Checkout/Checkout';
 
+const EVENT_TIME_FORMAT = 'MMM D YYYY, h:mm a';
+
 const EventDetails = (props: any): JSX.Element => {
   const dispatch = useDispatch();
   const loggedIn = useLoggedIn();
@@ -230,7 +232,7 @@ const EventDetails = (props: any): JSX.Element => {
       <Grid item={true} xs={6}>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <DateTimePicker
-            format="h:mm a MMM Do, YYYY"
+            format={EVENT_TIME_FORMAT}
             className={classes.commonInputStyles}
             inputVariant="outlined"
             value={moment(startDate)}
@@ -247,7 +249,7 @@ const EventDetails = (props: any): JSX.Element => {
       <Grid item={true} xs={6}>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <DateTimePicker
-            format="h:mm a MMM Do, YYYY"
+            format={EVENT_TIME_FORMAT}
             className={classes.commonInputStyles}
             inputVariant="outlined"
             value={moment(endDate)}
@@ -379,7 +381,7 @@ const EventDetails = (props: any): JSX.Element => {
       ) : null}
 
       {!isHost && (attending || maybe) ? (
-        <Grid xs={12} container spacing={0} direction="column" alignItems="center" justify="center">
+        <Grid container={true} item={true} xs={12} justify="center">
           <QRCode
             renderAs="svg"
             value={JSON.stringify({
