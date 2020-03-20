@@ -47,6 +47,7 @@ import { v4 } from 'uuid';
 import { getStorage } from 'lib/Firebase';
 import { isExtraSmallDown } from 'lib/useBreakPoints';
 import { isValidEvent } from 'validation/EventValidation';
+import { EventChat } from '../EventChat/EventChat';
 
 const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
 const EVENT_TIME_FORMAT = 'h:mm a, MMMM D, YYYY';
@@ -485,11 +486,7 @@ export const EventModal = (): JSX.Element => {
         );
 
       case 2: // Chat
-        return (
-          <Fragment>
-            <span>Chat</span>
-          </Fragment>
-        );
+        return <EventChat />;
 
       case 3: // Owner
         return (
