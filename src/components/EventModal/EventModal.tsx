@@ -38,6 +38,7 @@ import EventDetails from './EventDetails';
 import { eventModalStyles } from './EventModal.styles';
 
 const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
+const EVENT_TIME_FORMAT = 'h:mm a, MMMM D, YYYY';
 
 export const EventModal = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -185,6 +186,7 @@ export const EventModal = (): JSX.Element => {
   const classes = eventModalStyles({ isHost });
 
   const childProps = {
+    user,
     eventId,
     classes,
     partOfEvent,
@@ -316,10 +318,10 @@ export const EventModal = (): JSX.Element => {
               textColor="secondary"
               scrollButtons={isXs ? 'on' : 'auto'}
             >
-              <Tab label="Details" />
-              <Tab label="Participants" />
-              <Tab label="Chat" />
-              {isHost ? <Tab label="Owner" /> : null}
+              <Tab label="Details" className={classes.tab} />
+              <Tab label="Participants" className={classes.tab} />
+              <Tab label="Chat" className={classes.tab} />
+              {isHost ? <Tab label="Owner" className={classes.tab} /> : null}
             </Tabs>
           </Grid>
         </Grid>

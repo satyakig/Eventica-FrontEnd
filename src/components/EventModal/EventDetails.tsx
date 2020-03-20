@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment-timezone';
 import MomentUtils from '@date-io/moment';
+import QRCode from 'qrcode.react';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import {
   Button,
@@ -38,6 +39,7 @@ const EventDetails = (props: any): JSX.Element => {
   const [openPayment, setOpenPayment] = useState(false);
 
   const {
+    user,
     eventId,
     classes,
     partOfEvent,
@@ -373,6 +375,20 @@ const EventDetails = (props: any): JSX.Element => {
           >
             Update Event
           </Button>
+        </Grid>
+      ) : null}
+
+      {!isHost && (attending || maybe) ? (
+        <Grid xs={12} container spacing={0} direction="column" alignItems="center" justify="center">
+          <QRCode
+            renderAs="svg"
+            value={JSON.stringify({
+              uid: user.uid,
+              eventId: eventId,
+              attending: attending,
+              maybe: maybe,
+            })}
+          />
         </Grid>
       ) : null}
     </Fragment>
