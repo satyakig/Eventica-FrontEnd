@@ -5,6 +5,7 @@ import MetadataContainer from 'containers/MetadataContainer';
 import HomePage from '../HomePage/HomePage';
 import NavBar from '../NavBar/NavBar';
 import Notifications from '../Notifications/Notifications';
+import LoadingScreen from '../LoadingScreen/LoadingScreen';
 import './App.scss';
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
       <AuthContainer />
       <EventsContainer />
       <Notifications />
+      <LoadingScreen />
       <NavBar />
       <HomePage />
     </main>

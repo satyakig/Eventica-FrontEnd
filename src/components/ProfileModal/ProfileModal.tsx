@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, createRef, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
@@ -47,8 +47,8 @@ const ProfileModal = (props: ProfileProps) => {
     setPhotoUrl(user.photoURL);
   }, [user]);
 
-  const nameInput = React.createRef<string>();
-  const phoneInput = React.createRef<string>();
+  const nameInput = createRef<string>();
+  const phoneInput = createRef<string>();
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -108,11 +108,11 @@ const ProfileModal = (props: ProfileProps) => {
   return (
     <Dialog
       open={props.open}
-      onClose={props.handleClose}
+      onClose={handleClose}
       disableBackdropClick={false}
       disableEscapeKeyDown={false}
     >
-      <IconButton className={classes.closeButton} onClick={props.handleClose} color="secondary">
+      <IconButton className={classes.closeButton} onClick={handleClose} color="secondary">
         <CloseIcon />
       </IconButton>
       <Input

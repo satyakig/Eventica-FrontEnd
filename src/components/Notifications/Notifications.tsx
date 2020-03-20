@@ -15,7 +15,7 @@ interface CustomSnackProps {
   id: string;
 }
 
-const AUTO_HIDE = 10 * 1000; // 10 secs
+const AUTO_HIDE = 2 * 1000; // 2 secs
 
 const CustomSnack = (props: CustomSnackProps): JSX.Element => {
   const classes = useStyles();
