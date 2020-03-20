@@ -1,7 +1,7 @@
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core/styles';
 
-export const profileStyles = makeStyles((theme: Theme) => {
+export const profileModalStyles = makeStyles((theme: Theme) => {
   return createStyles({
     avatarPicture: {
       height: '200px',
@@ -17,9 +17,16 @@ export const profileStyles = makeStyles((theme: Theme) => {
     },
     title: {
       textTransform: 'lowercase',
+      userSelect: 'none',
+      margin: '0 auto',
+      textAlign: 'center',
+      width: '100%',
     },
-    email: {
-      color: '#ffffff !important',
+    actions: {
+      padding: '15px 0 20px 0',
+    },
+    submit: {
+      margin: '0 auto',
     },
   });
 });
