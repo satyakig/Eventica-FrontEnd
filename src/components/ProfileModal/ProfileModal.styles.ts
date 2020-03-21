@@ -6,6 +6,7 @@ export const profileModalStyles = makeStyles((theme: Theme) => {
     avatarPicture: {
       height: '200px',
       width: '200px',
+      cursor: 'pointer',
     },
     closeButton: {
       position: 'absolute',

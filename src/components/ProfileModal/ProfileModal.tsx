@@ -1,10 +1,9 @@
-import React, { useEffect, createRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-import { profileModalStyles } from './ProfileModal.styles';
 import {
   Avatar,
   FormControl,
@@ -18,9 +17,10 @@ import {
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
-import { updateUser } from '../../lib/UserRequests';
+import { updateUser } from 'lib/UserRequests';
 import { v4 } from 'uuid';
-import { getStorage } from '../../lib/Firebase';
+import { getStorage } from 'lib/Firebase';
+import { profileModalStyles } from './ProfileModal.styles';
 
 const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
 
@@ -46,9 +46,6 @@ const ProfileModal = (props: ProfileProps) => {
     setPhone(user.phone);
     setPhotoUrl(user.photoURL);
   }, [user]);
-
-  const nameInput = createRef<string>();
-  const phoneInput = createRef<string>();
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -137,11 +134,7 @@ const ProfileModal = (props: ProfileProps) => {
           <Grid item={true} className={classes.gridItem}>
             <FormControl variant="outlined">
               <InputLabel>Name</InputLabel>
-              <OutlinedInput
-                value={name}
-                onChange={handleNameChange}
-                label="Name"
-              />
+              <OutlinedInput value={name} onChange={handleNameChange} label="Name" />
             </FormControl>
           </Grid>
           <Grid item={true} className={classes.gridItem}>
@@ -153,11 +146,7 @@ const ProfileModal = (props: ProfileProps) => {
           <Grid item={true} className={classes.gridItem}>
             <FormControl variant="outlined">
               <InputLabel>Phone</InputLabel>
-              <OutlinedInput
-                value={phone}
-                onChange={handlePhoneChange}
-                label="Phone"
-              />
+              <OutlinedInput value={phone} onChange={handlePhoneChange} label="Phone" />
             </FormControl>
           </Grid>
         </Grid>

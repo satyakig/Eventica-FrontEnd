@@ -237,10 +237,10 @@ export const EventModal = (): JSX.Element => {
 
       case 2:
         return (
-        <Fragment>
-          <span>Chat</span>
-        </Fragment>
-      );
+          <Fragment>
+            <span>Chat</span>
+          </Fragment>
+        );
 
       case 3: // Owner
         return (
