@@ -86,10 +86,8 @@ const ProfileModal = (props: ProfileProps) => {
 
   function handleSaveChanges() {
     const newUser = {
-      // @ts-ignore
-      name: nameInput.current.value,
-      // @ts-ignore
-      phone: phoneInput.current.value,
+      name: name.trim(),
+      phone: phone.trim(),
       photoURL: photoUrl,
     };
 
@@ -143,7 +141,6 @@ const ProfileModal = (props: ProfileProps) => {
                 value={name}
                 onChange={handleNameChange}
                 label="Name"
-                inputRef={nameInput}
               />
             </FormControl>
           </Grid>
@@ -160,7 +157,6 @@ const ProfileModal = (props: ProfileProps) => {
                 value={phone}
                 onChange={handlePhoneChange}
                 label="Phone"
-                inputRef={phoneInput}
               />
             </FormControl>
           </Grid>
