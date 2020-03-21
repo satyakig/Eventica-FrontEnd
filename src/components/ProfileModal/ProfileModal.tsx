@@ -14,9 +14,15 @@ import {
   DialogTitle,
   DialogActions,
   Container,
+  Input,
 } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
+import { updateUser } from '../../lib/UserRequests';
+import { v4 } from 'uuid';
+import { getStorage } from '../../lib/Firebase';
+
+const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
 
 interface ProfileProps {
   open: boolean;
@@ -24,6 +30,7 @@ interface ProfileProps {
 }
 
 const ProfileModal = (props: ProfileProps) => {
+  const dispatch = useDispatch();
   const classes = profileModalStyles();
 
   const user = useSelector((state: ReduxState) => {
@@ -32,10 +39,12 @@ const ProfileModal = (props: ProfileProps) => {
 
   const [name, setName] = useState(user.name);
   const [phone, setPhone] = useState(user.phone);
+  const [photoUrl, setPhotoUrl] = useState(user.photoURL);
 
   useEffect(() => {
     setName(user.name);
     setPhone(user.phone);
+    setPhotoUrl(user.photoURL);
   }, [user]);
 
   const nameInput = createRef<string>();
@@ -49,35 +58,67 @@ const ProfileModal = (props: ProfileProps) => {
     setPhone(event.target.value);
   };
 
-  function close() {
-    setName(user.name);
-    setPhone(user.phone);
-
-    props.handleClose();
+  function imageClick() {
+    const element = document.getElementById(FILE_UPLOAD_EL);
+    if (element) {
+      element.click();
+    }
   }
 
-  function handleSaveChanges() {
-    // Read values
-    // @ts-ignore
-    console.log(nameInput.current.value);
-    // @ts-ignore
-    console.log(phoneInput.current.value);
+  const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files === null || e.target.files.length !== 1) {
+      return;
+    }
+    const id = `${v4()}${user.uid}`;
 
-    // Check if input changed, if not, do props.handleClose()
-    // Validate input
-    // Send to API to update Firebase
+    const file = e.target.files[0];
+
+    const storageRef = getStorage().child(id);
+    storageRef
+      .put(file)
+      .then(() => {
+        return storageRef.getDownloadURL();
+      })
+      .then((link) => {
+        setPhotoUrl(link);
+      });
+  };
+
+  function handleSaveChanges() {
+    const newUser = {
+      name: name.trim(),
+      phone: phone.trim(),
+      photoURL: photoUrl,
+    };
+
+    dispatch(updateUser(newUser));
+
+    handleClose();
+  }
+
+  function handleClose() {
+    setName(user.name);
+    setPhone(user.phone);
+    setPhotoUrl(user.photoURL);
+    props.handleClose();
   }
 
   return (
     <Dialog
       open={props.open}
-      onClose={close}
+      onClose={handleClose}
       disableBackdropClick={false}
       disableEscapeKeyDown={false}
     >
-      <IconButton className={classes.closeButton} onClick={close} color="secondary">
+      <IconButton className={classes.closeButton} onClick={handleClose} color="secondary">
         <CloseIcon />
       </IconButton>
+      <Input
+        id={FILE_UPLOAD_EL}
+        type="file"
+        onChange={handlePictureChange}
+        style={{ display: 'none' }}
+      />
       <Container maxWidth="lg">
         <DialogTitle>
           <Typography className={classes.title} variant="h6" component="span" display="block">
@@ -86,7 +127,12 @@ const ProfileModal = (props: ProfileProps) => {
         </DialogTitle>
         <Grid container={true} direction="column" justify="center" alignItems="center">
           <Grid item={true} className={classes.gridItem}>
-            <Avatar alt={user.name} src={user.photoURL} className={classes.avatarPicture} />
+            <Avatar
+              alt={name}
+              src={photoUrl}
+              className={classes.avatarPicture}
+              onClick={imageClick}
+            />
           </Grid>
           <Grid item={true} className={classes.gridItem}>
             <FormControl variant="outlined">
@@ -95,7 +141,6 @@ const ProfileModal = (props: ProfileProps) => {
                 value={name}
                 onChange={handleNameChange}
                 label="Name"
-                inputRef={nameInput}
               />
             </FormControl>
           </Grid>
@@ -112,7 +157,6 @@ const ProfileModal = (props: ProfileProps) => {
                 value={phone}
                 onChange={handlePhoneChange}
                 label="Phone"
-                inputRef={phoneInput}
               />
             </FormControl>
           </Grid>

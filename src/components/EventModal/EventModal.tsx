@@ -235,12 +235,12 @@ export const EventModal = (): JSX.Element => {
           </Fragment>
         );
 
-      case 2: // Chat
+      case 2:
         return (
-          <Fragment>
-            <span>Chat</span>
-          </Fragment>
-        );
+        <Fragment>
+          <span>Chat</span>
+        </Fragment>
+      );
 
       case 3: // Owner
         return (
