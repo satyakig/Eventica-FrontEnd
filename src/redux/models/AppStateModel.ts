@@ -12,4 +12,5 @@ export class AppStateModel {
   categoriesArray: string[] = [];
   categoriesMap: Record<string, string> = {};
   route: string = HOMEPAGE;
+  requestExecuting = false;
 }

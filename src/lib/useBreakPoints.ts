@@ -21,3 +21,11 @@ export function isExtraSmallDown(): boolean {
     return isXs;
   }, [isXs]);
 }
+
+export function isSuperExtraSmallDown(): boolean {
+  const isSXs = useMediaQuery('(max-width:400px)');
+
+  return useMemo(() => {
+    return isSXs;
+  }, [isSXs]);
+}

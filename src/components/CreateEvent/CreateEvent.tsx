@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
 import moment from 'moment-timezone';
@@ -29,7 +29,12 @@ import { v4 } from 'uuid';
 import { getStorage } from 'lib/Firebase';
 import { CreateEventType, createEvent } from 'lib/EventRequests';
 import { EVENT_TYPE_LABELS, getEventType } from 'redux/models/EventModel';
+import { isValidEvent } from 'validation/EventValidation';
 import { createEventStyles } from './CreateEvent.styles';
+import { isSuperExtraSmallDown } from 'lib/useBreakPoints';
+
+const EVENT_TIME_FORMAT = 'MMM D, h:mm a';
+const SMALL_FORMAT = 'D/MM H:m';
 
 type CreateEventProps = {
   openCreateEvent: boolean;
@@ -39,6 +44,7 @@ type CreateEventProps = {
 export default function CreateEvent(props: CreateEventProps) {
   const classes = createEventStyles();
   const dispatch = useDispatch();
+  const isSXs = isSuperExtraSmallDown();
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -50,10 +56,39 @@ export default function CreateEvent(props: CreateEventProps) {
   const [amount, setAmount] = useState(0);
   const [capacity, setCapacity] = useState(0);
   const [photoURL, setPhotoURL] = useState('');
+  const [validEvent, setValidEvent] = useState(false);
 
   const user = useSelector((state: ReduxState) => {
     return state.user;
   });
+
+  useEffect(() => {
+    const data: CreateEventType = {
+      name: name,
+      address: location,
+      category: categories,
+      photoURL: photoURL,
+      desc: description,
+      start: startDate,
+      end: endDate,
+      fee: amount,
+      type: getEventType(eventType),
+      capacity: capacity,
+    };
+
+    setValidEvent(isValidEvent(data));
+  }, [
+    name,
+    description,
+    eventType,
+    startDate,
+    endDate,
+    location,
+    categories,
+    amount,
+    capacity,
+    photoURL,
+  ]);
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -104,11 +139,11 @@ export default function CreateEvent(props: CreateEventProps) {
 
   const onSubmit = () => {
     const data: CreateEventType = {
-      name: name,
-      address: location,
+      name: name.trim(),
+      address: location.trim(),
       category: categories,
       photoURL: photoURL,
-      desc: description,
+      desc: description.trim(),
       start: startDate,
       end: endDate,
       fee: amount,
@@ -117,6 +152,19 @@ export default function CreateEvent(props: CreateEventProps) {
     };
 
     dispatch(createEvent(data));
+
+    setName('');
+    setDescription('');
+    setEventType(EVENT_TYPE_LABELS[0]);
+    setStartDate(moment().valueOf());
+    setEndDate(moment().valueOf());
+    setLocation('');
+    setCategories([]);
+    setAmount(0);
+    setCapacity(0);
+    setPhotoURL('');
+    setValidEvent(false);
+
     props.handleClose();
   };
 
@@ -209,13 +257,14 @@ export default function CreateEvent(props: CreateEventProps) {
           </Grid>
 
           <Grid item={true} xs={6}>
-            <FormControl variant="outlined">
+            <FormControl variant="outlined" fullWidth={true}>
               <InputLabel>Max Capacity</InputLabel>
               <OutlinedInput
                 type="number"
                 value={capacity}
                 onChange={handleCapacityChange}
                 label="Max Capacity"
+                fullWidth={true}
               />
             </FormControl>
           </Grid>
@@ -223,6 +272,7 @@ export default function CreateEvent(props: CreateEventProps) {
           <Grid item={true} xs={6}>
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <DateTimePicker
+                format={isSXs ? SMALL_FORMAT : EVENT_TIME_FORMAT}
                 inputVariant="outlined"
                 value={moment(startDate)}
                 disablePast={true}
@@ -231,6 +281,7 @@ export default function CreateEvent(props: CreateEventProps) {
                 }}
                 label="Start Time"
                 showTodayButton={true}
+                fullWidth={true}
               />
             </MuiPickersUtilsProvider>
           </Grid>
@@ -238,6 +289,7 @@ export default function CreateEvent(props: CreateEventProps) {
           <Grid item={true} xs={6}>
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <DateTimePicker
+                format={isSXs ? SMALL_FORMAT : EVENT_TIME_FORMAT}
                 inputVariant="outlined"
                 value={moment(endDate)}
                 disablePast={true}
@@ -246,6 +298,7 @@ export default function CreateEvent(props: CreateEventProps) {
                 }}
                 label="End Time"
                 showTodayButton={true}
+                fullWidth={true}
               />
             </MuiPickersUtilsProvider>
           </Grid>
@@ -305,6 +358,7 @@ export default function CreateEvent(props: CreateEventProps) {
 
         <DialogActions className={classes.actions}>
           <Button
+            disabled={!validEvent}
             onClick={onSubmit}
             color="secondary"
             variant="contained"

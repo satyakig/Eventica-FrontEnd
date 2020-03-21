@@ -10,9 +10,10 @@ interface EventCardProps {
   event: EventModel | UserEventModel;
 }
 
+const EVENT_TIME_FORMAT = 'ddd MMM D, h:mm a';
+
 const EventCard = (props: EventCardProps) => {
   const dispatch = useDispatch();
-
   const classes = eventCardStyles();
 
   function cardClick(): void {
@@ -30,7 +31,7 @@ const EventCard = (props: EventCardProps) => {
       />
       <CardContent className={classes.cardContent}>
         <Typography className={classes.subtitle} color="textSecondary" gutterBottom={true}>
-          {moment(props.event.start).format("ddd h:mma, MMM DD 'YY")}
+          {moment(props.event.start).format(EVENT_TIME_FORMAT)}
         </Typography>
         <Typography
           className={classes.title}

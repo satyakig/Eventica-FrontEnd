@@ -1,6 +1,6 @@
 import { createStyles } from '@material-ui/core';
 
-export const notificationStyles = () => {
+export const notificationPopupStyles = () => {
   return createStyles({
     container: {
       position: 'absolute',
@@ -19,6 +19,7 @@ export const notificationStyles = () => {
       maxWidth: '75%',
       left: '50%',
       transform: 'translateX(-50%)',
+      userSelect: 'none',
     },
   });
 };

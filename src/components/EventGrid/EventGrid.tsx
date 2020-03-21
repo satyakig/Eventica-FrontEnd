@@ -35,6 +35,8 @@ import EventCard from '../EventCard/EventCard';
 import { eventGridStyles } from './EventGrid.styles';
 import { isSmallDown } from 'lib/useBreakPoints';
 
+const EVENT_TIME_FORMAT = 'MMMM Do, YYYY';
+
 const EventGrid = () => {
   const classes = eventGridStyles();
   const isSmDown = isSmallDown();
@@ -224,7 +226,7 @@ const EventGrid = () => {
               className={classes.width100}
               label="Date"
               inputVariant="outlined"
-              format="MMMM Do, YYYY"
+              format={EVENT_TIME_FORMAT}
               value={selectedDate ? moment(selectedDate) : null}
               onChange={(date) => {
                 setSelectedDate(date ? date.valueOf() : null);

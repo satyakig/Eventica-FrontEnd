@@ -4,14 +4,10 @@ import {
   Typography,
   Tabs,
   Tab,
-  TextField,
-  Button,
   Grid,
   CardMedia,
   IconButton,
   Container,
-  Checkbox,
-  InputAdornment,
   InputLabel,
   FormControl,
   Input,
@@ -25,27 +21,21 @@ import {
   getEventStatusLabel,
   getEventType,
   getEventTypeLabel,
-  getUserEventStatus,
-  USER_EVENT_STATUS_LABELS,
   UserEventModel,
 } from 'redux/models/EventModel';
 import moment from 'moment-timezone';
 import CloseIcon from '@material-ui/icons/Close';
-import { eventModalStyles } from './EventModal.styles';
-import { clearSelectedEventAction } from 'redux/actions/EventsActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { ReduxState } from 'redux/combinedReducer';
-import MomentUtils from '@date-io/moment';
-import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import { updateEvent, UpdateEventType } from 'lib/EventRequests';
-import { updateUserEvent } from 'lib/EventCommentRequests';
-import { useLoggedIn } from 'lib/useLoggedIn';
 import { v4 } from 'uuid';
+import { clearSelectedEventAction } from 'redux/actions/EventsActions';
+import { ReduxState } from 'redux/combinedReducer';
+import { updateEvent, UpdateEventType, CreateEventType } from 'lib/EventRequests';
+import { useLoggedIn } from 'lib/useLoggedIn';
 import { getStorage } from 'lib/Firebase';
 import { isExtraSmallDown } from 'lib/useBreakPoints';
+import { isValidEvent } from 'validation/EventValidation';
+import EventDetails from './EventDetails';
+import { eventModalStyles } from './EventModal.styles';
 import { EventModalParticipants } from './EventModalParticipants';
 
 const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
@@ -72,10 +62,6 @@ export const EventModal = (): JSX.Element => {
     return state.events.events.get(eventId) as EventModel;
   });
 
-  const allEventCategories = useSelector((state: ReduxState) => {
-    return state.appState.categoriesArray;
-  });
-
   const [tabIndex, setTabIndex] = useState(0);
 
   const [name, setName] = useState('');
@@ -89,6 +75,7 @@ export const EventModal = (): JSX.Element => {
   const [amount, setAmount] = useState(0);
   const [capacity, setCapacity] = useState(0);
   const [photoURL, setPhotoURL] = useState('');
+  const [validEventUpdate, setValidEventUpdate] = useState(false);
 
   function closeEventModal() {
     dispatch(clearSelectedEventAction());
@@ -128,11 +115,11 @@ export const EventModal = (): JSX.Element => {
     const updatedData: UpdateEventType = {
       eid: eventId,
       status: getEventStatus(eventStatus),
-      name: name,
-      address: location,
+      name: name.trim(),
+      address: location.trim(),
       category: categories,
       photoURL: photoURL,
-      desc: description,
+      desc: description.trim(),
       start: startDate,
       end: endDate,
       fee: amount,
@@ -161,285 +148,86 @@ export const EventModal = (): JSX.Element => {
     setTabIndex(0);
   }, [event, eventId]);
 
+  useEffect(() => {
+    const updatedData: CreateEventType = {
+      name: name,
+      address: location,
+      category: categories,
+      photoURL: photoURL,
+      desc: description,
+      start: startDate,
+      end: endDate,
+      fee: amount,
+      type: getEventType(eventType),
+      capacity: capacity,
+    };
+
+    setValidEventUpdate(isValidEvent(updatedData));
+  }, [
+    name,
+    location,
+    categories,
+    photoURL,
+    description,
+    startDate,
+    endDate,
+    amount,
+    eventType,
+    capacity,
+  ]);
+
   const partOfEvent = loggedIn && event instanceof UserEventModel;
   const isHost = partOfEvent && (event as UserEventModel).isUserHost();
   const attending = partOfEvent && (event as UserEventModel).isUserYes();
   const maybe = partOfEvent && (event as UserEventModel).isUserMaybe();
   const no = partOfEvent && (event as UserEventModel).isUserNo();
   const invited = partOfEvent && (event as UserEventModel).isUserInvited();
+  const paid = partOfEvent && (event as UserEventModel).hasUserPaid();
 
   const classes = eventModalStyles({ isHost });
+
+  const childProps = {
+    classes,
+    user,
+    eventId,
+    partOfEvent,
+    isHost,
+    attending,
+    maybe,
+    no,
+    invited,
+    paid,
+    name,
+    setName,
+    description,
+    setDescription,
+    eventType,
+    setEventType,
+    eventStatus,
+    setEventStatus,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    location,
+    setLocation,
+    categories,
+    setCategories,
+    amount,
+    setAmount,
+    capacity,
+    setCapacity,
+    photoURL,
+    setPhotoURL,
+    validEventUpdate,
+    setValidEventUpdate,
+    handleSubmit,
+  };
 
   function getTab() {
     switch (tabIndex) {
       case 0: // Details
-        return (
-          <Fragment>
-            <Grid item={true} xs={12}>
-              <FormControl variant="outlined" fullWidth={true}>
-                <InputLabel>Description</InputLabel>
-                <OutlinedInput
-                  className={classes.commonInputStyles}
-                  value={description}
-                  onChange={(changeEvent) => {
-                    setDescription(changeEvent.target.value);
-                  }}
-                  label="Description"
-                  fullWidth={true}
-                  multiline={true}
-                  disabled={!isHost}
-                />
-              </FormControl>
-            </Grid>
-
-            <Grid item={true} xs={12}>
-              <FormControl variant="outlined" fullWidth={true}>
-                <InputLabel>Location</InputLabel>
-                <OutlinedInput
-                  className={classes.commonInputStyles}
-                  value={location}
-                  onChange={(changeEvent) => {
-                    setLocation(changeEvent.target.value);
-                  }}
-                  label="Location"
-                  fullWidth={true}
-                  disabled={!isHost}
-                  multiline={true}
-                />
-              </FormControl>
-            </Grid>
-
-            <Grid item={true} xs={6}>
-              <Autocomplete
-                className={classes.commonInputStyles}
-                multiple={false}
-                disableCloseOnSelect={false}
-                value={eventType}
-                disableClearable={true}
-                options={EVENT_TYPE_LABELS}
-                renderOption={(option, { selected }) => {
-                  return (
-                    <Fragment>
-                      <Checkbox
-                        icon={<CheckBoxOutlineBlankIcon fontSize="small" color="secondary" />}
-                        checkedIcon={<CheckBoxIcon fontSize="small" color="secondary" />}
-                        checked={selected}
-                      />
-                      {option}
-                    </Fragment>
-                  );
-                }}
-                renderInput={(params) => {
-                  return <TextField {...params} variant="outlined" label="Type" />;
-                }}
-                onChange={(e, value) => {
-                  if (value) {
-                    setEventType(value);
-                  }
-                }}
-                disabled={!isHost}
-              />
-            </Grid>
-
-            <Grid item={true} xs={6}>
-              <Autocomplete
-                className={classes.commonInputStyles}
-                multiple={false}
-                disableCloseOnSelect={false}
-                value={eventStatus}
-                disableClearable={true}
-                options={EVENT_STATUS_LABELS}
-                renderOption={(option, { selected }) => {
-                  return (
-                    <Fragment>
-                      <Checkbox
-                        icon={<CheckBoxOutlineBlankIcon fontSize="small" color="secondary" />}
-                        checkedIcon={<CheckBoxIcon fontSize="small" color="secondary" />}
-                        checked={selected}
-                      />
-                      {option}
-                    </Fragment>
-                  );
-                }}
-                renderInput={(params) => {
-                  return <TextField {...params} variant="outlined" label="Status" />;
-                }}
-                onChange={(e, value) => {
-                  if (value) {
-                    setEventStatus(value);
-                  }
-                }}
-                disabled={!isHost}
-              />
-            </Grid>
-
-            <Grid item={true} xs={6}>
-              <MuiPickersUtilsProvider utils={MomentUtils}>
-                <DateTimePicker
-                  format="h:mm a MMM Do, YYYY"
-                  className={classes.commonInputStyles}
-                  inputVariant="outlined"
-                  value={moment(startDate)}
-                  onChange={(date) => {
-                    setStartDate(date ? date.valueOf() : moment().valueOf());
-                  }}
-                  label="Start Time"
-                  showTodayButton={true}
-                  disabled={!isHost}
-                />
-              </MuiPickersUtilsProvider>
-            </Grid>
-
-            <Grid item={true} xs={6}>
-              <MuiPickersUtilsProvider utils={MomentUtils}>
-                <DateTimePicker
-                  format="h:mm a MMM Do, YYYY"
-                  className={classes.commonInputStyles}
-                  inputVariant="outlined"
-                  value={moment(endDate)}
-                  onChange={(date) => {
-                    setEndDate(date ? date.valueOf() : moment().valueOf());
-                  }}
-                  label="End Time"
-                  showTodayButton={true}
-                  disabled={!isHost}
-                />
-              </MuiPickersUtilsProvider>
-            </Grid>
-
-            <Grid item={true} xs={6}>
-              <FormControl variant="outlined" fullWidth={true}>
-                <InputLabel>Amount</InputLabel>
-                <OutlinedInput
-                  className={classes.commonInputStyles}
-                  type="number"
-                  value={amount} // TODO: Make value "Free" if 0
-                  onChange={(changeEvent) => {
-                    setAmount(parseInt(changeEvent.target.value));
-                  }}
-                  label="Amount"
-                  fullWidth={true}
-                  startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                  disabled={!isHost}
-                />
-              </FormControl>
-            </Grid>
-
-            <Grid item={true} xs={6}>
-              <FormControl variant="outlined">
-                <InputLabel>Max Capacity</InputLabel>
-                <OutlinedInput
-                  className={classes.commonInputStyles}
-                  type="number"
-                  value={capacity}
-                  onChange={(changeEvent) => {
-                    setCapacity(parseInt(changeEvent.target.value));
-                  }}
-                  label="Max Capacity"
-                  disabled={!isHost}
-                />
-              </FormControl>
-            </Grid>
-
-            <Grid item={true} xs={12}>
-              <Autocomplete
-                className={classes.commonInputStyles}
-                multiple={true}
-                disableCloseOnSelect={true}
-                value={categories}
-                options={allEventCategories}
-                renderOption={(option, { selected }) => {
-                  return (
-                    <Fragment>
-                      <Checkbox
-                        icon={<CheckBoxOutlineBlankIcon fontSize="small" color="secondary" />}
-                        checkedIcon={<CheckBoxIcon fontSize="small" color="secondary" />}
-                        checked={selected}
-                      />
-                      {option}
-                    </Fragment>
-                  );
-                }}
-                renderInput={(params) => {
-                  return <TextField {...params} variant="outlined" label="Categories" />;
-                }}
-                onChange={(changeEvent, value) => {
-                  setCategories(value);
-                }}
-                disabled={!isHost}
-              />
-            </Grid>
-
-            {loggedIn && !isHost ? (
-              <Fragment>
-                <Grid item={true} xs={4}>
-                  <Button
-                    className={classes.userEventButtons}
-                    color={attending ? 'primary' : 'secondary'}
-                    onClick={() => {
-                      dispatch(
-                        updateUserEvent({
-                          eid: eventId,
-                          status: getUserEventStatus(USER_EVENT_STATUS_LABELS[1]),
-                        }),
-                      );
-                    }}
-                    variant="outlined"
-                    fullWidth={true}
-                  >
-                    {USER_EVENT_STATUS_LABELS[1]}
-                  </Button>
-                </Grid>
-
-                <Grid item={true} xs={4}>
-                  <Button
-                    className={classes.userEventButtons}
-                    color={maybe ? 'primary' : 'secondary'}
-                    onClick={() => {
-                      dispatch(
-                        updateUserEvent({
-                          eid: eventId,
-                          status: getUserEventStatus(USER_EVENT_STATUS_LABELS[2]),
-                        }),
-                      );
-                    }}
-                    variant="outlined"
-                    fullWidth={true}
-                  >
-                    {USER_EVENT_STATUS_LABELS[2]}
-                  </Button>
-                </Grid>
-
-                <Grid item={true} xs={4}>
-                  <Button
-                    color={no ? 'primary' : 'secondary'}
-                    onClick={() => {
-                      dispatch(
-                        updateUserEvent({
-                          eid: eventId,
-                          status: getUserEventStatus(USER_EVENT_STATUS_LABELS[3]),
-                        }),
-                      );
-                    }}
-                    variant="outlined"
-                    fullWidth={true}
-                    className={classes.userEventButtons}
-                  >
-                    {USER_EVENT_STATUS_LABELS[3]}
-                  </Button>
-                </Grid>
-              </Fragment>
-            ) : null}
-
-            {isHost ? (
-              <Grid item={true} xs={12} className={classes.updateButton}>
-                <Button variant="contained" color="secondary" onClick={handleSubmit}>
-                  Update Event
-                </Button>
-              </Grid>
-            ) : null}
-          </Fragment>
-        );
+        return <EventDetails {...childProps} />;
 
       case 1: // Participants
         return (
@@ -448,7 +236,7 @@ export const EventModal = (): JSX.Element => {
           </Fragment>
         );
 
-      case 2: // Chat
+      case 2:
         return (
           <Fragment>
             <span>Chat</span>
@@ -532,10 +320,10 @@ export const EventModal = (): JSX.Element => {
               textColor="secondary"
               scrollButtons={isXs ? 'on' : 'auto'}
             >
-              <Tab label="Details" />
-              <Tab label="Participants" />
-              <Tab label="Chat" />
-              {isHost ? <Tab label="Owner" /> : null}
+              <Tab label="Details" className={classes.tab} />
+              <Tab label="Participants" className={classes.tab} />
+              <Tab label="Chat" className={classes.tab} />
+              {isHost ? <Tab label="Owner" className={classes.tab} /> : null}
             </Tabs>
           </Grid>
         </Grid>
