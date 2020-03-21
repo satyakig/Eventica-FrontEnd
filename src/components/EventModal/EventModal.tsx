@@ -34,7 +34,6 @@ import { useLoggedIn } from 'lib/useLoggedIn';
 import { getStorage } from 'lib/Firebase';
 import { isExtraSmallDown } from 'lib/useBreakPoints';
 import { isValidEvent } from 'validation/EventValidation';
-import { EventChat } from '../EventChat/EventChat';
 import EventDetails from './EventDetails';
 import { eventModalStyles } from './EventModal.styles';
 
@@ -236,8 +235,12 @@ export const EventModal = (): JSX.Element => {
           </Fragment>
         );
 
-      case 2: // Chat
-        return <EventChat />;
+      case 2:
+        return (
+        <Fragment>
+          <span>Chat</span>
+        </Fragment>
+      );
 
       case 3: // Owner
         return (
