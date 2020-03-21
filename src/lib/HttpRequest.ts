@@ -2,8 +2,7 @@ import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import { ThunkAction } from 'redux-thunk';
 import { ReduxState } from 'redux/combinedReducer';
 import { AnyAction } from 'redux';
-import { addNotificationAction } from '../redux/actions/NotificationActions';
-import { setRequestExecutingAction } from '../redux/actions/AppStateActions';
+import { setRequestExecutingAction } from 'redux/actions/AppStateActions';
 
 export const PATHS = {
   EVENT: 'event',
@@ -29,12 +28,9 @@ export function postRequest(path: string, data: any): ThunkActionType {
     })
       .then((response: AxiosResponse) => {
         dispatch(setRequestExecutingAction(false));
-        dispatch(addNotificationAction(response.data, 'success'));
       })
       .catch((error: AxiosError) => {
         dispatch(setRequestExecutingAction(false));
-        const message = error.response ? error.response.data : error.message;
-        dispatch(addNotificationAction(message, 'error'));
       });
   };
 }
@@ -48,12 +44,9 @@ export function patchRequest(path: string, data: any): ThunkActionType {
     })
       .then((response: AxiosResponse) => {
         dispatch(setRequestExecutingAction(false));
-        dispatch(addNotificationAction(response.data, 'success'));
       })
       .catch((error: AxiosError) => {
         dispatch(setRequestExecutingAction(false));
-        const message = error.response ? error.response.data : error.message;
-        dispatch(addNotificationAction(message, 'error'));
       });
   };
 }
@@ -70,12 +63,9 @@ export function deleteRequest(path: string, data: any): ThunkActionType {
     })
       .then((response: AxiosResponse) => {
         dispatch(setRequestExecutingAction(false));
-        dispatch(addNotificationAction(response.data, 'success'));
       })
       .catch((error: AxiosError) => {
         dispatch(setRequestExecutingAction(false));
-        const message = error.response ? error.response.data : error.message;
-        dispatch(addNotificationAction(message, 'error'));
       });
   };
 }

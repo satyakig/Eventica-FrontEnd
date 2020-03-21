@@ -1,37 +1,17 @@
 import { Action } from 'redux';
-import { Notification, SeverityType } from '../models/NotificationModel';
+import { Notification } from '../models/NotificationModel';
 
 export const NOTIFICATION_ACTION_CONSTANTS = {
-  ADD_NOTIFICATION: 'ADD_NOTIFICATION',
-  REMOVE_NOTIFICATION: 'REMOVE_NOTIFICATION',
+  SET_NOTIFICATIONS: 'SET_NOTIFICATIONS',
 };
 
-export type AddNotificationActionType = {
-  notification: Notification;
+export type SetNotificationsActionType = {
+  notifications: Notification[];
 } & Action;
 
-export type RemoveNotificationActionType = {
-  notificationId: string;
-} & Action;
-
-export function addNotificationAction(
-  message: string,
-  severity: SeverityType,
-): AddNotificationActionType {
-  const notification: Notification = {
-    message,
-    severity,
-  };
-
+export function setNotificationsAction(notifications: Notification[]): SetNotificationsActionType {
   return {
-    type: NOTIFICATION_ACTION_CONSTANTS.ADD_NOTIFICATION,
-    notification,
-  };
-}
-
-export function removeNotificationAction(notificationId: string): RemoveNotificationActionType {
-  return {
-    type: NOTIFICATION_ACTION_CONSTANTS.REMOVE_NOTIFICATION,
-    notificationId,
+    type: NOTIFICATION_ACTION_CONSTANTS.SET_NOTIFICATIONS,
+    notifications,
   };
 }

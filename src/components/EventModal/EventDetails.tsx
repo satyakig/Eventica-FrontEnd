@@ -47,14 +47,11 @@ const EventDetails = (props: any): JSX.Element => {
     classes,
     user,
     eventId,
-    partOfEvent,
     isHost,
     attending,
     maybe,
     no,
-    invited,
     paid,
-    setName,
     description,
     setDescription,
     eventType,
@@ -73,12 +70,8 @@ const EventDetails = (props: any): JSX.Element => {
     setAmount,
     capacity,
     setCapacity,
-    photoURL,
-    setPhotoURL,
     validEventUpdate,
-    setValidEventUpdate,
     handleSubmit,
-    ...rest
   } = props;
 
   function processPaymentClose(status: boolean) {
