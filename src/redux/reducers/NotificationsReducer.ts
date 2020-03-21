@@ -1,31 +1,22 @@
 import { NotificationModel } from '../models/NotificationModel';
 import {
   NOTIFICATION_ACTION_CONSTANTS,
-  AddNotificationActionType,
-  RemoveNotificationActionType,
+  SetNotificationsActionType,
 } from '../actions/NotificationActions';
 
-export const x = 1;
-
-type ActionType = AddNotificationActionType & RemoveNotificationActionType;
+type ActionType = SetNotificationsActionType;
 
 export const NotificationReducer = (
   state: NotificationModel[] = [],
   action: ActionType,
 ): NotificationModel[] => {
-  if (action.type === NOTIFICATION_ACTION_CONSTANTS.ADD_NOTIFICATION) {
-    return state
-      .concat([new NotificationModel(action.notification)])
-      .sort((a: NotificationModel, b: NotificationModel) => {
-        return a.timestamp - b.timestamp;
-      });
-  } else if (action.type === NOTIFICATION_ACTION_CONSTANTS.REMOVE_NOTIFICATION) {
-    return state
-      .filter((notification) => {
-        return notification.id !== action.notificationId;
+  if (action.type === NOTIFICATION_ACTION_CONSTANTS.SET_NOTIFICATIONS) {
+    return action.notifications
+      .map((notif) => {
+        return new NotificationModel(notif);
       })
       .sort((a: NotificationModel, b: NotificationModel) => {
-        return a.timestamp - b.timestamp;
+        return b.timestamp - a.timestamp;
       });
   }
 
