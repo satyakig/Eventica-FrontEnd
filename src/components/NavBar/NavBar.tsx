@@ -24,7 +24,7 @@ import { ReactComponent as GoogleLogo } from 'assets/google.svg';
 import { getAuth, makeLoginPopup } from 'lib/Firebase';
 import { isSmallDown } from 'lib/useBreakPoints';
 import { navbarStyles } from './NavBar.styles';
-import { setRouteAction, setSearchTermAction } from 'redux/actions/AppStateActions';
+import { setRouteAction, setSearching, setSearchTermAction } from 'redux/actions/AppStateActions';
 import { HOMEPAGE, MANAGE_EVENTS } from 'redux/models/AppStateModel';
 import ProfileModal from '../ProfileModal/ProfileModal';
 import CreateEvent from '../CreateEvent/CreateEvent';
@@ -171,12 +171,15 @@ const Navbar = (): JSX.Element => {
           <InputBase
             value={searchTerm}
             onChange={updateSearch}
-            placeholder="Search Events…"
+            placeholder="search events..."
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput,
             }}
             inputProps={{ 'aria-label': 'search' }}
+            onFocus={() => {
+              dispatch(setSearching(true));
+            }}
           />
         </div>
         {getEndComponents()}

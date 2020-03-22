@@ -9,6 +9,7 @@ export const ROUTES = [HOMEPAGE, MANAGE_EVENTS];
  */
 export class AppStateModel {
   searchTerm = '';
+  searching = false;
   categoriesArray: string[] = [];
   categoriesMap: Record<string, string> = {};
   route: string = HOMEPAGE;

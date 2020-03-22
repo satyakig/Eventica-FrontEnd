@@ -53,5 +53,11 @@ export const eventGridStyles = makeStyles(({ spacing, zIndex }: Theme) => {
       top: spacing(1),
       right: spacing(1),
     },
+    listItemClose: {
+      paddingTop: 0,
+      paddingBottom: 0,
+      justifyContent: 'flex-end',
+      paddingRight: '5px',
+    },
   });
 });

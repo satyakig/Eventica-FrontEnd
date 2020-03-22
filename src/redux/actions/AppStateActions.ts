@@ -2,6 +2,7 @@ import { Action } from 'redux';
 
 export const APP_STATE_ACTION_CONSTANTS = {
   SET_SEARCH_TERM: 'SET_SEARCH_TERM',
+  SET_SEARCHING: 'SET_SEARCHING',
   SET_CATEGORIES: 'SET_CATEGORIES',
   SET_ROUTE: 'SET_ROUTE',
   REQUEST_EXECUTING: 'REQUEST_EXECUTING',
@@ -47,6 +48,13 @@ export function setRouteAction(route: string): SetRouteActionType {
 export function setRequestExecutingAction(state: boolean): SetRequestExecutingAction {
   return {
     type: APP_STATE_ACTION_CONSTANTS.REQUEST_EXECUTING,
+    state,
+  };
+}
+
+export function setSearching(state: boolean): SetRequestExecutingAction {
+  return {
+    type: APP_STATE_ACTION_CONSTANTS.SET_SEARCHING,
     state,
   };
 }
