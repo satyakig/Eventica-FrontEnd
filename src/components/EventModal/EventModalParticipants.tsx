@@ -1,6 +1,5 @@
-import React, { ChangeEvent, useState } from 'react';
+import React from 'react';
 import {
-  Container,
   List,
   ListItem,
   ListItemAvatar,
@@ -9,7 +8,7 @@ import {
   Grid,
   ExpansionPanel,
   ExpansionPanelSummary,
-  ExpansionPanelDetails, Typography,
+  ExpansionPanelDetails,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { EventUserType, USER_EVENT_STATUS } from '../../redux/models/EventModel';
@@ -30,7 +29,6 @@ export const EventModalParticipants = (props: EventParticipantsProps): JSX.Eleme
   return (
     <React.Fragment>
       <Grid item={true} xs={12}>
-
         <ExpansionPanel expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{`Attending ( ${
             props.eventUsers.filter((eventUser) => {

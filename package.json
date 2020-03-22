@@ -34,7 +34,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "lint:js": "eslint --cache .",
+    "lint:js": "eslint --cache . --ext .ts --ext .tsx",
     "lint:styled": "stylelint \"src/**/*.*css\"",
     "lint:fix": "eslint --fix .",
     "lint": "npm run lint:js && npm run lint:styled",
