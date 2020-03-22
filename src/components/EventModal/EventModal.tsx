@@ -255,7 +255,7 @@ export const EventModal = (): JSX.Element => {
       case 1: // Participants
         return (
           <Fragment>
-            <EventModalParticipants eventUsers={eventUsers} />
+            <EventModalParticipants classes={classes} eventUsers={eventUsers} />
           </Fragment>
         );
 

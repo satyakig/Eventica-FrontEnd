@@ -1,11 +1,21 @@
 import { Theme } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/styles';
-import { DARKER } from 'assets/Styles';
+import { BACKGROUND, DARKER } from 'assets/Styles';
 
 export const eventModalStyles = makeStyles((theme: Theme) => {
   return createStyles({
     dialog: {
       overflowY: 'auto',
+    },
+    expansionPanel: {
+      background: BACKGROUND,
+    },
+    expansionPanelLabel: {
+      fontWeight: 600,
+    },
+    hostCard: {
+      width: '100%',
+      textAlign: 'center',
     },
     image: {
       height: '200px',

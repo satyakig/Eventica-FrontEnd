@@ -15,6 +15,7 @@ import { EventUserType, USER_EVENT_STATUS } from '../../redux/models/EventModel'
 
 export interface EventParticipantsProps {
   eventUsers: EventUserType[];
+  classes: any;
 }
 
 export const EventModalParticipants = (props: EventParticipantsProps): JSX.Element => {
@@ -29,12 +30,34 @@ export const EventModalParticipants = (props: EventParticipantsProps): JSX.Eleme
   return (
     <React.Fragment>
       <Grid item={true} xs={12}>
-        <ExpansionPanel expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{`Attending ( ${
+        <ExpansionPanel className={props.classes.expansionPanel} expanded={true}>
+          <ExpansionPanelSummary className={props.classes.expansionPanelLabel}>
+            <div className={props.classes.hostCard}>
+              hosted by{' '}
+              {props.eventUsers
+                .filter((user) => {
+                  return user.status === USER_EVENT_STATUS.HOST;
+                })
+                .map((user) => {
+                  return user.name;
+                })}
+            </div>
+          </ExpansionPanelSummary>
+        </ExpansionPanel>
+
+        <ExpansionPanel
+          className={props.classes.expansionPanel}
+          expanded={expanded === 'panel1'}
+          onChange={handleChange('panel1')}
+        >
+          <ExpansionPanelSummary
+            className={props.classes.expansionPanelLabel}
+            expandIcon={<ExpandMoreIcon />}
+          >{`attending - ${
             props.eventUsers.filter((eventUser) => {
               return eventUser.status === USER_EVENT_STATUS.ATTENDING;
             }).length
-          } )`}</ExpansionPanelSummary>
+          }`}</ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <List>
               {props.eventUsers
@@ -55,12 +78,19 @@ export const EventModalParticipants = (props: EventParticipantsProps): JSX.Eleme
           </ExpansionPanelDetails>
         </ExpansionPanel>
 
-        <ExpansionPanel expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{`Maybe ( ${
+        <ExpansionPanel
+          className={props.classes.expansionPanel}
+          expanded={expanded === 'panel2'}
+          onChange={handleChange('panel2')}
+        >
+          <ExpansionPanelSummary
+            className={props.classes.expansionPanelLabel}
+            expandIcon={<ExpandMoreIcon />}
+          >{`maybe - ${
             props.eventUsers.filter((eventUser) => {
               return eventUser.status === USER_EVENT_STATUS.MAYBE;
             }).length
-          } )`}</ExpansionPanelSummary>
+          }`}</ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <List>
               {props.eventUsers
@@ -81,12 +111,19 @@ export const EventModalParticipants = (props: EventParticipantsProps): JSX.Eleme
           </ExpansionPanelDetails>
         </ExpansionPanel>
 
-        <ExpansionPanel expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{`No ( ${
+        <ExpansionPanel
+          className={props.classes.expansionPanel}
+          expanded={expanded === 'panel3'}
+          onChange={handleChange('panel3')}
+        >
+          <ExpansionPanelSummary
+            className={props.classes.expansionPanelLabel}
+            expandIcon={<ExpandMoreIcon />}
+          >{`no - ${
             props.eventUsers.filter((eventUser) => {
               return eventUser.status === USER_EVENT_STATUS.NO;
             }).length
-          } )`}</ExpansionPanelSummary>
+          }`}</ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <List>
               {props.eventUsers
@@ -107,12 +144,19 @@ export const EventModalParticipants = (props: EventParticipantsProps): JSX.Eleme
           </ExpansionPanelDetails>
         </ExpansionPanel>
 
-        <ExpansionPanel expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{`Invited ( ${
+        <ExpansionPanel
+          className={props.classes.expansionPanel}
+          expanded={expanded === 'panel4'}
+          onChange={handleChange('panel4')}
+        >
+          <ExpansionPanelSummary
+            className={props.classes.expansionPanelLabel}
+            expandIcon={<ExpandMoreIcon />}
+          >{`invited - ${
             props.eventUsers.filter((eventUser) => {
               return eventUser.status === USER_EVENT_STATUS.INVITED;
             }).length
-          } )`}</ExpansionPanelSummary>
+          }`}</ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <List>
               {props.eventUsers
