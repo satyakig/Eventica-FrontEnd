@@ -17,6 +17,7 @@ import {
   EVENT_STATUS_LABELS,
   EVENT_TYPE_LABELS,
   EventModel,
+  EventUserType,
   getEventStatus,
   getEventStatusLabel,
   getEventType,
@@ -31,7 +32,7 @@ import { clearSelectedEventAction } from 'redux/actions/EventsActions';
 import { ReduxState } from 'redux/combinedReducer';
 import { updateEvent, UpdateEventType, CreateEventType } from 'lib/EventRequests';
 import { useLoggedIn } from 'lib/useLoggedIn';
-import { getStorage } from 'lib/Firebase';
+import { DB_PATHS, getDb, getStorage } from 'lib/Firebase';
 import { isExtraSmallDown } from 'lib/useBreakPoints';
 import { isValidEvent } from 'validation/EventValidation';
 import EventDetails from './EventDetails';
@@ -53,6 +54,8 @@ export const EventModal = (): JSX.Element => {
   const eventId = useSelector((state: ReduxState) => {
     return state.events.selectedEvent;
   });
+
+  const [eventUsers, setEventUsers] = useState<EventUserType[]>([]);
 
   const event: EventModel | UserEventModel = useSelector((state: ReduxState) => {
     if (state.events.userEvents.get(eventId)) {
@@ -176,6 +179,26 @@ export const EventModal = (): JSX.Element => {
     capacity,
   ]);
 
+  /**
+   * Load the event users for the selected event
+   */
+  useEffect(() => {
+    const unsubscribe = getDb()
+      .collection(DB_PATHS.EVENT_USERS)
+      .where('eid', '==', eventId)
+      .onSnapshot((doc) => {
+        const data = doc.docs.map((value) => {
+          return value.data() as EventUserType;
+        });
+
+        setEventUsers(data);
+      });
+
+    return () => {
+      return unsubscribe();
+    };
+  }, [eventId]);
+
   const partOfEvent = loggedIn && event instanceof UserEventModel;
   const isHost = partOfEvent && (event as UserEventModel).isUserHost();
   const attending = partOfEvent && (event as UserEventModel).isUserYes();
@@ -232,7 +255,7 @@ export const EventModal = (): JSX.Element => {
       case 1: // Participants
         return (
           <Fragment>
-            <EventModalParticipants />
+            <EventModalParticipants eventUsers={eventUsers} />
           </Fragment>
         );
 

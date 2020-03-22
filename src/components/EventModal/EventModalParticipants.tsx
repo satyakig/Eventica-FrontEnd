@@ -1,9 +1,4 @@
-import React, { ChangeEvent, Fragment, useEffect, useState } from 'react';
-import { DB_PATHS, getDb } from 'lib/Firebase';
-import { ReduxState } from 'redux/combinedReducer';
-import { useSelector } from 'react-redux';
-import { GenericDataMap } from 'lib/GenericDataMap';
-import { User } from 'redux/models/UserModel';
+import React, { ChangeEvent, useState } from 'react';
 import {
   Container,
   List,
@@ -11,172 +6,135 @@ import {
   ListItemAvatar,
   Avatar,
   ListItemText,
-  Tabs,
-  Tab,
   Grid,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails, Typography,
 } from '@material-ui/core';
-import { isExtraSmallDown } from '../../lib/useBreakPoints';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { EventUserType, USER_EVENT_STATUS } from '../../redux/models/EventModel';
 
-export const EventModalParticipants = (): JSX.Element => {
-  const selectedEventId = useSelector((state: ReduxState) => {
-    return state.events.selectedEvent;
-  });
+export interface EventParticipantsProps {
+  eventUsers: EventUserType[];
+}
 
-  const [userStatuses, setUserStatuses] = useState(new GenericDataMap<string, number>());
-  const [users, setUsers] = useState(new GenericDataMap<string, User>());
+export const EventModalParticipants = (props: EventParticipantsProps): JSX.Element => {
+  const [expanded, setExpanded] = React.useState<string | false>(false);
 
-  useEffect(() => {
-    const unsubscribe = getDb()
-      .collection(DB_PATHS.EVENT_USERS)
-      .where('eid', '==', selectedEventId)
-      .onSnapshot((doc) => {
-        for (const value of doc.docs) {
-          userStatuses.set(value.data().uid as string, value.data().status as number);
-        }
-
-        setUserStatuses(userStatuses.clone());
-      });
-
-    return () => {
-      return unsubscribe();
+  const handleChange = (panel: string) => {
+    return (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
+      setExpanded(isExpanded ? panel : false);
     };
-  }, [selectedEventId]);
-
-  useEffect(() => {
-    const unSubs: any[] = [];
-
-    for (const uid of userStatuses.getAllIds()) {
-      const unsubscribe = getDb()
-        .collection(DB_PATHS.USERS)
-        .where('uid', '==', uid)
-        .onSnapshot((doc) => {
-          const user = doc.docs[0].data() as User;
-
-          users.set(user.uid, user);
-          setUsers(users.clone());
-        });
-
-      unSubs.push(unsubscribe);
-    }
-
-    return () => {
-      for (const unsub of unSubs) {
-        unsub();
-      }
-    };
-  }, [userStatuses]);
-
-  const [tabIndex, setTabIndex] = useState(0);
-  const isXs = isExtraSmallDown();
-  function handleTabChange(e: ChangeEvent<{}>, newValue: number) {
-    setTabIndex(newValue);
-  }
-
-  function getTab() {
-    switch (tabIndex) {
-      case 0: // Attending
-        return (
-          <List>
-            {console.log(users)}
-            {users
-              .getAllData()
-              .filter((user) => {
-                return userStatuses.get(user.uid) === 1;
-              })
-              .map((user) => {
-                return (
-                  <ListItem key={user.uid}>
-                    <ListItemAvatar>
-                      <Avatar src={user.photoURL} />
-                    </ListItemAvatar>
-                    <ListItemText primary={user.name} />
-                  </ListItem>
-                );
-              })}
-          </List>
-        );
-      case 1: // Maybe
-        return (
-          <List>
-            {console.log(users)}
-            {users
-              .getAllData()
-              .filter((user) => {
-                return userStatuses.get(user.uid) === 2;
-              })
-              .map((user) => {
-                return (
-                  <ListItem key={user.uid}>
-                    <ListItemAvatar>
-                      <Avatar src={user.photoURL} />
-                    </ListItemAvatar>
-                    <ListItemText primary={user.name} />
-                  </ListItem>
-                );
-              })}
-          </List>
-        );
-      case 2: // No
-        return (
-          <List>
-            {console.log(users)}
-            {users
-              .getAllData()
-              .filter((user) => {
-                return userStatuses.get(user.uid) === 3;
-              })
-              .map((user) => {
-                return (
-                  <ListItem key={user.uid}>
-                    <ListItemAvatar>
-                      <Avatar src={user.photoURL} />
-                    </ListItemAvatar>
-                    <ListItemText primary={user.name} />
-                  </ListItem>
-                );
-              })}
-          </List>
-        );
-    }
-  }
+  };
 
   return (
-    <Container>
+    <React.Fragment>
       <Grid item={true} xs={12}>
-        <Tabs
-          value={tabIndex}
-          onChange={handleTabChange}
-          variant="scrollable"
-          indicatorColor="primary"
-          textColor="secondary"
-          scrollButtons={isXs ? 'on' : 'auto'}
-        >
-          <Tab
-            label={`Attending ( ${
-              userStatuses.getAllData().filter((status) => {
-                return status === 1;
-              }).length
-            } )`}
-          />
-          <Tab
-            label={`Maybe ( ${
-              userStatuses.getAllData().filter((status) => {
-                return status === 2;
-              }).length
-            } )`}
-          />
-          <Tab
-            label={`No ( ${
-              userStatuses.getAllData().filter((status) => {
-                return status === 3;
-              }).length
-            } )`}
-          />
-        </Tabs>
+
+        <ExpansionPanel expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{`Attending ( ${
+            props.eventUsers.filter((eventUser) => {
+              return eventUser.status === USER_EVENT_STATUS.ATTENDING;
+            }).length
+          } )`}</ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <List>
+              {props.eventUsers
+                .filter((user) => {
+                  return user.status === USER_EVENT_STATUS.ATTENDING;
+                })
+                .map((user) => {
+                  return (
+                    <ListItem key={user.uid}>
+                      <ListItemAvatar>
+                        <Avatar src={user.photoURL} />
+                      </ListItemAvatar>
+                      <ListItemText primary={user.name} />
+                    </ListItem>
+                  );
+                })}
+            </List>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+
+        <ExpansionPanel expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{`Maybe ( ${
+            props.eventUsers.filter((eventUser) => {
+              return eventUser.status === USER_EVENT_STATUS.MAYBE;
+            }).length
+          } )`}</ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <List>
+              {props.eventUsers
+                .filter((user) => {
+                  return user.status === USER_EVENT_STATUS.MAYBE;
+                })
+                .map((user) => {
+                  return (
+                    <ListItem key={user.uid}>
+                      <ListItemAvatar>
+                        <Avatar src={user.photoURL} />
+                      </ListItemAvatar>
+                      <ListItemText primary={user.name} />
+                    </ListItem>
+                  );
+                })}
+            </List>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+
+        <ExpansionPanel expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{`No ( ${
+            props.eventUsers.filter((eventUser) => {
+              return eventUser.status === USER_EVENT_STATUS.NO;
+            }).length
+          } )`}</ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <List>
+              {props.eventUsers
+                .filter((user) => {
+                  return user.status === USER_EVENT_STATUS.NO;
+                })
+                .map((user) => {
+                  return (
+                    <ListItem key={user.uid}>
+                      <ListItemAvatar>
+                        <Avatar src={user.photoURL} />
+                      </ListItemAvatar>
+                      <ListItemText primary={user.name} />
+                    </ListItem>
+                  );
+                })}
+            </List>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+
+        <ExpansionPanel expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{`Invited ( ${
+            props.eventUsers.filter((eventUser) => {
+              return eventUser.status === USER_EVENT_STATUS.INVITED;
+            }).length
+          } )`}</ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <List>
+              {props.eventUsers
+                .filter((user) => {
+                  return user.status === USER_EVENT_STATUS.INVITED;
+                })
+                .map((user) => {
+                  return (
+                    <ListItem key={user.uid}>
+                      <ListItemAvatar>
+                        <Avatar src={user.photoURL} />
+                      </ListItemAvatar>
+                      <ListItemText primary={user.name} />
+                    </ListItem>
+                  );
+                })}
+            </List>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
       </Grid>
-      <Grid container={true} spacing={2}>
-        {getTab()}
-      </Grid>
-    </Container>
+    </React.Fragment>
   );
 };
