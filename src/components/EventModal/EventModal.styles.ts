@@ -16,6 +16,7 @@ export const eventModalStyles = makeStyles((theme: Theme) => {
     hostCard: {
       width: '100%',
       textAlign: 'center',
+      cursor: 'default',
     },
     image: {
       height: '200px',

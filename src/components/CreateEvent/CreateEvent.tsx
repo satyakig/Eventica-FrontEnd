@@ -258,12 +258,12 @@ export default function CreateEvent(props: CreateEventProps) {
 
           <Grid item={true} xs={6}>
             <FormControl variant="outlined" fullWidth={true}>
-              <InputLabel>Max Capacity</InputLabel>
+              <InputLabel>Capacity</InputLabel>
               <OutlinedInput
                 type="number"
                 value={capacity}
                 onChange={handleCapacityChange}
-                label="Max Capacity"
+                label="Capacity"
                 fullWidth={true}
               />
             </FormControl>
@@ -305,12 +305,12 @@ export default function CreateEvent(props: CreateEventProps) {
 
           <Grid item={true} xs={6}>
             <FormControl variant="outlined" fullWidth={true}>
-              <InputLabel>Amount</InputLabel>
+              <InputLabel>Fee</InputLabel>
               <OutlinedInput
                 type="number"
                 value={amount}
                 onChange={handleAmountChange}
-                label="Amount"
+                label="Fee"
                 fullWidth={true}
                 startAdornment={<InputAdornment position="start">$</InputAdornment>}
               />

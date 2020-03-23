@@ -261,7 +261,7 @@ const EventDetails = (props: any): JSX.Element => {
 
       <Grid item={true} xs={6}>
         <FormControl variant="outlined" fullWidth={true}>
-          <InputLabel>Amount</InputLabel>
+          <InputLabel>Fee</InputLabel>
           <OutlinedInput
             className={classes.commonInputStyles}
             type="number"
@@ -269,7 +269,7 @@ const EventDetails = (props: any): JSX.Element => {
             onChange={(changeEvent) => {
               setAmount(parseInt(changeEvent.target.value));
             }}
-            label="Amount"
+            label="Fee"
             fullWidth={true}
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
             disabled={!isHost}
@@ -279,7 +279,7 @@ const EventDetails = (props: any): JSX.Element => {
 
       <Grid item={true} xs={6}>
         <FormControl variant="outlined" fullWidth={true}>
-          <InputLabel>Max Capacity</InputLabel>
+          <InputLabel>Capacity</InputLabel>
           <OutlinedInput
             className={classes.commonInputStyles}
             type="number"
@@ -287,7 +287,7 @@ const EventDetails = (props: any): JSX.Element => {
             onChange={(changeEvent) => {
               setCapacity(parseInt(changeEvent.target.value));
             }}
-            label="Max Capacity"
+            label="Capacity"
             disabled={!isHost}
             fullWidth={true}
           />
