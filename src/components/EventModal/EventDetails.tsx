@@ -72,6 +72,7 @@ const EventDetails = (props: any): JSX.Element => {
     setCapacity,
     validEventUpdate,
     handleSubmit,
+    pastEndDate,
   } = props;
 
   function processPaymentClose(status: boolean) {
@@ -88,7 +89,7 @@ const EventDetails = (props: any): JSX.Element => {
   }
 
   function attendingClick() {
-    if (!attending) {
+    if (!attending && !pastEndDate) {
       if (amount > 0 && !paid) {
         setOpenPayment(true);
       } else {
@@ -103,7 +104,7 @@ const EventDetails = (props: any): JSX.Element => {
   }
 
   function maybeClick() {
-    if (!maybe) {
+    if (!maybe && !pastEndDate) {
       dispatch(
         updateUserEvent({
           eid: eventId,
@@ -114,7 +115,7 @@ const EventDetails = (props: any): JSX.Element => {
   }
 
   function noClick() {
-    if (!no) {
+    if (!no && !pastEndDate) {
       dispatch(
         updateUserEvent({
           eid: eventId,
@@ -139,7 +140,7 @@ const EventDetails = (props: any): JSX.Element => {
             label="Description"
             fullWidth={true}
             multiline={true}
-            disabled={!isHost}
+            disabled={!isHost || pastEndDate}
           />
         </FormControl>
       </Grid>
@@ -155,7 +156,7 @@ const EventDetails = (props: any): JSX.Element => {
             }}
             label="Location"
             fullWidth={true}
-            disabled={!isHost}
+            disabled={!isHost || pastEndDate}
             multiline={true}
           />
         </FormControl>
@@ -189,7 +190,7 @@ const EventDetails = (props: any): JSX.Element => {
               setEventType(value);
             }
           }}
-          disabled={!isHost}
+          disabled={!isHost || pastEndDate}
         />
       </Grid>
 
@@ -221,7 +222,7 @@ const EventDetails = (props: any): JSX.Element => {
               setEventStatus(value);
             }
           }}
-          disabled={!isHost}
+          disabled={!isHost || pastEndDate}
         />
       </Grid>
 
@@ -237,7 +238,7 @@ const EventDetails = (props: any): JSX.Element => {
             }}
             label="Start Time"
             showTodayButton={true}
-            disabled={!isHost}
+            disabled={!isHost || pastEndDate}
           />
         </MuiPickersUtilsProvider>
       </Grid>
@@ -254,7 +255,7 @@ const EventDetails = (props: any): JSX.Element => {
             }}
             label="End Time"
             showTodayButton={true}
-            disabled={!isHost}
+            disabled={!isHost || pastEndDate}
           />
         </MuiPickersUtilsProvider>
       </Grid>
@@ -272,7 +273,7 @@ const EventDetails = (props: any): JSX.Element => {
             label="Fee"
             fullWidth={true}
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
-            disabled={!isHost}
+            disabled={!isHost || pastEndDate}
           />
         </FormControl>
       </Grid>
@@ -288,7 +289,7 @@ const EventDetails = (props: any): JSX.Element => {
               setCapacity(parseInt(changeEvent.target.value));
             }}
             label="Capacity"
-            disabled={!isHost}
+            disabled={!isHost || pastEndDate}
             fullWidth={true}
           />
         </FormControl>
@@ -319,7 +320,7 @@ const EventDetails = (props: any): JSX.Element => {
           onChange={(changeEvent, value) => {
             setCategories(value);
           }}
-          disabled={!isHost}
+          disabled={!isHost || pastEndDate}
         />
       </Grid>
 
@@ -351,11 +352,11 @@ const EventDetails = (props: any): JSX.Element => {
 
           <Grid item={true} xs={4}>
             <Button
+              className={classes.userEventButtons}
               color={no ? 'primary' : 'secondary'}
               onClick={noClick}
               variant="outlined"
               fullWidth={true}
-              className={classes.userEventButtons}
             >
               {USER_EVENT_STATUS_LABELS[3]}
             </Button>
@@ -366,10 +367,10 @@ const EventDetails = (props: any): JSX.Element => {
       {isHost ? (
         <Grid item={true} xs={12} className={classes.updateButton}>
           <Button
-            disabled={!validEventUpdate}
             variant="contained"
             color="secondary"
             onClick={handleSubmit}
+            disabled={!validEventUpdate || pastEndDate}
           >
             Update Event
           </Button>

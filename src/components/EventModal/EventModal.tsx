@@ -209,6 +209,8 @@ export const EventModal = (): JSX.Element => {
 
   const classes = eventModalStyles({ isHost });
 
+  const pastEndDate = endDate < moment().valueOf();
+
   const childProps = {
     classes,
     user,
@@ -245,6 +247,7 @@ export const EventModal = (): JSX.Element => {
     validEventUpdate,
     setValidEventUpdate,
     handleSubmit,
+    pastEndDate,
   };
 
   function getTab() {

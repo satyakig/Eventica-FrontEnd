@@ -19,7 +19,10 @@ import moment from 'moment-timezone';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import { useDispatch, useSelector } from 'react-redux';
-import { ReduxState } from 'redux/combinedReducer';
+import { HOMEPAGE } from 'redux/models/AppStateModel';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import {
   EventModel,
   EVENT_STATUS_LABELS,
@@ -28,13 +31,11 @@ import {
   getUserEventStatus,
   UserEventModel,
 } from 'redux/models/EventModel';
-import { HOMEPAGE } from 'redux/models/AppStateModel';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import { ReduxState } from 'redux/combinedReducer';
+import { setSearching } from 'redux/actions/AppStateActions';
 import EventCard from '../EventCard/EventCard';
 import { eventGridStyles } from './EventGrid.styles';
 import { isSmallDown } from 'lib/useBreakPoints';
-import { setSearching } from '../../redux/actions/AppStateActions';
 
 const EVENT_TIME_FORMAT = 'MMMM Do, YYYY';
 
@@ -204,7 +205,7 @@ const EventGrid = () => {
                 dispatch(setSearching(false));
               }}
             >
-              <CloseIcon />
+              <HighlightOffIcon />
             </IconButton>
           </ListItem>
         ) : null}
@@ -377,7 +378,7 @@ const EventGrid = () => {
         })}
       </Grid>
 
-      {isSmDown && searching ? (
+      {isSmDown ? (
         <Fab
           className={classes.fab}
           color="secondary"
