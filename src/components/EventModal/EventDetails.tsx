@@ -52,6 +52,7 @@ const EventDetails = (props: any): JSX.Element => {
     maybe,
     no,
     paid,
+    checkedIn,
     description,
     setDescription,
     eventType,
@@ -381,15 +382,16 @@ const EventDetails = (props: any): JSX.Element => {
         </Grid>
       ) : null}
 
-      {!isHost && (attending || maybe) ? (
+      {!isHost && attending ? (
         <Grid container={true} item={true} xs={12} justify="center">
           <QRCode
             renderAs="svg"
             value={JSON.stringify({
-              uid: user.uid,
-              eventId: eventId,
-              attending: attending,
-              maybe: maybe,
+              eventUser: user.uid,
+              eventId,
+              paid,
+              attending,
+              checkedIn,
             })}
           />
         </Grid>

@@ -193,10 +193,13 @@ const EventGrid = () => {
     isHomepage,
   ]);
 
+  const showSideBarClose = !isSmDown && isHomepage;
+  const showSideBar = !isSmDown && (searching || !isHomepage);
+
   const filterCompo = (
     <Paper className={classes.drawer} elevation={10} variant="elevation">
       <List>
-        {!isSmDown ? (
+        {showSideBarClose ? (
           <ListItem className={classes.listItemClose}>
             <IconButton
               color="secondary"
@@ -355,7 +358,7 @@ const EventGrid = () => {
         </IconButton>
       </Dialog>
 
-      {!isSmDown && searching ? (
+      {showSideBar ? (
         <Grid container={true} item={true} sm={3} className={classes.drawerContainer}>
           {filterCompo}
         </Grid>
@@ -364,7 +367,7 @@ const EventGrid = () => {
       <Grid
         container={true}
         item={true}
-        sm={searching ? (isSmDown ? 12 : 9) : 12}
+        sm={showSideBar ? 9 : 12}
         spacing={2}
         className={classes.grid}
         alignItems="stretch"

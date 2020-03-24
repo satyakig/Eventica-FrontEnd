@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import {
   List,
   ListItem,
@@ -27,44 +28,55 @@ export const EventModalParticipants = (props: EventParticipantsProps): JSX.Eleme
     };
   };
 
+  const hosts = props.eventUsers.filter((user) => {
+    return user.status === USER_EVENT_STATUS.HOST;
+  });
+
+  const attendees = props.eventUsers.filter((user) => {
+    return user.status === USER_EVENT_STATUS.ATTENDING;
+  });
+
+  const maybes = props.eventUsers.filter((user) => {
+    return user.status === USER_EVENT_STATUS.MAYBE;
+  });
+
+  const nos = props.eventUsers.filter((user) => {
+    return user.status === USER_EVENT_STATUS.NO;
+  });
+
+  const invitees = props.eventUsers.filter((user) => {
+    return user.status === USER_EVENT_STATUS.INVITED;
+  });
+
   return (
     <React.Fragment>
       <Grid item={true} xs={12}>
-        <ExpansionPanel className={props.classes.expansionPanel} expanded={true}>
-          <ExpansionPanelSummary className={props.classes.expansionPanelLabel}>
+        <ExpansionPanel className={props.classes.expansionPanel} expanded={false}>
+          <ExpansionPanelSummary
+            className={classNames(props.classes.expansionPanelLabel, props.classes.hostCursor)}
+          >
             <div className={props.classes.hostCard}>
-              hosted by{' '}
-              {props.eventUsers
-                .filter((user) => {
-                  return user.status === USER_EVENT_STATUS.HOST;
-                })
-                .map((user) => {
-                  return user.name;
-                })}
+              hosted by &nbsp;
+              {hosts.map((user) => {
+                return user.name;
+              })}
             </div>
           </ExpansionPanelSummary>
         </ExpansionPanel>
 
         <ExpansionPanel
           className={props.classes.expansionPanel}
-          expanded={expanded === 'panel1'}
-          onChange={handleChange('panel1')}
+          expanded={expanded === 'attending'}
+          onChange={handleChange('attending')}
         >
           <ExpansionPanelSummary
             className={props.classes.expansionPanelLabel}
-            expandIcon={<ExpandMoreIcon />}
-          >{`attending - ${
-            props.eventUsers.filter((eventUser) => {
-              return eventUser.status === USER_EVENT_STATUS.ATTENDING;
-            }).length
-          }`}</ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <List>
-              {props.eventUsers
-                .filter((user) => {
-                  return user.status === USER_EVENT_STATUS.ATTENDING;
-                })
-                .map((user) => {
+            expandIcon={attendees.length > 0 ? <ExpandMoreIcon /> : null}
+          >{`attending - ${attendees.length}`}</ExpansionPanelSummary>
+          {attendees.length > 0 ? (
+            <ExpansionPanelDetails>
+              <List>
+                {attendees.map((user) => {
                   return (
                     <ListItem key={user.uid}>
                       <ListItemAvatar>
@@ -74,30 +86,24 @@ export const EventModalParticipants = (props: EventParticipantsProps): JSX.Eleme
                     </ListItem>
                   );
                 })}
-            </List>
-          </ExpansionPanelDetails>
+              </List>
+            </ExpansionPanelDetails>
+          ) : null}
         </ExpansionPanel>
 
         <ExpansionPanel
           className={props.classes.expansionPanel}
-          expanded={expanded === 'panel2'}
-          onChange={handleChange('panel2')}
+          expanded={expanded === 'maybe'}
+          onChange={handleChange('maybe')}
         >
           <ExpansionPanelSummary
             className={props.classes.expansionPanelLabel}
-            expandIcon={<ExpandMoreIcon />}
-          >{`maybe - ${
-            props.eventUsers.filter((eventUser) => {
-              return eventUser.status === USER_EVENT_STATUS.MAYBE;
-            }).length
-          }`}</ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <List>
-              {props.eventUsers
-                .filter((user) => {
-                  return user.status === USER_EVENT_STATUS.MAYBE;
-                })
-                .map((user) => {
+            expandIcon={maybes.length > 0 ? <ExpandMoreIcon /> : null}
+          >{`maybe - ${maybes.length}`}</ExpansionPanelSummary>
+          {maybes.length > 0 ? (
+            <ExpansionPanelDetails>
+              <List>
+                {maybes.map((user) => {
                   return (
                     <ListItem key={user.uid}>
                       <ListItemAvatar>
@@ -107,30 +113,24 @@ export const EventModalParticipants = (props: EventParticipantsProps): JSX.Eleme
                     </ListItem>
                   );
                 })}
-            </List>
-          </ExpansionPanelDetails>
+              </List>
+            </ExpansionPanelDetails>
+          ) : null}
         </ExpansionPanel>
 
         <ExpansionPanel
           className={props.classes.expansionPanel}
-          expanded={expanded === 'panel3'}
-          onChange={handleChange('panel3')}
+          expanded={expanded === 'no'}
+          onChange={handleChange('no')}
         >
           <ExpansionPanelSummary
             className={props.classes.expansionPanelLabel}
-            expandIcon={<ExpandMoreIcon />}
-          >{`no - ${
-            props.eventUsers.filter((eventUser) => {
-              return eventUser.status === USER_EVENT_STATUS.NO;
-            }).length
-          }`}</ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <List>
-              {props.eventUsers
-                .filter((user) => {
-                  return user.status === USER_EVENT_STATUS.NO;
-                })
-                .map((user) => {
+            expandIcon={nos.length > 0 ? <ExpandMoreIcon /> : null}
+          >{`no - ${nos.length}`}</ExpansionPanelSummary>
+          {nos.length > 0 ? (
+            <ExpansionPanelDetails>
+              <List>
+                {nos.map((user) => {
                   return (
                     <ListItem key={user.uid}>
                       <ListItemAvatar>
@@ -140,30 +140,24 @@ export const EventModalParticipants = (props: EventParticipantsProps): JSX.Eleme
                     </ListItem>
                   );
                 })}
-            </List>
-          </ExpansionPanelDetails>
+              </List>
+            </ExpansionPanelDetails>
+          ) : null}
         </ExpansionPanel>
 
         <ExpansionPanel
           className={props.classes.expansionPanel}
-          expanded={expanded === 'panel4'}
-          onChange={handleChange('panel4')}
+          expanded={expanded === 'invited'}
+          onChange={handleChange('invited')}
         >
           <ExpansionPanelSummary
             className={props.classes.expansionPanelLabel}
-            expandIcon={<ExpandMoreIcon />}
-          >{`invited - ${
-            props.eventUsers.filter((eventUser) => {
-              return eventUser.status === USER_EVENT_STATUS.INVITED;
-            }).length
-          }`}</ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <List>
-              {props.eventUsers
-                .filter((user) => {
-                  return user.status === USER_EVENT_STATUS.INVITED;
-                })
-                .map((user) => {
+            expandIcon={invitees.length > 0 ? <ExpandMoreIcon /> : null}
+          >{`invited - ${invitees.length}`}</ExpansionPanelSummary>
+          {invitees.length > 0 ? (
+            <ExpansionPanelDetails>
+              <List>
+                {invitees.map((user) => {
                   return (
                     <ListItem key={user.uid}>
                       <ListItemAvatar>
@@ -173,8 +167,9 @@ export const EventModalParticipants = (props: EventParticipantsProps): JSX.Eleme
                     </ListItem>
                   );
                 })}
-            </List>
-          </ExpansionPanelDetails>
+              </List>
+            </ExpansionPanelDetails>
+          ) : null}
         </ExpansionPanel>
       </Grid>
     </React.Fragment>

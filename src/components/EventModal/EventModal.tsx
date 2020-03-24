@@ -206,6 +206,7 @@ export const EventModal = (): JSX.Element => {
   const no = partOfEvent && (event as UserEventModel).isUserNo();
   const invited = partOfEvent && (event as UserEventModel).isUserInvited();
   const paid = partOfEvent && (event as UserEventModel).hasUserPaid();
+  const checkedIn = partOfEvent && (event as UserEventModel).hasCheckedIn();
 
   const classes = eventModalStyles({ isHost });
 
@@ -222,6 +223,7 @@ export const EventModal = (): JSX.Element => {
     no,
     invited,
     paid,
+    checkedIn,
     name,
     setName,
     description,

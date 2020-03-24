@@ -211,6 +211,10 @@ export class UserEventModel extends EventModel {
   hasUserPaid(): boolean {
     return this.paid;
   }
+
+  hasCheckedIn(): boolean {
+    return this.checkedIn;
+  }
 }
 
 export class EventsModel {

@@ -13,10 +13,12 @@ export const eventModalStyles = makeStyles((theme: Theme) => {
     expansionPanelLabel: {
       fontWeight: 600,
     },
+    hostCursor: {
+      cursor: 'default !important',
+    },
     hostCard: {
       width: '100%',
       textAlign: 'center',
-      cursor: 'default',
     },
     image: {
       height: '200px',
