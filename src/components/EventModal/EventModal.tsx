@@ -327,6 +327,7 @@ export const EventModal = (): JSX.Element => {
                   label="Name"
                   fullWidth={true}
                   multiline={true}
+                  disabled={!isHost || pastEndDate}
                 />
               </FormControl>
             ) : (

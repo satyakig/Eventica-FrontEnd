@@ -268,7 +268,11 @@ const EventDetails = (props: any): JSX.Element => {
             type="number"
             value={amount} // TODO: Make value "Free" if 0
             onChange={(changeEvent) => {
-              setAmount(parseInt(changeEvent.target.value));
+              if (changeEvent.target.value) {
+                setAmount(Number(changeEvent.target.value));
+              } else {
+                setAmount(Number.NaN);
+              }
             }}
             label="Fee"
             fullWidth={true}

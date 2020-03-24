@@ -111,7 +111,11 @@ export default function CreateEvent(props: CreateEventProps) {
   };
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(parseInt(event.target.value));
+    if (event.target.value) {
+      setAmount(Number(event.target.value));
+    } else {
+      setAmount(Number.NaN);
+    }
   };
 
   const allEventCategories = useSelector((state: ReduxState) => {

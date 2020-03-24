@@ -1,7 +1,7 @@
 import { EVENT_STATUS, EVENT_TYPE } from 'redux/models/EventModel';
 
 export function isStringEmpty(value: string): boolean {
-  return value.length === 0;
+  return value.trim().length === 0;
 }
 
 export function isNumberPositive(value: number): boolean {
