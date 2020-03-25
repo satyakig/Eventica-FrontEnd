@@ -22,7 +22,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { HOMEPAGE } from 'redux/models/AppStateModel';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import {
   EventModel,
   EVENT_STATUS_LABELS,
@@ -208,7 +207,7 @@ const EventGrid = () => {
                 dispatch(setSearching(false));
               }}
             >
-              <HighlightOffIcon />
+              <CloseIcon />
             </IconButton>
           </ListItem>
         ) : null}
