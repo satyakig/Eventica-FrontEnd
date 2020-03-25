@@ -37,7 +37,7 @@ import { isExtraSmallDown } from 'lib/useBreakPoints';
 import { isValidEvent } from 'validation/EventValidation';
 import EventDetails from './EventDetails';
 import { eventModalStyles } from './EventModal.styles';
-import { EventModalParticipants } from './EventModalParticipants';
+import { EventParticipants } from './EventParticipants';
 import EventOwner from './EventOwner';
 
 const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
@@ -45,7 +45,6 @@ const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
 export const EventModal = (): JSX.Element => {
   const dispatch = useDispatch();
   const loggedIn = useLoggedIn();
-
   const isXs = isExtraSmallDown();
 
   const user = useSelector((state: ReduxState) => {
@@ -56,8 +55,6 @@ export const EventModal = (): JSX.Element => {
     return state.events.selectedEvent;
   });
 
-  const [eventUsers, setEventUsers] = useState<EventUserType[]>([]);
-
   const event: EventModel | UserEventModel = useSelector((state: ReduxState) => {
     if (state.events.userEvents.get(eventId)) {
       return state.events.userEvents.get(eventId) as UserEventModel;
@@ -66,6 +63,7 @@ export const EventModal = (): JSX.Element => {
     return state.events.events.get(eventId) as EventModel;
   });
 
+  const [eventUsers, setEventUsers] = useState<EventUserType[]>([]);
   const [tabIndex, setTabIndex] = useState(0);
 
   const [name, setName] = useState('');
@@ -261,7 +259,7 @@ export const EventModal = (): JSX.Element => {
       case 1: // Participants
         return (
           <Fragment>
-            <EventModalParticipants classes={classes} eventUsers={eventUsers} />
+            <EventParticipants classes={classes} eventUsers={eventUsers} />
           </Fragment>
         );
 
@@ -274,9 +272,16 @@ export const EventModal = (): JSX.Element => {
 
       case 3: // Owner
         return (
-          <Fragment>
-            <EventOwner classes={classes} eventUsers={eventUsers} />
-          </Fragment>
+          isHost && (
+            <Fragment>
+              <EventOwner
+                classes={classes}
+                eventUsers={eventUsers}
+                pastEndDate={pastEndDate}
+                eventId={eventId}
+              />
+            </Fragment>
+          )
         );
 
       default:
@@ -284,7 +289,7 @@ export const EventModal = (): JSX.Element => {
     }
   }
 
-  if (!eventId) {
+  if (!eventId || event === undefined) {
     return <div />;
   }
 
