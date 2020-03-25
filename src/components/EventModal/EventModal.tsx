@@ -39,6 +39,7 @@ import EventDetails from './EventDetails';
 import { eventModalStyles } from './EventModal.styles';
 import { EventParticipants } from './EventParticipants';
 import EventOwner from './EventOwner';
+import { EventChat } from '../EventChat/EventChat';
 
 const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
 
@@ -263,10 +264,10 @@ export const EventModal = (): JSX.Element => {
           </Fragment>
         );
 
-      case 2:
+      case 2: // Chat
         return (
           <Fragment>
-            <span>Chat</span>
+            <EventChat />
           </Fragment>
         );
 
