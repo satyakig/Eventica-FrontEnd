@@ -38,6 +38,7 @@ import { isValidEvent } from 'validation/EventValidation';
 import EventDetails from './EventDetails';
 import { eventModalStyles } from './EventModal.styles';
 import { EventModalParticipants } from './EventModalParticipants';
+import EventOwner from './EventOwner';
 
 const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
 
@@ -274,7 +275,7 @@ export const EventModal = (): JSX.Element => {
       case 3: // Owner
         return (
           <Fragment>
-            <span>Owner</span>
+            <EventOwner classes={classes} eventUsers={eventUsers} />
           </Fragment>
         );
 
