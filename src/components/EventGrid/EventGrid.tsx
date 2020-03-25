@@ -18,8 +18,10 @@ import FilterListIcon from '@material-ui/icons/FilterListOutlined';
 import moment from 'moment-timezone';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
-import { useSelector } from 'react-redux';
-import { ReduxState } from 'redux/combinedReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { HOMEPAGE } from 'redux/models/AppStateModel';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import {
   EventModel,
   EVENT_STATUS_LABELS,
@@ -28,16 +30,18 @@ import {
   getUserEventStatus,
   UserEventModel,
 } from 'redux/models/EventModel';
-import { HOMEPAGE } from 'redux/models/AppStateModel';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import { ReduxState } from 'redux/combinedReducer';
+import { setSearching } from 'redux/actions/AppStateActions';
 import EventCard from '../EventCard/EventCard';
 import { eventGridStyles } from './EventGrid.styles';
 import { isSmallDown } from 'lib/useBreakPoints';
 
+const EVENT_TIME_FORMAT = 'MMMM Do, YYYY';
+
 const EventGrid = () => {
   const classes = eventGridStyles();
   const isSmDown = isSmallDown();
+  const dispatch = useDispatch();
 
   const allEventCategories = useSelector((state: ReduxState) => {
     return state.appState.categoriesArray;
@@ -55,7 +59,10 @@ const EventGrid = () => {
     return state.appState.searchTerm;
   });
 
-  const [isSearching, setIsSearching] = useState(false);
+  const searching = useSelector((state: ReduxState) => {
+    return state.appState.searching;
+  });
+
   const [filterDialog, setFilterDialog] = useState(false);
 
   const [maxFee, setMaxFee] = useState(0);
@@ -84,20 +91,16 @@ const EventGrid = () => {
     const min = priceRange[0];
     const max = priceRange[1];
 
-    if (min !== 0) {
+    if (min !== 0 && min !== maxFee && min !== 1) {
       marks.push({ value: min, label: `$${min}` });
     }
 
-    if (max !== maxFee) {
+    if (max !== 0 && max !== maxFee && min !== max && max !== 1) {
       marks.push({ value: max, label: `$${max}` });
     }
 
     return marks;
   }
-
-  useEffect(() => {
-    setIsSearching(search.length > 0);
-  }, [search]);
 
   useEffect(() => {
     let max = eventsMap
@@ -125,7 +128,7 @@ const EventGrid = () => {
       return event.name.toUpperCase().includes(search.toUpperCase());
     });
 
-    if (isSearching) {
+    if (searching) {
       filtered = filtered.filter((event) => {
         return event.fee >= priceRange[0] && event.fee <= priceRange[1];
       });
@@ -180,7 +183,7 @@ const EventGrid = () => {
   }, [
     eventsMap,
     search,
-    isSearching,
+    searching,
     priceRange,
     selectedDate,
     categories,
@@ -189,9 +192,26 @@ const EventGrid = () => {
     isHomepage,
   ]);
 
+  const showSideBarClose = !isSmDown && isHomepage;
+  const showSideBar = !isSmDown && (searching || !isHomepage);
+
   const filterCompo = (
     <Paper className={classes.drawer} elevation={10} variant="elevation">
       <List>
+        {showSideBarClose ? (
+          <ListItem className={classes.listItemClose}>
+            <IconButton
+              color="secondary"
+              size="small"
+              onClick={() => {
+                dispatch(setSearching(false));
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </ListItem>
+        ) : null}
+
         <ListItem>
           <Typography className={classes.title} variant="body1">
             {isHomepage ? 'public events' : 'manage events'}
@@ -224,7 +244,7 @@ const EventGrid = () => {
               className={classes.width100}
               label="Date"
               inputVariant="outlined"
-              format="MMMM Do, YYYY"
+              format={EVENT_TIME_FORMAT}
               value={selectedDate ? moment(selectedDate) : null}
               onChange={(date) => {
                 setSelectedDate(date ? date.valueOf() : null);
@@ -337,7 +357,7 @@ const EventGrid = () => {
         </IconButton>
       </Dialog>
 
-      {!isSmDown && isSearching ? (
+      {showSideBar ? (
         <Grid container={true} item={true} sm={3} className={classes.drawerContainer}>
           {filterCompo}
         </Grid>
@@ -346,7 +366,7 @@ const EventGrid = () => {
       <Grid
         container={true}
         item={true}
-        sm={isSearching ? (isSmDown ? 12 : 9) : 12}
+        sm={showSideBar ? 9 : 12}
         spacing={2}
         className={classes.grid}
         alignItems="stretch"
@@ -360,7 +380,7 @@ const EventGrid = () => {
         })}
       </Grid>
 
-      {isSmDown && isSearching ? (
+      {isSmDown ? (
         <Fab
           className={classes.fab}
           color="secondary"

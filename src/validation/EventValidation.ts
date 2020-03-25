@@ -1,3 +1,4 @@
+import moment from 'moment-timezone';
 import { CreateEventType, UpdateEventType } from 'lib/EventRequests';
 import {
   isArrayEmpty,
@@ -17,7 +18,7 @@ export function isValidEvent(event: CreateEventType | UpdateEventType): boolean 
   const validDesc = !isStringEmpty(desc);
 
   const validStartDate = isNumberPositive(start);
-  const validEndDate = isNumberPositive(end);
+  const validEndDate = isNumberPositive(end) && end > start && end >= moment().valueOf();
   const endDateIsAfterStartDate = end - start > 0;
   const validFee = fee === 0 || isNumberPositive(fee);
   const validCapacity = isNumberPositive(capacity);

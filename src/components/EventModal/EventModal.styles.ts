@@ -1,14 +1,29 @@
 import { Theme } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/styles';
-import { DARKER } from 'assets/Styles';
+import { BACKGROUND, DARKER } from 'assets/Styles';
 
 export const eventModalStyles = makeStyles((theme: Theme) => {
   return createStyles({
     dialog: {
       overflowY: 'auto',
     },
+    expansionPanel: {
+      background: BACKGROUND,
+    },
+    expansionPanelLabel: {
+      fontWeight: 600,
+    },
+    hostCursor: {
+      cursor: 'default !important',
+    },
+    hostCard: {
+      width: '100%',
+      textAlign: 'center',
+    },
     image: {
+      maxHeight: '200px',
       height: '200px',
+      flexBasis: '200px',
       cursor: (props: any) => {
         return props.isHost ? 'pointer' : 'auto';
       },
@@ -74,6 +89,9 @@ export const eventModalStyles = makeStyles((theme: Theme) => {
           return props.isHost ? '' : 'none';
         },
       },
+    },
+    ownerAddButton: {
+      width: '100%',
     },
   });
 });

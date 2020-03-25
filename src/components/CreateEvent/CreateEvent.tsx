@@ -29,10 +29,12 @@ import { v4 } from 'uuid';
 import { getStorage } from 'lib/Firebase';
 import { CreateEventType, createEvent } from 'lib/EventRequests';
 import { EVENT_TYPE_LABELS, getEventType } from 'redux/models/EventModel';
+import { isValidEvent } from 'validation/EventValidation';
 import { createEventStyles } from './CreateEvent.styles';
-import { isValidEvent } from '../../validation/EventValidation';
+import { isSuperExtraSmallDown } from 'lib/useBreakPoints';
 
-const EVENT_TIME_FORMAT = 'MMMM D h:mm a';
+const EVENT_TIME_FORMAT = 'MMM D, h:mm a';
+const SMALL_FORMAT = 'D/MM H:m';
 
 type CreateEventProps = {
   openCreateEvent: boolean;
@@ -42,6 +44,7 @@ type CreateEventProps = {
 export default function CreateEvent(props: CreateEventProps) {
   const classes = createEventStyles();
   const dispatch = useDispatch();
+  const isSXs = isSuperExtraSmallDown();
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -108,7 +111,11 @@ export default function CreateEvent(props: CreateEventProps) {
   };
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(parseInt(event.target.value));
+    if (event.target.value) {
+      setAmount(Number(event.target.value));
+    } else {
+      setAmount(Number.NaN);
+    }
   };
 
   const allEventCategories = useSelector((state: ReduxState) => {
@@ -149,6 +156,19 @@ export default function CreateEvent(props: CreateEventProps) {
     };
 
     dispatch(createEvent(data));
+
+    setName('');
+    setDescription('');
+    setEventType(EVENT_TYPE_LABELS[0]);
+    setStartDate(moment().valueOf());
+    setEndDate(moment().valueOf());
+    setLocation('');
+    setCategories([]);
+    setAmount(0);
+    setCapacity(0);
+    setPhotoURL('');
+    setValidEvent(false);
+
     props.handleClose();
   };
 
@@ -242,12 +262,12 @@ export default function CreateEvent(props: CreateEventProps) {
 
           <Grid item={true} xs={6}>
             <FormControl variant="outlined" fullWidth={true}>
-              <InputLabel>Max Capacity</InputLabel>
+              <InputLabel>Capacity</InputLabel>
               <OutlinedInput
                 type="number"
                 value={capacity}
                 onChange={handleCapacityChange}
-                label="Max Capacity"
+                label="Capacity"
                 fullWidth={true}
               />
             </FormControl>
@@ -256,7 +276,7 @@ export default function CreateEvent(props: CreateEventProps) {
           <Grid item={true} xs={6}>
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <DateTimePicker
-                format={EVENT_TIME_FORMAT}
+                format={isSXs ? SMALL_FORMAT : EVENT_TIME_FORMAT}
                 inputVariant="outlined"
                 value={moment(startDate)}
                 disablePast={true}
@@ -273,7 +293,7 @@ export default function CreateEvent(props: CreateEventProps) {
           <Grid item={true} xs={6}>
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <DateTimePicker
-                format={EVENT_TIME_FORMAT}
+                format={isSXs ? SMALL_FORMAT : EVENT_TIME_FORMAT}
                 inputVariant="outlined"
                 value={moment(endDate)}
                 disablePast={true}
@@ -289,12 +309,12 @@ export default function CreateEvent(props: CreateEventProps) {
 
           <Grid item={true} xs={6}>
             <FormControl variant="outlined" fullWidth={true}>
-              <InputLabel>Amount</InputLabel>
+              <InputLabel>Fee</InputLabel>
               <OutlinedInput
                 type="number"
                 value={amount}
                 onChange={handleAmountChange}
-                label="Amount"
+                label="Fee"
                 fullWidth={true}
                 startAdornment={<InputAdornment position="start">$</InputAdornment>}
               />

@@ -4,7 +4,6 @@ import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-import { profileModalStyles } from './ProfileModal.styles';
 import {
   Avatar,
   FormControl,
@@ -16,11 +15,12 @@ import {
   Container,
   Input,
 } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
-import { patchRequest, PATHS } from '../../lib/HttpRequest';
+import { updateUser } from 'lib/UserRequests';
 import { v4 } from 'uuid';
-import { getStorage } from '../../lib/Firebase';
+import { getStorage } from 'lib/Firebase';
+import { profileModalStyles } from './ProfileModal.styles';
 
 const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
 
@@ -30,6 +30,7 @@ interface ProfileProps {
 }
 
 const ProfileModal = (props: ProfileProps) => {
+  const dispatch = useDispatch();
   const classes = profileModalStyles();
 
   const user = useSelector((state: ReduxState) => {
@@ -45,9 +46,6 @@ const ProfileModal = (props: ProfileProps) => {
     setPhone(user.phone);
     setPhotoUrl(user.photoURL);
   }, [user]);
-
-  const nameInput = React.createRef<string>();
-  const phoneInput = React.createRef<string>();
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
@@ -84,27 +82,14 @@ const ProfileModal = (props: ProfileProps) => {
   };
 
   function handleSaveChanges() {
-    const oldUser = {
-      name: user.name,
-      phone: user.phone,
-      photoURL: user.photoURL,
-    };
-
     const newUser = {
-      // @ts-ignore
-      name: nameInput.current.value,
-      // @ts-ignore
-      phone: phoneInput.current.value,
+      name: name.trim(),
+      phone: phone.trim(),
       photoURL: photoUrl,
     };
-    console.log(JSON.stringify(oldUser));
-    console.log(JSON.stringify(newUser));
-    console.log(JSON.stringify(oldUser) !== JSON.stringify(newUser));
 
-    if (JSON.stringify(oldUser) !== JSON.stringify(newUser)) {
-      console.log('Updating user');
-      patchRequest(PATHS.USER, newUser);
-    }
+    dispatch(updateUser(newUser));
+
     handleClose();
   }
 
@@ -118,11 +103,11 @@ const ProfileModal = (props: ProfileProps) => {
   return (
     <Dialog
       open={props.open}
-      onClose={props.handleClose}
+      onClose={handleClose}
       disableBackdropClick={false}
       disableEscapeKeyDown={false}
     >
-      <IconButton className={classes.closeButton} onClick={props.handleClose} color="secondary">
+      <IconButton className={classes.closeButton} onClick={handleClose} color="secondary">
         <CloseIcon />
       </IconButton>
       <Input
@@ -149,12 +134,7 @@ const ProfileModal = (props: ProfileProps) => {
           <Grid item={true} className={classes.gridItem}>
             <FormControl variant="outlined">
               <InputLabel>Name</InputLabel>
-              <OutlinedInput
-                value={name}
-                onChange={handleNameChange}
-                label="Name"
-                inputRef={nameInput}
-              />
+              <OutlinedInput value={name} onChange={handleNameChange} label="Name" />
             </FormControl>
           </Grid>
           <Grid item={true} className={classes.gridItem}>
@@ -166,12 +146,7 @@ const ProfileModal = (props: ProfileProps) => {
           <Grid item={true} className={classes.gridItem}>
             <FormControl variant="outlined">
               <InputLabel>Phone</InputLabel>
-              <OutlinedInput
-                value={phone}
-                onChange={handlePhoneChange}
-                label="Phone"
-                inputRef={phoneInput}
-              />
+              <OutlinedInput value={phone} onChange={handlePhoneChange} label="Phone" />
             </FormControl>
           </Grid>
         </Grid>

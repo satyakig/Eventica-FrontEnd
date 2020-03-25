@@ -1,20 +1,16 @@
 import { makeStyles, createStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core/styles';
+import { BACKGROUND } from 'assets/Styles';
 
 export const profileModalStyles = makeStyles((theme: Theme) => {
   return createStyles({
-    avatarPicture: {
-      height: '200px',
-      width: '200px',
-      cursor: 'pointer',
-    },
     closeButton: {
       position: 'absolute',
       right: theme.spacing(1),
       top: theme.spacing(1),
     },
-    gridItem: {
-      padding: '12px',
+    gridContainer: {
+      marginBottom: '20px',
     },
     title: {
       textTransform: 'lowercase',
@@ -23,11 +19,16 @@ export const profileModalStyles = makeStyles((theme: Theme) => {
       textAlign: 'center',
       width: '100%',
     },
-    actions: {
-      padding: '15px 0 20px 0',
+    cardContainer: {
+      backgroundColor: BACKGROUND,
+      borderRadius: '5px',
     },
-    submit: {
-      margin: '0 auto',
+    body: {
+      marginTop: '8px',
+    },
+    cardAction: {
+      paddingTop: 0,
+      justifyContent: 'center',
     },
   });
 });

@@ -17,24 +17,27 @@ import EventIcon from '@material-ui/icons/Event';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 import ManageEventIcon from '@material-ui/icons/EventNote';
 import ProfileIcon from '@material-ui/icons/AccountCircle';
+import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
 import { ReactComponent as GoogleLogo } from 'assets/google.svg';
 import { getAuth, makeLoginPopup } from 'lib/Firebase';
 import { isSmallDown } from 'lib/useBreakPoints';
 import { navbarStyles } from './NavBar.styles';
-import { setRouteAction, setSearchTermAction } from 'redux/actions/AppStateActions';
+import { setRouteAction, setSearching, setSearchTermAction } from 'redux/actions/AppStateActions';
 import { HOMEPAGE, MANAGE_EVENTS } from 'redux/models/AppStateModel';
 import ProfileModal from '../ProfileModal/ProfileModal';
 import CreateEvent from '../CreateEvent/CreateEvent';
+import NotificationModal from '../NotificationsModal/NotificationsModal';
 
 const useStyles = makeStyles(navbarStyles);
 
 const Navbar = (): JSX.Element => {
   const classes = useStyles();
-  const [openCreateEvent, setCreateEvent] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [openCreateEvent, setOpenCreateEvent] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
+  const [openNotifications, setOpenNotifications] = useState(false);
 
   const isSmall = isSmallDown();
 
@@ -62,20 +65,29 @@ const Navbar = (): JSX.Element => {
 
   function openCreateEventModal() {
     handleClose();
-    setCreateEvent(true);
+    setOpenCreateEvent(true);
   }
 
   function closeCreateEventModal() {
-    setCreateEvent(false);
+    setOpenCreateEvent(false);
   }
 
-  function profileClick() {
+  function openProfileModal() {
     handleClose();
     setOpenProfile(true);
   }
 
-  function handleProfileClose() {
+  function closeProfileModal() {
     setOpenProfile(false);
+  }
+
+  function openNotificationsModal() {
+    handleClose();
+    setOpenNotifications(true);
+  }
+
+  function closeNotificationsModal() {
+    setOpenNotifications(false);
   }
 
   function manageEventsClick() {
@@ -144,8 +156,10 @@ const Navbar = (): JSX.Element => {
 
   return (
     <AppBar position="static">
-      <ProfileModal open={openProfile} handleClose={handleProfileClose} />
       <CreateEvent openCreateEvent={openCreateEvent} handleClose={closeCreateEventModal} />
+      <ProfileModal open={openProfile} handleClose={closeProfileModal} />
+      <NotificationModal open={openNotifications} handleClose={closeNotificationsModal} />
+
       <Toolbar className={classes.navBar}>
         <Typography className={classes.title} variant="h6" noWrap={true} onClick={homePageClick}>
           Eventica
@@ -157,12 +171,15 @@ const Navbar = (): JSX.Element => {
           <InputBase
             value={searchTerm}
             onChange={updateSearch}
-            placeholder="Search Events…"
+            placeholder="search events..."
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput,
             }}
             inputProps={{ 'aria-label': 'search' }}
+            onFocus={() => {
+              dispatch(setSearching(true));
+            }}
           />
         </div>
         {getEndComponents()}
@@ -182,18 +199,27 @@ const Navbar = (): JSX.Element => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem onClick={profileClick}>
+          <MenuItem onClick={openProfileModal}>
             <ListItemIcon className={classes.listIcon}>
               <ProfileIcon color="secondary" fontSize="small" />
             </ListItemIcon>
             <Typography>Profile</Typography>
           </MenuItem>
+
+          <MenuItem onClick={openNotificationsModal}>
+            <ListItemIcon className={classes.listIcon}>
+              <NotificationsNoneIcon color="secondary" fontSize="small" />
+            </ListItemIcon>
+            <Typography>Notifications</Typography>
+          </MenuItem>
+
           <MenuItem onClick={manageEventsClick}>
             <ListItemIcon className={classes.listIcon}>
               <ManageEventIcon color="secondary" fontSize="small" />
             </ListItemIcon>
             <Typography>Manage Events</Typography>
           </MenuItem>
+
           <MenuItem onClick={logout}>
             <ListItemIcon className={classes.listIcon}>
               <LogoutIcon color="secondary" fontSize="small" />

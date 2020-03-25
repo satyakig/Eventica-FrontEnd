@@ -104,6 +104,11 @@ export interface EventUserType {
   eid: string;
   status: number;
   uid: string;
+  name: string;
+  photoURL: string;
+  paid: boolean;
+  checkedIn: boolean;
+  fee: number;
 }
 
 export class EventModel {
@@ -168,12 +173,18 @@ export class EventModel {
 
 export class UserEventModel extends EventModel {
   eventUserStatus = USER_EVENT_STATUS.NO;
+  paid = false;
+  checkedIn = false;
+  fee = 0;
 
   constructor(event?: EventType, user?: EventUserType) {
     super(event);
 
     if (user) {
       this.eventUserStatus = user.status;
+      this.paid = user.paid;
+      this.checkedIn = user.checkedIn;
+      this.fee = user.fee;
     }
   }
 
@@ -195,6 +206,14 @@ export class UserEventModel extends EventModel {
 
   isUserInvited(): boolean {
     return this.eventUserStatus === USER_EVENT_STATUS.INVITED;
+  }
+
+  hasUserPaid(): boolean {
+    return this.paid;
+  }
+
+  hasCheckedIn(): boolean {
+    return this.checkedIn;
   }
 }
 
