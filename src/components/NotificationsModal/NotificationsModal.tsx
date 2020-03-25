@@ -19,6 +19,8 @@ import { NotificationModel } from 'redux/models/NotificationModel';
 import { DB_PATHS, getDb } from 'lib/Firebase';
 import { profileModalStyles } from './NotificationModal.styles';
 
+const NOTIF_TIME_FORMAT = 'MMM D YYYY, h:mm a';
+
 interface NotificationsModalProps {
   open: boolean;
   handleClose: () => void;
@@ -74,7 +76,7 @@ const NotificationModal = (props: NotificationsModalProps) => {
                         {notif.title}
                       </Typography>
                       <Typography color="textSecondary" variant="caption" gutterBottom={true}>
-                        {moment(notif.timestamp).format('MMM D YYYY, h:mm a')}
+                        {moment(notif.timestamp).format(NOTIF_TIME_FORMAT)}
                       </Typography>
                       <Typography variant="body2" component="p" className={classes.body}>
                         {notif.message}
