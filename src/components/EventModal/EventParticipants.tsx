@@ -55,7 +55,7 @@ export const EventParticipants = (props: EventParticipantsProps): JSX.Element =>
           className={classNames(props.classes.expansionPanelLabel, props.classes.hostCursor)}
         >
           <div className={props.classes.hostCard}>
-            hosted by &nbsp;
+            hosted by&nbsp;
             {hosts.map((user) => {
               return user.name;
             })}
