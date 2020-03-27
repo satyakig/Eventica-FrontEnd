@@ -11,10 +11,6 @@ import SubmitCommentCard from './SubmitCommentCard';
 export const EventChat = (): JSX.Element => {
   const classes = eventChatStyles();
 
-  const user = useSelector((state: ReduxState) => {
-    return state.user;
-  });
-
   const eventId = useSelector((state: ReduxState) => {
     return state.events.selectedEvent;
   });
