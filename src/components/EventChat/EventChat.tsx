@@ -6,6 +6,7 @@ import { ReduxState } from '../../redux/combinedReducer';
 import { DB_PATHS, getDb } from '../../lib/Firebase';
 import { EventCommentType } from '../../redux/models/EventModel';
 import CommentCard from './CommentCard';
+import SubmitCommentCard from './SubmitCommentCard';
 
 export const EventChat = (): JSX.Element => {
   const classes = eventChatStyles();
@@ -45,6 +46,9 @@ export const EventChat = (): JSX.Element => {
 
   return (
     <Grid container={true} spacing={2} alignItems="stretch">
+      <Grid item={true} xs={12}>
+        <SubmitCommentCard eventId={eventId} />
+      </Grid>
       {eventComments.map((comment, index) => {
         return (
           <Grid item={true} key={index} xs={12}>

@@ -11,5 +11,8 @@ export const commentCardStyles = makeStyles(() => {
       height: 0,
       paddingTop: '56.25%', // 16:9
     },
+    textField: {
+      width: '100%',
+    },
   });
 });
