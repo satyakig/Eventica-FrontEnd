@@ -2,7 +2,6 @@ import {
   Avatar,
   Button,
   Card,
-  CardActionArea,
   CardActions,
   CardHeader,
   CardMedia,
@@ -98,10 +97,9 @@ const SubmitCommentCard = (props: SubmitCommentCardProps) => {
       <TextField
         value={commentMsg}
         onChange={handleCommentMsgChange}
-        multiline
+        multiline={true}
         rows="3"
         placeholder="write something..."
-        variant="filled"
         className={classes.textField}
       />
       <CardActions>

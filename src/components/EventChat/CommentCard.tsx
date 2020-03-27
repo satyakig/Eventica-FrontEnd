@@ -24,7 +24,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../redux/combinedReducer';
 import { v4 } from 'uuid';
 import { getStorage } from '../../lib/Firebase';
-import { updateComment, UpdateCommentType } from '../../lib/CommentRequests';
+import {
+  deleteComment,
+  DeleteCommentType,
+  updateComment,
+  UpdateCommentType,
+} from '../../lib/CommentRequests';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -96,6 +101,11 @@ const CommentCard = (props: EventCardProps) => {
     setCommentMsg(event.target.value);
   };
 
+  function toggleEditMode() {
+    setEditMode(!editMode);
+    handleClose();
+  }
+
   function handleUpdate() {
     if (!commentMsg && !commentPhotoURL) {
       return;
@@ -112,12 +122,13 @@ const CommentCard = (props: EventCardProps) => {
     toggleEditMode();
   }
 
-  function toggleEditMode() {
-    setEditMode(!editMode);
-    handleClose();
-  }
-
   function handleDelete() {
+    const deletedComment: DeleteCommentType = {
+      eid: props.eventId,
+      cid: comment.cid,
+    };
+
+    dispatch(deleteComment(deletedComment));
     handleClose();
   }
 
@@ -167,11 +178,13 @@ const CommentCard = (props: EventCardProps) => {
       />
       {commentPhotoURL ? <CardMedia component="img" image={commentPhotoURL} /> : null}
       {!editMode ? (
-        <CardContent>
-          <Typography variant="body2" color="textPrimary" component="p">
-            {commentMsg}
-          </Typography>
-        </CardContent>
+        commentMsg ? (
+          <CardContent>
+            <Typography variant="body2" color="textPrimary" component="p">
+              {commentMsg}
+            </Typography>
+          </CardContent>
+        ) : null
       ) : (
         <div>
           <Input
@@ -183,9 +196,8 @@ const CommentCard = (props: EventCardProps) => {
           <TextField
             value={commentMsg}
             onChange={handleCommentMsgChange}
-            multiline
+            multiline={true}
             rows="3"
-            variant="filled"
             className={classes.textField}
           />
           <CardActions>
