@@ -18,8 +18,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
 import { updateUser } from 'lib/UserRequests';
-import { v4 } from 'uuid';
-import { getStorage } from 'lib/Firebase';
+import { uploadPhotoToFirestore } from 'lib/Firebase';
 import { profileModalStyles } from './ProfileModal.styles';
 
 const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
@@ -63,22 +62,9 @@ const ProfileModal = (props: ProfileProps) => {
   }
 
   const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files === null || e.target.files.length !== 1) {
-      return;
-    }
-    const id = `${v4()}${user.uid}`;
-
-    const file = e.target.files[0];
-
-    const storageRef = getStorage().child(id);
-    storageRef
-      .put(file)
-      .then(() => {
-        return storageRef.getDownloadURL();
-      })
-      .then((link) => {
-        setPhotoUrl(link);
-      });
+    uploadPhotoToFirestore(e, user.uid).then((link) => {
+      setPhotoUrl(link);
+    });
   };
 
   function handleSaveChanges() {

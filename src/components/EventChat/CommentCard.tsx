@@ -22,8 +22,7 @@ import { commentCardStyles } from './CommentCard.styles';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../redux/combinedReducer';
-import { v4 } from 'uuid';
-import { getStorage } from '../../lib/Firebase';
+import { uploadPhotoToFirestore } from '../../lib/Firebase';
 import {
   deleteComment,
   DeleteCommentType,
@@ -79,22 +78,9 @@ const CommentCard = (props: EventCardProps) => {
   }
 
   const handleCommentPictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files === null || e.target.files.length !== 1) {
-      return;
-    }
-
-    const id = `${v4()}${user.uid}`;
-    const file = e.target.files[0];
-
-    const storageRef = getStorage().child(id);
-    storageRef
-      .put(file)
-      .then(() => {
-        return storageRef.getDownloadURL();
-      })
-      .then((link) => {
-        setCommentPhotoURL(link);
-      });
+    uploadPhotoToFirestore(e, user.uid).then((link) => {
+      setCommentPhotoURL(link);
+    });
   };
 
   const handleCommentMsgChange = (event: React.ChangeEvent<HTMLInputElement>) => {
