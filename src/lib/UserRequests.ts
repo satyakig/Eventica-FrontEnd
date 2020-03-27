@@ -7,7 +7,7 @@ export interface UpdateUserType {
 }
 
 /**
- * Say Yes/No/Maybe to event
+ * Update user info
  * @param {UpdateUserEventType} data
  * @returns {ThunkActionType}
  */

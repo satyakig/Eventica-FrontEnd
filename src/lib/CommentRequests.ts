@@ -16,7 +16,7 @@ export interface UpdateCommentType extends CreateCommentType {
  * @param {CreateCommentType} data
  * @returns {ThunkActionType}
  */
-export function createEvent(data: CreateCommentType) {
+export function createComment(data: CreateCommentType) {
   return postRequest(PATHS.COMMENT, data);
 }
 
@@ -25,6 +25,6 @@ export function createEvent(data: CreateCommentType) {
  * @param {UpdateCommentType} data
  * @returns {ThunkActionType}
  */
-export function updateEvent(data: UpdateCommentType) {
+export function updateComment(data: UpdateCommentType) {
   return patchRequest(PATHS.COMMENT, data);
 }
