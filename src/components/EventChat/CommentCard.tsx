@@ -203,7 +203,7 @@ const CommentCard = (props: EventCardProps) => {
           <CardActions>
             <Grid container direction="row" justify="space-between" alignItems="center">
               <Button size="small" color="primary" onClick={uploadPhoto}>
-                Add Photo
+                {!commentPhotoURL ? 'Add Photo' : 'Update Photo'}
               </Button>
               <Button size="small" color="primary" onClick={handleUpdate}>
                 Update

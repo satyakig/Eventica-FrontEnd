@@ -41,7 +41,7 @@ const SubmitCommentCard = (props: SubmitCommentCardProps) => {
     }
   }
 
-  const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCommentPictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files === null || e.target.files.length !== 1) {
       return;
     }
@@ -91,7 +91,7 @@ const SubmitCommentCard = (props: SubmitCommentCardProps) => {
       <Input
         id={SUBMIT_COMMENT_PHOTO}
         type="file"
-        onChange={handlePictureChange}
+        onChange={handleCommentPictureChange}
         style={{ display: 'none' }}
       />
       <TextField
