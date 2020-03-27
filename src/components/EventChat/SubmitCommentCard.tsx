@@ -18,7 +18,7 @@ import { v4 } from 'uuid';
 import { getStorage } from '../../lib/Firebase';
 import { createComment, CreateCommentType } from '../../lib/CommentRequests';
 
-const COMMENT_PHOTO = 'COMMENT_PHOTO';
+const SUBMIT_COMMENT_PHOTO = 'SUBMIT_COMMENT_PHOTO';
 
 interface SubmitCommentCardProps {
   eventId: string;
@@ -32,11 +32,11 @@ const SubmitCommentCard = (props: SubmitCommentCardProps) => {
     return state.user;
   });
 
-  const [commentPhotoURL, setCommentPhotoURL] = useState('');
   const [commentMsg, setCommentMsg] = useState('');
+  const [commentPhotoURL, setCommentPhotoURL] = useState('');
 
   function uploadPhoto() {
-    const element = document.getElementById(COMMENT_PHOTO);
+    const element = document.getElementById(SUBMIT_COMMENT_PHOTO);
     if (element) {
       element.click();
     }
@@ -82,14 +82,14 @@ const SubmitCommentCard = (props: SubmitCommentCardProps) => {
   return (
     <Card className={classes.root}>
       <Input
-        id={COMMENT_PHOTO}
+        id={SUBMIT_COMMENT_PHOTO}
         type="file"
         onChange={handlePictureChange}
         style={{ display: 'none' }}
       />
       <CardHeader
         avatar={<Avatar alt={user.name} src={user.photoURL} />}
-        title="Submit a Comment"
+        title="submit a comment"
       />
       {commentPhotoURL ? <CardMedia className={classes.media} image={commentPhotoURL} /> : null}
       <CardActionArea>
@@ -97,8 +97,8 @@ const SubmitCommentCard = (props: SubmitCommentCardProps) => {
           value={commentMsg}
           onChange={handleCommentMsgChange}
           multiline
-          rows="4"
-          placeholder="Write something..."
+          rows="3"
+          placeholder="write something..."
           variant="filled"
           className={classes.textField}
         />

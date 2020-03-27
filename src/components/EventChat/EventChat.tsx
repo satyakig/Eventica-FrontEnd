@@ -45,14 +45,14 @@ export const EventChat = (): JSX.Element => {
   }, [eventId]);
 
   return (
-    <Grid container={true} spacing={2} alignItems="stretch">
-      <Grid item={true} xs={12}>
+    <Grid container={true} alignItems="stretch">
+      <Grid item={true} xs={12} className={classes.gridItem}>
         <SubmitCommentCard eventId={eventId} />
       </Grid>
       {eventComments.map((comment, index) => {
         return (
-          <Grid item={true} key={index} xs={12}>
-            <CommentCard comment={comment} />
+          <Grid item={true} key={index} xs={12} className={classes.gridItem}>
+            <CommentCard eventId={eventId} comment={comment} />
           </Grid>
         );
       })}
