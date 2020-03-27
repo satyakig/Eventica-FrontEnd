@@ -77,6 +77,9 @@ const SubmitCommentCard = (props: SubmitCommentCardProps) => {
     };
 
     dispatch(createComment(comment));
+
+    setCommentMsg('');
+    setCommentPhotoURL('');
   }
 
   return (
@@ -92,17 +95,15 @@ const SubmitCommentCard = (props: SubmitCommentCardProps) => {
         title="submit a comment"
       />
       {commentPhotoURL ? <CardMedia className={classes.media} image={commentPhotoURL} /> : null}
-      <CardActionArea>
-        <TextField
-          value={commentMsg}
-          onChange={handleCommentMsgChange}
-          multiline
-          rows="3"
-          placeholder="write something..."
-          variant="filled"
-          className={classes.textField}
-        />
-      </CardActionArea>
+      <TextField
+        value={commentMsg}
+        onChange={handleCommentMsgChange}
+        multiline
+        rows="3"
+        placeholder="write something..."
+        variant="filled"
+        className={classes.textField}
+      />
       <CardActions>
         <Grid container direction="row" justify="space-between" alignItems="center">
           <Button size="small" color="primary" onClick={uploadPhoto}>

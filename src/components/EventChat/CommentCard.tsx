@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment-timezone';
 import { EventCommentType } from '../../redux/models/EventModel';
 import {
@@ -47,11 +47,17 @@ const CommentCard = (props: EventCardProps) => {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [comment, setComment] = useState<EventCommentType>(props.comment);
-  const [commentMsg, setCommentMsg] = useState(comment.message);
-  const [commentPhotoURL, setCommentPhotoURL] = useState(comment.photoURL);
+  const [commentMsg, setCommentMsg] = useState('');
+  const [commentPhotoURL, setCommentPhotoURL] = useState('');
   const [editMode, setEditMode] = useState(false);
 
   const createdByUser = comment.createdBy.email === user.email;
+
+  useEffect(() => {
+    setComment(props.comment);
+    setCommentMsg(props.comment.message);
+    setCommentPhotoURL(props.comment.photoURL);
+  }, [props.comment]);
 
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     setAnchorEl(event.currentTarget);
