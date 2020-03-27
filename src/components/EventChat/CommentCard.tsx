@@ -5,7 +5,6 @@ import {
   Avatar,
   Button,
   Card,
-  CardActionArea,
   CardActions,
   CardContent,
   CardHeader,
@@ -166,7 +165,7 @@ const CommentCard = (props: EventCardProps) => {
         title={comment.createdBy.name}
         subheader={moment(comment.lastUpdated).format(COMMENT_TIME_FORMAT)}
       />
-      {commentPhotoURL ? <CardMedia className={classes.media} image={commentPhotoURL} /> : null}
+      {commentPhotoURL ? <CardMedia component="img" image={commentPhotoURL} /> : null}
       {!editMode ? (
         <CardContent>
           <Typography variant="body2" color="textPrimary" component="p">
@@ -181,23 +180,21 @@ const CommentCard = (props: EventCardProps) => {
             onChange={handleCommentPictureChange}
             style={{ display: 'none' }}
           />
-          <CardActionArea>
-            <TextField
-              value={commentMsg}
-              onChange={handleCommentMsgChange}
-              multiline
-              rows="3"
-              variant="filled"
-              className={classes.textField}
-            />
-          </CardActionArea>
+          <TextField
+            value={commentMsg}
+            onChange={handleCommentMsgChange}
+            multiline
+            rows="3"
+            variant="filled"
+            className={classes.textField}
+          />
           <CardActions>
             <Grid container direction="row" justify="space-between" alignItems="center">
               <Button size="small" color="primary" onClick={uploadPhoto}>
-                Update Photo
+                Add Photo
               </Button>
               <Button size="small" color="primary" onClick={handleUpdate}>
-                Update Comment
+                Update
               </Button>
             </Grid>
           </CardActions>

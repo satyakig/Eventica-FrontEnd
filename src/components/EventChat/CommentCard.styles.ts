@@ -7,10 +7,6 @@ export const commentCardStyles = makeStyles(() => {
       width: '100%',
       backgroundColor: BACKGROUND,
     },
-    media: {
-      height: 0,
-      paddingTop: '56.25%', // 16:9
-    },
     textField: {
       width: '100%',
       backgroundColor: DARK,

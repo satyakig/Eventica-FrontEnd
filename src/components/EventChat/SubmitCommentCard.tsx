@@ -84,17 +84,17 @@ const SubmitCommentCard = (props: SubmitCommentCardProps) => {
 
   return (
     <Card className={classes.root}>
+      <CardHeader
+        avatar={<Avatar alt={user.name} src={user.photoURL} />}
+        title="submit a comment"
+      />
+      {commentPhotoURL ? <CardMedia component="img" image={commentPhotoURL} /> : null}
       <Input
         id={SUBMIT_COMMENT_PHOTO}
         type="file"
         onChange={handlePictureChange}
         style={{ display: 'none' }}
       />
-      <CardHeader
-        avatar={<Avatar alt={user.name} src={user.photoURL} />}
-        title="submit a comment"
-      />
-      {commentPhotoURL ? <CardMedia className={classes.media} image={commentPhotoURL} /> : null}
       <TextField
         value={commentMsg}
         onChange={handleCommentMsgChange}
