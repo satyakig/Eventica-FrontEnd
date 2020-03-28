@@ -27,18 +27,18 @@ import {
 import moment from 'moment-timezone';
 import CloseIcon from '@material-ui/icons/Close';
 import { useDispatch, useSelector } from 'react-redux';
-import { v4 } from 'uuid';
 import { clearSelectedEventAction } from 'redux/actions/EventsActions';
 import { ReduxState } from 'redux/combinedReducer';
 import { updateEvent, UpdateEventType, CreateEventType } from 'lib/EventRequests';
 import { useLoggedIn } from 'lib/useLoggedIn';
-import { DB_PATHS, getDb, getStorage } from 'lib/Firebase';
+import { DB_PATHS, getDb, uploadPhotoToFirestore } from 'lib/Firebase';
 import { isExtraSmallDown } from 'lib/useBreakPoints';
 import { isValidEvent } from 'validation/EventValidation';
 import EventDetails from './EventDetails';
 import { eventModalStyles } from './EventModal.styles';
 import { EventParticipants } from './EventParticipants';
 import EventOwner from './EventOwner';
+import { EventChat } from '../EventChat/EventChat';
 
 const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
 
@@ -95,22 +95,9 @@ export const EventModal = (): JSX.Element => {
   }
 
   const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files === null || e.target.files.length !== 1) {
-      return;
-    }
-    const id = `${v4()}${user.uid}`;
-
-    const file = e.target.files[0];
-
-    const storageRef = getStorage().child(id);
-    storageRef
-      .put(file)
-      .then(() => {
-        return storageRef.getDownloadURL();
-      })
-      .then((link) => {
-        setPhotoURL(link);
-      });
+    uploadPhotoToFirestore(e, user.uid).then((link) => {
+      setPhotoURL(link);
+    });
   };
 
   function handleSubmit() {
@@ -263,10 +250,10 @@ export const EventModal = (): JSX.Element => {
           </Fragment>
         );
 
-      case 2:
+      case 2: // Chat
         return (
           <Fragment>
-            <span>Chat</span>
+            <EventChat />
           </Fragment>
         );
 

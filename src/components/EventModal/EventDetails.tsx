@@ -23,7 +23,7 @@ import {
   USER_EVENT_STATUS,
   USER_EVENT_STATUS_LABELS,
 } from 'redux/models/EventModel';
-import { updateUserEvent } from 'lib/EventCommentRequests';
+import { updateUserEvent } from 'lib/UserEventRequests';
 import { useLoggedIn } from 'lib/useLoggedIn';
 import { isSuperExtraSmallDown } from 'lib/useBreakPoints';
 import { ReduxState } from 'redux/combinedReducer';

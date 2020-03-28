@@ -25,8 +25,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import { v4 } from 'uuid';
-import { getStorage } from 'lib/Firebase';
+import { uploadPhotoToFirestore } from 'lib/Firebase';
 import { CreateEventType, createEvent } from 'lib/EventRequests';
 import { EVENT_TYPE_LABELS, getEventType } from 'redux/models/EventModel';
 import { isValidEvent } from 'validation/EventValidation';
@@ -123,22 +122,9 @@ export default function CreateEvent(props: CreateEventProps) {
   });
 
   const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files === null || e.target.files.length !== 1) {
-      return;
-    }
-    const id = `${v4()}${user.uid}`;
-
-    const file = e.target.files[0];
-
-    const storageRef = getStorage().child(id);
-    storageRef
-      .put(file)
-      .then(() => {
-        return storageRef.getDownloadURL();
-      })
-      .then((link) => {
-        setPhotoURL(link);
-      });
+    uploadPhotoToFirestore(e, user.uid).then((link) => {
+      setPhotoURL(link);
+    });
   };
 
   const onSubmit = () => {

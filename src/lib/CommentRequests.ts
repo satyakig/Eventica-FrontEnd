@@ -1,4 +1,4 @@
-import { patchRequest, PATHS, postRequest } from './HttpRequest';
+import { deleteRequest, patchRequest, PATHS, postRequest } from './HttpRequest';
 
 // At least one of message or photoURL
 export interface CreateCommentType {
@@ -11,12 +11,17 @@ export interface UpdateCommentType extends CreateCommentType {
   cid: string; // comment id
 }
 
+export interface DeleteCommentType {
+  eid: string;
+  cid: string;
+}
+
 /**
  * Create Comment Http Request
  * @param {CreateCommentType} data
  * @returns {ThunkActionType}
  */
-export function createEvent(data: CreateCommentType) {
+export function createComment(data: CreateCommentType) {
   return postRequest(PATHS.COMMENT, data);
 }
 
@@ -25,6 +30,15 @@ export function createEvent(data: CreateCommentType) {
  * @param {UpdateCommentType} data
  * @returns {ThunkActionType}
  */
-export function updateEvent(data: UpdateCommentType) {
+export function updateComment(data: UpdateCommentType) {
   return patchRequest(PATHS.COMMENT, data);
+}
+
+/**
+ * Delete Comment Http Request
+ * @param {DeleteCommentType} data
+ * @returns {ThunkActionType}
+ */
+export function deleteComment(data: DeleteCommentType) {
+  return deleteRequest(PATHS.COMMENT, data);
 }

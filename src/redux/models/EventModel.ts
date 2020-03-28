@@ -111,6 +111,20 @@ export interface EventUserType {
   fee: number;
 }
 
+export interface EventCommentType {
+  cid: string;
+  createdBy: {
+    email: string;
+    name: string;
+    profile: string;
+  };
+  createdOn: number;
+  eid: string;
+  lastUpdated: number;
+  message: string;
+  photoURL: string;
+}
+
 export class EventModel {
   address = '';
   category: string[] = [];

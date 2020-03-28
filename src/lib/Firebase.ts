@@ -2,6 +2,8 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firebase-firestore';
 import 'firebase/storage';
+import React from 'react';
+import { v4 } from 'uuid';
 
 const firebase = app.initializeApp({
   apiKey: 'AIzaSyDGt23yzVQmF0mdIqUilPLCGNjnpX_aaMM',
@@ -39,4 +41,21 @@ export function makeLoginPopup() {
   return getAuth()
     .signInWithPopup(new app.auth.GoogleAuthProvider())
     .then();
+}
+
+export function uploadPhotoToFirestore(
+  e: React.ChangeEvent<HTMLInputElement>,
+  uid: string,
+): Promise<string> {
+  if (e.target.files === null || e.target.files.length !== 1) {
+    return Promise.resolve('');
+  }
+
+  const id = `${v4()}${uid}`;
+  const file = e.target.files[0];
+
+  const storageRef = getStorage().child(id);
+  return storageRef.put(file).then(() => {
+    return storageRef.getDownloadURL();
+  });
 }
