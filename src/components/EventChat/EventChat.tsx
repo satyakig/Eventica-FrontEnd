@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { eventChatStyles } from './EventChat.styles';
 import { Grid } from '@material-ui/core';
 import { useSelector } from 'react-redux';
-import { ReduxState } from '../../redux/combinedReducer';
-import { DB_PATHS, getDb } from '../../lib/Firebase';
-import { EventCommentType } from '../../redux/models/EventModel';
+import { ReduxState } from 'redux/combinedReducer';
+import { DB_PATHS, getDb } from 'lib/Firebase';
+import { EventCommentType } from 'redux/models/EventModel';
 import CommentCard from './CommentCard';
 import SubmitCommentCard from './SubmitCommentCard';
 

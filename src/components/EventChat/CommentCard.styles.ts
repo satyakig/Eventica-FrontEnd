@@ -14,5 +14,12 @@ export const commentCardStyles = makeStyles(() => {
     listIcon: {
       minWidth: '40px',
     },
+    input: {
+      width: 'calc(100% - 10px)',
+      padding: '0 5px',
+    },
+    image: {
+      maxHeight: '400px',
+    },
   });
 });

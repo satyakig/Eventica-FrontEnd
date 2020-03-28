@@ -162,7 +162,9 @@ const CommentCard = (props: EventCardProps) => {
         title={comment.createdBy.name}
         subheader={moment(comment.lastUpdated).format(COMMENT_TIME_FORMAT)}
       />
-      {commentPhotoURL ? <CardMedia component="img" image={commentPhotoURL} /> : null}
+      {commentPhotoURL ? (
+        <CardMedia className={classes.image} component="img" image={commentPhotoURL} />
+      ) : null}
       {!editMode ? (
         commentMsg ? (
           <CardContent>
@@ -185,13 +187,21 @@ const CommentCard = (props: EventCardProps) => {
             multiline={true}
             rows="3"
             className={classes.textField}
+            classes={{
+              root: classes.input,
+            }}
           />
           <CardActions>
             <Grid container direction="row" justify="space-between" alignItems="center">
               <Button size="small" color="primary" onClick={uploadPhoto}>
                 {!commentPhotoURL ? 'Add Photo' : 'Update Photo'}
               </Button>
-              <Button size="small" color="primary" onClick={handleUpdate}>
+              <Button
+                size="small"
+                color="primary"
+                onClick={handleUpdate}
+                disabled={!commentMsg && !commentPhotoURL}
+              >
                 Update
               </Button>
             </Grid>
