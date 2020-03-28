@@ -266,6 +266,7 @@ export const EventModal = (): JSX.Element => {
                 eventUsers={eventUsers}
                 pastEndDate={pastEndDate}
                 eventId={eventId}
+                eventStatus={eventStatus}
               />
             </Fragment>
           )

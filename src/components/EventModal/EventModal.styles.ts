@@ -93,5 +93,8 @@ export const eventModalStyles = makeStyles((theme: Theme) => {
     ownerAddButton: {
       width: '100%',
     },
+    scanButton: {
+      width: '100%',
+    },
   });
 });
