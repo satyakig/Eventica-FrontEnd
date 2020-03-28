@@ -12,7 +12,7 @@ service cloud.firestore {
     }
 
     match /events/{x=**} {
-      allow read: if resource.data.type == 0;
+      allow read: if resource.data.type == 0 || request.auth != null;
       allow write: if false;
     }
 

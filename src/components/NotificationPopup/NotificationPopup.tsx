@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { makeStyles, Snackbar, Fade } from '@material-ui/core';
+import { makeStyles, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { useSelector } from 'react-redux';
 import moment from 'moment-timezone';
@@ -17,8 +17,8 @@ function usePrevious(value: number): number {
   return ref.current;
 }
 
-const AUTO_HIDE = 5 * 1000; // 4 secs
-const MAX_TIME = 2 * 60 * 1000; // 2 min
+const AUTO_HIDE = 4 * 1000; // 4 secs
+const MAX_TIME = 30 * 1000; // 30 secs
 
 const useStyles = makeStyles(notificationPopupStyles);
 
@@ -53,7 +53,8 @@ const NotificationPopup = (): JSX.Element => {
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
           className={classes.notification}
           autoHideDuration={AUTO_HIDE}
-          TransitionComponent={Fade}
+          transitionDuration={400}
+          onClose={closeNotif}
         >
           <MuiAlert
             elevation={6}

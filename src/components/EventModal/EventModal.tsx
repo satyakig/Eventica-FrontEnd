@@ -343,9 +343,9 @@ export const EventModal = (): JSX.Element => {
               scrollButtons={isXs ? 'on' : 'auto'}
             >
               <Tab label="Details" className={classes.tab} />
-              <Tab label="Participants" className={classes.tab} />
-              <Tab label="Chat" className={classes.tab} />
-              {isHost ? <Tab label="Owner" className={classes.tab} /> : null}
+              <Tab label="Party" className={classes.tab} />
+              <Tab label="Share" className={classes.tab} />
+              {isHost ? <Tab label="Host" className={classes.tab} /> : null}
             </Tabs>
           </Grid>
         </Grid>
