@@ -8,11 +8,17 @@ import {
   OutlinedInput,
   TextField,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from '@material-ui/core';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import { EventUserType, USER_EVENT_STATUS } from 'redux/models/EventModel';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete/Autocomplete';
 import { addUsersRequest } from 'lib/AddUserToEventRequests';
+import QrReader from 'react-qr-reader';
 
 type EventOwnerProps = {
   eventUsers: EventUserType[];
@@ -27,6 +33,10 @@ export default function EventOwner(props: EventOwnerProps) {
   const { classes, eventUsers, pastEndDate, eventId } = props;
   const [inviteEmails, setInviteEmails] = useState<string[]>([]);
   const dispatch = useDispatch();
+  const [scannerOpen, setScannerOpen] = useState(false);
+  const [scanSuccessAlertOpen, setScanSuccessAlertOpen] = useState(false);
+  const [scanFailAlertOpen, setScanFailAlertOpen] = useState(false);
+  const [scannedUser, setScannedUser] = useState('');
 
   const totalResponses = eventUsers.filter((user: EventUserType) => {
     return (
@@ -61,6 +71,45 @@ export default function EventOwner(props: EventOwnerProps) {
         emails: inviteEmails,
       }),
     );
+  }
+
+  const hideShowScanner = () => {
+    if (scannerOpen === true) {
+      setScannerOpen(false);
+    } else {
+      setScannerOpen(true);
+    }
+  };
+
+  function handleScan(data: string | null) {
+    if (data) {
+      const ticketData = JSON.parse(data);
+      setScannedData(data);
+
+      const scannedUserArr = eventUsers.filter((user: EventUserType) => {
+        return user.uid === ticketData.eventUser && user.eid === ticketData.eventId && user.paid;
+      });
+      if (scannedUserArr.length > 0) {
+        setScannedUser(scannedUserArr[0].name);
+        setScanSuccessAlertOpen(true);
+      } else {
+        setScanFailAlertOpen(true);
+      }
+    }
+  }
+
+  function handleCheckin() {
+    // TODO: Log check-in with backend
+    setScanSuccessAlertOpen(false);
+  }
+
+  function handleError(err: any) {
+    console.error(err);
+  }
+
+  function handleClose() {
+    setScanSuccessAlertOpen(false);
+    setScanFailAlertOpen(false);
   }
 
   return (
@@ -131,6 +180,63 @@ export default function EventOwner(props: EventOwnerProps) {
           Add
         </Button>
       </Grid>
+      {scannerOpen ? (
+        <Grid item={true} xs={12}>
+          <QrReader
+            delay={300}
+            onError={handleError}
+            onScan={handleScan}
+            style={{ width: '100%' }}
+          />
+        </Grid>
+      ) : null}
+      <Grid item={true} xs={12}>
+        <Button
+          variant="contained"
+          color="secondary"
+          size="medium"
+          className={classes.scanButton}
+          onClick={hideShowScanner}
+        >
+          {scannerOpen ? 'Stop ' : 'Start '}
+          Scanning Tickets
+        </Button>
+      </Grid>
+      <Dialog
+        open={scanSuccessAlertOpen}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'Ticket scanned'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Scanned ticket for {scannedUser}. Would you like to check them in?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary" autoFocus>
+            Cancel
+          </Button>
+          <Button onClick={handleCheckin} color="primary" autoFocus>
+            Check-in user
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={scanFailAlertOpen}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'Invalid Ticket'}</DialogTitle>
+        <DialogContent>The ticket that was scanned is invalid.</DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary" autoFocus>
+            Ok
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Fragment>
   );
 }
