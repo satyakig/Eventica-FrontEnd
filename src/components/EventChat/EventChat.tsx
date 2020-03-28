@@ -18,7 +18,7 @@ export const EventChat = (): JSX.Element => {
   const [eventComments, setEventComments] = useState<EventCommentType[]>([]);
 
   /**
-   * Load the event comments for the selected event
+   * Load the comments for the selected event
    */
   useEffect(() => {
     const unsubscribe = getDb()
@@ -29,7 +29,7 @@ export const EventChat = (): JSX.Element => {
           return value.data() as EventCommentType;
         });
         data.sort((a, b) => {
-          return a.lastUpdated < b.lastUpdated ? 1 : a.lastUpdated > b.lastUpdated ? -1 : 0;
+          return b.lastUpdated - a.lastUpdated;
         });
 
         setEventComments(data);
