@@ -25,12 +25,13 @@ type EventOwnerProps = {
   classes: any;
   pastEndDate: boolean;
   eventId: string;
+  eventStatus: string;
 };
 
 const filter = createFilterOptions<string>();
 
 export default function EventOwner(props: EventOwnerProps) {
-  const { classes, eventUsers, pastEndDate, eventId } = props;
+  const { classes, eventUsers, pastEndDate, eventId, eventStatus } = props;
   const [inviteEmails, setInviteEmails] = useState<string[]>([]);
   const dispatch = useDispatch();
   const [scannerOpen, setScannerOpen] = useState(false);
@@ -175,7 +176,7 @@ export default function EventOwner(props: EventOwnerProps) {
           Add
         </Button>
       </Grid>
-      {scannerOpen && !pastEndDate ? (
+      {scannerOpen && !pastEndDate && eventStatus === 'Active' ? (
         <Grid item={true} xs={12}>
           <QrReader
             delay={300}
@@ -185,7 +186,7 @@ export default function EventOwner(props: EventOwnerProps) {
           />
         </Grid>
       ) : null}
-      {!pastEndDate ? (
+      {!pastEndDate && eventStatus === 'Active' ? (
         <Grid item={true} xs={12}>
           <Button
             variant="contained"
