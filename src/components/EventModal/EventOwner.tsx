@@ -73,18 +73,13 @@ export default function EventOwner(props: EventOwnerProps) {
     );
   }
 
-  const hideShowScanner = () => {
-    if (scannerOpen === true) {
-      setScannerOpen(false);
-    } else {
-      setScannerOpen(true);
-    }
+  const toggleScanner = () => {
+    setScannerOpen(!scannerOpen);
   };
 
   function handleScan(data: string | null) {
     if (data) {
       const ticketData = JSON.parse(data);
-      setScannedData(data);
 
       const scannedUserArr = eventUsers.filter((user: EventUserType) => {
         return user.uid === ticketData.eventUser && user.eid === ticketData.eventId && user.paid;
@@ -180,7 +175,7 @@ export default function EventOwner(props: EventOwnerProps) {
           Add
         </Button>
       </Grid>
-      {scannerOpen ? (
+      {scannerOpen && !pastEndDate ? (
         <Grid item={true} xs={12}>
           <QrReader
             delay={300}
@@ -190,18 +185,20 @@ export default function EventOwner(props: EventOwnerProps) {
           />
         </Grid>
       ) : null}
-      <Grid item={true} xs={12}>
-        <Button
-          variant="contained"
-          color="secondary"
-          size="medium"
-          className={classes.scanButton}
-          onClick={hideShowScanner}
-        >
-          {scannerOpen ? 'Stop ' : 'Start '}
-          Scanning Tickets
-        </Button>
-      </Grid>
+      {!pastEndDate ? (
+        <Grid item={true} xs={12}>
+          <Button
+            variant="contained"
+            color="secondary"
+            size="medium"
+            className={classes.scanButton}
+            onClick={toggleScanner}
+          >
+            {scannerOpen ? 'Stop ' : 'Start '}
+            Scanning Tickets
+          </Button>
+        </Grid>
+      ) : null}
       <Dialog
         open={scanSuccessAlertOpen}
         onClose={handleClose}
