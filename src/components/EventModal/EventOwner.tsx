@@ -114,7 +114,7 @@ export default function EventOwner(props: EventOwnerProps) {
         <FormControl variant="outlined" fullWidth={true}>
           <InputLabel>Total Revenue</InputLabel>
           <OutlinedInput
-            className={classes.commonInputStyles}
+            className={classes.ownerInputStyles}
             type="number"
             value={totalRevenue}
             label="Total Revenue"
@@ -129,7 +129,7 @@ export default function EventOwner(props: EventOwnerProps) {
         <FormControl variant="outlined" fullWidth={true}>
           <InputLabel>Total Responses</InputLabel>
           <OutlinedInput
-            className={classes.commonInputStyles}
+            className={classes.ownerInputStyles}
             type="number"
             value={totalResponses}
             label="Total Responses"
@@ -141,7 +141,7 @@ export default function EventOwner(props: EventOwnerProps) {
 
       <Grid item={true} xs={12} sm={10}>
         <Autocomplete
-          className={classes.commonInputStyles}
+          className={classes.ownerInputStyles}
           freeSolo={true}
           multiple={true}
           filterSelectedOptions={true}
