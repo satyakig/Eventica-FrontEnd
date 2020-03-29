@@ -18,8 +18,5 @@ export const commentCardStyles = makeStyles(() => {
       width: 'calc(100% - 10px)',
       padding: '0 5px',
     },
-    image: {
-      maxHeight: '400px',
-    },
   });
 });

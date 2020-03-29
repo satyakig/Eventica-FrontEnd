@@ -162,9 +162,7 @@ const CommentCard = (props: EventCardProps) => {
         title={comment.createdBy.name}
         subheader={moment(comment.lastUpdated).format(COMMENT_TIME_FORMAT)}
       />
-      {commentPhotoURL ? (
-        <CardMedia className={classes.image} component="img" image={commentPhotoURL} />
-      ) : null}
+      {commentPhotoURL ? <CardMedia component="img" image={commentPhotoURL} /> : null}
       {!editMode ? (
         commentMsg ? (
           <CardContent>
