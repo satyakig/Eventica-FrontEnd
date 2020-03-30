@@ -22,8 +22,8 @@ export const eventGridStyles = makeStyles(({ spacing, zIndex }: Theme) => {
       backgroundColor: 'inherit',
     },
     grid: {
-      margin: '-16px 0 !important',
-      height: `calc(100vh - ${NAV_BAR_HEIGHT})`,
+      margin: '-8px 0 !important',
+      height: `calc(100vh - ${NAV_BAR_HEIGHT} - 8px)`,
       overflowY: 'auto',
     },
     width100: {
