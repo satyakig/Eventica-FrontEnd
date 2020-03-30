@@ -10,6 +10,7 @@ export const eventGridStyles = makeStyles(({ spacing, zIndex }: Theme) => {
       right: 0,
       height: '100%',
       width: '100%',
+      paddingTop: '8px',
     },
     drawerContainer: {
       paddingRight: '8px',

@@ -16,6 +16,11 @@ export const eventCardStyles = makeStyles(() => {
         cursor: 'pointer',
         border: `1px solid ${SECONDARY}`,
       },
+      width: '100%',
+    },
+    badge: {
+      height: '100%',
+      width: '100%',
     },
     cardMedia: {
       borderTopLeftRadius: '5px',
