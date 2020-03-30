@@ -106,7 +106,7 @@ export default function EventOwner(props: EventOwnerProps) {
       }),
     );
 
-    setScanSuccessAlertOpen(false);
+    handleClose();
   }
 
   function handleError(err: any) {
@@ -114,6 +114,9 @@ export default function EventOwner(props: EventOwnerProps) {
   }
 
   function handleClose() {
+    setScannedUser('');
+    setScannedUID('');
+
     setScanSuccessAlertOpen(false);
     setScanFailAlertOpen(false);
   }
