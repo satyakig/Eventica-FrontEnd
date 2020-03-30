@@ -1,5 +1,6 @@
 import { createStyles, makeStyles } from '@material-ui/styles';
-import { CARD_BG, SECONDARY } from 'assets/Styles';
+import moment from 'moment-timezone';
+import { CARD_BG, DARK, PRIMARY, SECONDARY, SUCCESS, WARNING } from 'assets/Styles';
 
 export const eventCardStyles = makeStyles(() => {
   return createStyles({
@@ -21,6 +22,25 @@ export const eventCardStyles = makeStyles(() => {
     badge: {
       height: '100%',
       width: '100%',
+      '& .MuiBadge-badge': {
+        height: '14px',
+        minWidth: '14px',
+        backgroundColor: (event: any) => {
+          if (event.end < moment.valueOf()) {
+            return DARK;
+          }
+
+          if (event.isEventPostponed()) {
+            return WARNING;
+          }
+
+          if (event.isEventCancelled()) {
+            return PRIMARY;
+          }
+
+          return SUCCESS;
+        },
+      },
     },
     cardMedia: {
       borderTopLeftRadius: '5px',

@@ -10,43 +10,27 @@ interface EventCardProps {
   event: EventModel | UserEventModel;
 }
 
-type color = 'default' | 'primary' | 'secondary' | 'error' | undefined;
-
 const EVENT_TIME_FORMAT = 'ddd MMM D, h:mm a';
 
-const StyledBadge = withStyles((theme) => {
+const StyledBadge = withStyles(() => {
   return {
     badge: {
-      right: 2,
-      top: 2,
+      right: 3,
+      top: 3,
     },
   };
 })(Badge);
 
 const EventCard = (props: EventCardProps) => {
   const dispatch = useDispatch();
-  const classes = eventCardStyles();
+  const classes = eventCardStyles(props.event);
 
   function cardClick(): void {
     dispatch(updateSelectedEventAction(props.event.eid));
   }
 
-  const eventColor = (): color => {
-    // If the event is over
-    if (props.event.end < Date.now()) {
-      return 'primary';
-    }
-    if (props.event.isEventActive()) {
-      return 'secondary';
-    } else if (props.event.isEventPostponed()) {
-      return 'error';
-    } else if (props.event.isEventCancelled()) {
-      return 'primary';
-    }
-  };
-
   return (
-    <StyledBadge className={classes.badge} badgeContent=" " color={eventColor()}>
+    <StyledBadge className={classes.badge} badgeContent="">
       <Card className={classes.cardContainer} onClick={cardClick}>
         <CardMedia
           className={classes.cardMedia}
