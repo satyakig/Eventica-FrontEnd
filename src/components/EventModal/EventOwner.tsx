@@ -18,6 +18,7 @@ import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import { EventUserType, USER_EVENT_STATUS } from 'redux/models/EventModel';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete/Autocomplete';
 import { addUsersRequest } from 'lib/AddUserToEventRequests';
+import { checkinUser } from 'lib/TicketRequests';
 import QrReader from 'react-qr-reader';
 
 type EventOwnerProps = {
@@ -38,6 +39,7 @@ export default function EventOwner(props: EventOwnerProps) {
   const [scanSuccessAlertOpen, setScanSuccessAlertOpen] = useState(false);
   const [scanFailAlertOpen, setScanFailAlertOpen] = useState(false);
   const [scannedUser, setScannedUser] = useState('');
+  const [scannedUID, setScannedUID] = useState('');
 
   const totalResponses = eventUsers.filter((user: EventUserType) => {
     return (
@@ -87,6 +89,8 @@ export default function EventOwner(props: EventOwnerProps) {
       });
       if (scannedUserArr.length > 0) {
         setScannedUser(scannedUserArr[0].name);
+        setScannedUID(scannedUserArr[0].uid);
+
         setScanSuccessAlertOpen(true);
       } else {
         setScanFailAlertOpen(true);
@@ -95,8 +99,14 @@ export default function EventOwner(props: EventOwnerProps) {
   }
 
   function handleCheckin() {
-    // TODO: Log check-in with backend
-    setScanSuccessAlertOpen(false);
+    dispatch(
+      checkinUser({
+        eid: eventId,
+        uid: scannedUID,
+      }),
+    );
+
+    handleClose();
   }
 
   function handleError(err: any) {
@@ -104,6 +114,9 @@ export default function EventOwner(props: EventOwnerProps) {
   }
 
   function handleClose() {
+    setScannedUser('');
+    setScannedUID('');
+
     setScanSuccessAlertOpen(false);
     setScanFailAlertOpen(false);
   }

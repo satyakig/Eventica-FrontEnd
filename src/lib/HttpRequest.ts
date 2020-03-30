@@ -10,6 +10,7 @@ export const PATHS = {
   USER_EVENT: 'user-event',
   USER: 'user',
   ADD_USER: 'add-user',
+  TICKET: 'use-ticket',
 };
 
 export type ThunkActionType = ThunkAction<void, ReduxState, null, AnyAction>;
