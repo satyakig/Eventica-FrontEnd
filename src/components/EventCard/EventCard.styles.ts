@@ -1,6 +1,6 @@
 import { createStyles, makeStyles } from '@material-ui/styles';
 import moment from 'moment-timezone';
-import { CARD_BG, DARK, PRIMARY, SECONDARY, SUCCESS, WARNING } from 'assets/Styles';
+import { CARD_BG, DARK, PRIMARY, SECONDARY, SUCCESS, WARNING, INFO } from 'assets/Styles';
 
 export const eventCardStyles = makeStyles(() => {
   return createStyles({
@@ -60,6 +60,7 @@ export const eventCardStyles = makeStyles(() => {
     },
     subtitle: {
       fontSize: 14,
+      color: INFO,
     },
     title: {
       fontSize: 18,

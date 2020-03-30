@@ -75,6 +75,7 @@ const EventDetails = (props: any): JSX.Element => {
     handleSubmit,
     pastEndDate,
   } = props;
+  const isFree = amount === 0;
 
   function processPaymentClose(status: boolean) {
     if (status) {
@@ -266,8 +267,8 @@ const EventDetails = (props: any): JSX.Element => {
           <InputLabel>Fee</InputLabel>
           <OutlinedInput
             className={classes.commonInputStyles}
-            type="number"
-            value={amount} // TODO: Make value "Free" if 0
+            type={isFree ? 'string' : 'number'}
+            value={isFree ? 'Free' : amount}
             onChange={(changeEvent) => {
               if (changeEvent.target.value) {
                 setAmount(Number(changeEvent.target.value));
@@ -277,7 +278,7 @@ const EventDetails = (props: any): JSX.Element => {
             }}
             label="Fee"
             fullWidth={true}
-            startAdornment={<InputAdornment position="start">$</InputAdornment>}
+            startAdornment={isFree ? null : <InputAdornment position="start">$</InputAdornment>}
             disabled={!isHost || pastEndDate}
           />
         </FormControl>
