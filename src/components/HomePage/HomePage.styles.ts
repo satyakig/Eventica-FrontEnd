@@ -8,7 +8,6 @@ export const homePageStyles = makeStyles(() => {
       top: NAV_BAR_HEIGHT,
       bottom: 0,
       width: '100%',
-      paddingTop: '10px',
       overflowY: 'auto',
       background: `linear-gradient(${BACKGROUND}, ${BACKGROUND})`,
       transition: 'all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1)',

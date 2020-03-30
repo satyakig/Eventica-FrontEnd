@@ -134,7 +134,7 @@ const EventGrid = () => {
       });
     }
 
-    if (searching) {
+    if (searching || !isHomepage) {
       filtered = filtered.filter((event) => {
         return event.fee >= priceRange[0] && event.fee <= priceRange[1];
       });
