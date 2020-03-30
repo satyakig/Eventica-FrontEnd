@@ -301,14 +301,7 @@ export const EventModal = (): JSX.Element => {
           style={{ display: 'none' }}
         />
       ) : null}
-      <CardMedia
-        className={classes.image}
-        component="img"
-        alt={name}
-        image={photoURL}
-        title={name}
-        onClick={imageClick}
-      />
+      <CardMedia component="img" alt={name} image={photoURL} title={name} onClick={imageClick} />
       <Container maxWidth="xl">
         <Grid container={true} spacing={1} className={classes.topGrid}>
           <Grid item={true} xs={12}>

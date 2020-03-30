@@ -141,7 +141,7 @@ export default function EventOwner(props: EventOwnerProps) {
 
       <Grid item={true} xs={12} sm={10}>
         <Autocomplete
-          className={classes.ownerInputStyles}
+          className={classes.commonInputStyles}
           freeSolo={true}
           multiple={true}
           filterSelectedOptions={true}

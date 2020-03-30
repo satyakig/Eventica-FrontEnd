@@ -128,6 +128,12 @@ const EventGrid = () => {
       return event.name.toUpperCase().includes(search.toUpperCase());
     });
 
+    if (isHomepage) {
+      filtered = filtered.filter((event) => {
+        return event.end >= moment().valueOf();
+      });
+    }
+
     if (searching) {
       filtered = filtered.filter((event) => {
         return event.fee >= priceRange[0] && event.fee <= priceRange[1];
@@ -176,7 +182,7 @@ const EventGrid = () => {
     }
 
     filtered = filtered.sort((a, b) => {
-      return b.start - a.start;
+      return a.start - b.start;
     });
 
     setFilteredEvents(filtered);

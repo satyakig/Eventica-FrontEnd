@@ -14,8 +14,5 @@ export const commentCardStyles = makeStyles(() => {
     listIcon: {
       minWidth: '40px',
     },
-    image: {
-      maxHeight: '400px',
-    },
   });
 });

@@ -96,17 +96,8 @@ export const eventModalStyles = makeStyles((theme: Theme) => {
       '& .MuiInputBase-input': {
         color: '#ffffff',
       },
-      '& .MuiChip-root': {
-        color: '#ffffff',
-      },
       '& .MuiOutlinedInput-notchedOutline': {
         border: 0,
-      },
-      '& .MuiAutocomplete-endAdornment': {
-        display: 'none',
-      },
-      '& .MuiChip-deleteIcon': {
-        display: 'none',
       },
     },
     ownerAddButton: {
