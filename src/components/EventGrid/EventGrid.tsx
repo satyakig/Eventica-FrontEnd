@@ -10,7 +10,6 @@ import {
   Slider,
   Fab,
   Dialog,
-  Badge,
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
