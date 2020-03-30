@@ -337,7 +337,7 @@ export const EventModal = (): JSX.Element => {
               scrollButtons={isXs ? 'on' : 'auto'}
             >
               <Tab label="Details" className={classes.tab} />
-              <Tab label="People" className={classes.tab} />
+              <Tab label="Guests" className={classes.tab} />
               <Tab label="Feed" className={classes.tab} />
               {isHost ? <Tab label="Host" className={classes.tab} /> : null}
             </Tabs>

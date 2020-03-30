@@ -84,9 +84,7 @@ const SubmitCommentCard = (props: SubmitCommentCardProps) => {
         rows="3"
         placeholder="write something..."
         className={classes.textField}
-        classes={{
-          root: classes.input,
-        }}
+        variant="filled"
       />
       <CardActions>
         <Grid container direction="row" justify="space-between" alignItems="center">

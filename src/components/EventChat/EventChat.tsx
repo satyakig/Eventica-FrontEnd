@@ -7,9 +7,11 @@ import { DB_PATHS, getDb } from 'lib/Firebase';
 import { EventCommentType } from 'redux/models/EventModel';
 import CommentCard from './CommentCard';
 import SubmitCommentCard from './SubmitCommentCard';
+import { useLoggedIn } from '../../lib/useLoggedIn';
 
 export const EventChat = (): JSX.Element => {
   const classes = eventChatStyles();
+  const loggedIn = useLoggedIn();
 
   const eventId = useSelector((state: ReduxState) => {
     return state.events.selectedEvent;
@@ -29,7 +31,7 @@ export const EventChat = (): JSX.Element => {
           return value.data() as EventCommentType;
         });
         data.sort((a, b) => {
-          return b.lastUpdated - a.lastUpdated;
+          return b.createdOn - a.createdOn;
         });
 
         setEventComments(data);
@@ -42,9 +44,11 @@ export const EventChat = (): JSX.Element => {
 
   return (
     <Grid container={true} alignItems="stretch">
-      <Grid item={true} xs={12} className={classes.gridItem}>
-        <SubmitCommentCard eventId={eventId} />
-      </Grid>
+      {loggedIn ? (
+        <Grid item={true} xs={12} className={classes.gridItem}>
+          <SubmitCommentCard eventId={eventId} />
+        </Grid>
+      ) : null}
       {eventComments.map((comment, index) => {
         return (
           <Grid item={true} key={index} xs={12} className={classes.gridItem}>
