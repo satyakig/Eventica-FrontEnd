@@ -129,12 +129,6 @@ const ProfileModal = (props: ProfileProps) => {
               <OutlinedInput value={user.email} label="Email" disabled={true} />
             </FormControl>
           </Grid>
-          <Grid item={true} className={classes.gridItem}>
-            <FormControl variant="outlined">
-              <InputLabel>Phone</InputLabel>
-              <OutlinedInput value={phone} onChange={handlePhoneChange} label="Phone" />
-            </FormControl>
-          </Grid>
         </Grid>
         <DialogActions className={classes.actions}>
           <Button

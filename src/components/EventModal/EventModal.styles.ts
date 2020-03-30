@@ -21,9 +21,9 @@ export const eventModalStyles = makeStyles((theme: Theme) => {
       textAlign: 'center',
     },
     image: {
-      maxHeight: '200px',
-      height: '200px',
-      flexBasis: '200px',
+      maxHeight: '250px',
+      height: '250px',
+      flexBasis: '250px',
       cursor: (props: any) => {
         return props.isHost ? 'pointer' : 'auto';
       },

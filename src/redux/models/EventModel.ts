@@ -189,7 +189,6 @@ export class UserEventModel extends EventModel {
   eventUserStatus = USER_EVENT_STATUS.NO;
   paid = false;
   checkedIn = false;
-  fee = 0;
 
   constructor(event?: EventType, user?: EventUserType) {
     super(event);
@@ -198,7 +197,6 @@ export class UserEventModel extends EventModel {
       this.eventUserStatus = user.status;
       this.paid = user.paid;
       this.checkedIn = user.checkedIn;
-      this.fee = user.fee;
     }
   }
 

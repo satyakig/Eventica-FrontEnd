@@ -23,7 +23,7 @@ const loggerMiddleware = createLogger({
     return logEntry && !logEntry.error;
   },
   predicate: () => {
-    return false;
+    return true;
   },
   duration: true,
   timestamp: false,

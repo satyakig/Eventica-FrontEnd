@@ -61,12 +61,10 @@ const EventsContainer = (): JSX.Element | null => {
       for (const eventUser of eventUsers) {
         const unsub = getDb()
           .collection(DB_PATHS.EVENTS)
-          .where('eid', '==', eventUser.eid)
+          .doc(eventUser.eid)
           .onSnapshot((doc) => {
-            if (doc.docs.length === 1) {
-              const data = doc.docs[0].data() as EventType;
-
-              dispatch(setUserEventAction(data, eventUser));
+            if (doc.exists) {
+              dispatch(setUserEventAction(doc.data() as EventType, eventUser));
             }
           });
 
