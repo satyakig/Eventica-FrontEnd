@@ -186,10 +186,9 @@ const CommentCard = (props: EventCardProps) => {
             onChange={handleCommentMsgChange}
             multiline={true}
             rows="3"
+            placeholder={!commentMsg ? 'Add text...' : undefined}
             className={classes.textField}
-            classes={{
-              root: classes.input,
-            }}
+            variant="filled"
           />
           <CardActions>
             <Grid container direction="row" justify="space-between" alignItems="center">

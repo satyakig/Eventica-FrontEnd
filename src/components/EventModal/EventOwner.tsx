@@ -157,7 +157,7 @@ export default function EventOwner(props: EventOwnerProps) {
             return filtered as string[];
           }}
           renderInput={(params) => {
-            return <TextField {...params} variant="outlined" label="Add user(s) with email" />;
+            return <TextField {...params} variant="filled" label="Add user(s) with email" />;
           }}
           onChange={onChange}
           disabled={pastEndDate}
