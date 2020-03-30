@@ -184,7 +184,7 @@ const CommentCard = (props: EventCardProps) => {
             onChange={handleCommentMsgChange}
             multiline={true}
             rows="3"
-            placeholder={!commentMsg ? 'Add text...' : undefined}
+            placeholder="Add text..."
             className={classes.textField}
             variant="filled"
           />
