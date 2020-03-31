@@ -2,7 +2,6 @@ import { patchRequest, PATHS } from './HttpRequest';
 
 export interface UpdateUserType {
   name: string;
-  phone: string;
   photoURL: string;
 }
 

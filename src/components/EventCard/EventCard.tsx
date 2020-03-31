@@ -42,7 +42,7 @@ const EventCard = (props: EventCardProps) => {
         <CardContent className={classes.cardContent}>
           <Typography className={classes.subtitle} gutterBottom={true}>
             {moment(props.event.start).format(EVENT_TIME_FORMAT)} -{' '}
-            {props.event.fee === 0 ? 'Free' : `\$${props.event.fee}`}
+            {props.event.fee === 0 ? 'Free' : `$${props.event.fee}`}
           </Typography>
           <Typography
             className={classes.title}

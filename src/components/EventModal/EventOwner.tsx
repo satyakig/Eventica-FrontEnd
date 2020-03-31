@@ -213,37 +213,27 @@ export default function EventOwner(props: EventOwnerProps) {
           </Button>
         </Grid>
       ) : null}
-      <Dialog
-        open={scanSuccessAlertOpen}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{'Ticket scanned'}</DialogTitle>
+      <Dialog open={scanSuccessAlertOpen} onClose={handleClose}>
+        <DialogTitle>Ticket scanned</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText>
             Scanned ticket for {scannedUser}. Would you like to check them in?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleCheckin} color="primary" autoFocus>
-            Check-in user
+          <Button onClick={handleCheckin} color="primary">
+            Check In user
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog
-        open={scanFailAlertOpen}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{'Invalid Ticket'}</DialogTitle>
+      <Dialog open={scanFailAlertOpen} onClose={handleClose}>
+        <DialogTitle>Invalid Ticket</DialogTitle>
         <DialogContent>The ticket that was scanned is invalid.</DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button onClick={handleClose} color="primary">
             Ok
           </Button>
         </DialogActions>

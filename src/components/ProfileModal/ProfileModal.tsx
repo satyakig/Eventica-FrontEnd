@@ -37,21 +37,15 @@ const ProfileModal = (props: ProfileProps) => {
   });
 
   const [name, setName] = useState(user.name);
-  const [phone, setPhone] = useState(user.phone);
   const [photoUrl, setPhotoUrl] = useState(user.photoURL);
 
   useEffect(() => {
     setName(user.name);
-    setPhone(user.phone);
     setPhotoUrl(user.photoURL);
   }, [user]);
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
-  };
-
-  const handlePhoneChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPhone(event.target.value);
   };
 
   function imageClick() {
@@ -70,7 +64,6 @@ const ProfileModal = (props: ProfileProps) => {
   function handleSaveChanges() {
     const newUser = {
       name: name.trim(),
-      phone: phone.trim(),
       photoURL: photoUrl,
     };
 
@@ -81,7 +74,6 @@ const ProfileModal = (props: ProfileProps) => {
 
   function handleClose() {
     setName(user.name);
-    setPhone(user.phone);
     setPhotoUrl(user.photoURL);
     props.handleClose();
   }
