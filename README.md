@@ -1,14 +1,22 @@
 # SENG 513 - Winter 2020 - Final Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Group 12, Eventica
 
-## Setup
+### Front End application
+
+- GitHub: [https://github.com/satyakig/SENG-513-FrontEnd](https://github.com/satyakig/SENG-513-FrontEnd)
+- Deployed Project: [https://seng-513.web.app/](https://seng-513.web.app/)
+- BROWSERS: Chrome, Firefox
+
+### Setup
 
 - Install NodeJS v12 from https://nodejs.org/en/download/releases/
-- Clone the repo
-- Run `npm ci` to install all the dependencies
+- Clone the GitHub repo
+- Run `npm ci` or `npm install` to install all the dependencies
 - Run `npm start` to start the application locally
 - Application will start on `https://localhost:3000`
+- This app will automatically communicate with the backend server which is deployed at https://seng-513.appspot.com/.
+  But it can be configured to use a local server instead, by changing `line #20` in `src/lib/HttpRequest.ts` to `http://localhost:3001/` instead
 
 ### IDE Integration
 
@@ -43,10 +51,6 @@ The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `firebase deploy`
-
-Manually deploys everything related to firebase (including the cloud functions).
 
 ## Code Style
 

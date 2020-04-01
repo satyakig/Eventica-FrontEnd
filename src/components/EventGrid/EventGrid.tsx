@@ -125,7 +125,10 @@ const EventGrid = () => {
 
   useEffect(() => {
     let filtered = eventsMap.getAllData().filter((event) => {
-      return event.name.toUpperCase().includes(search.toUpperCase());
+      return (
+        event.name.toUpperCase().includes(search.toUpperCase()) ||
+        event.desc.toUpperCase().includes(search.toUpperCase())
+      );
     });
 
     if (isHomepage) {
