@@ -14,4 +14,6 @@ export class AppStateModel {
   categoriesMap: Record<string, string> = {};
   route: string = HOMEPAGE;
   requestExecuting = false;
+
+  networkErrorMessage: string | null = null;
 }

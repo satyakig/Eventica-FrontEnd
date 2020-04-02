@@ -23,6 +23,7 @@ export class NotificationModel {
   success = false;
   seen = false;
   severity: SeverityType = 'info';
+  networkError = false;
 
   constructor(notification?: Notification) {
     if (notification) {

@@ -5,13 +5,15 @@ import {
   SetSearchTermActionType,
   SetRouteActionType,
   SetRequestExecutingAction,
+  SetNetworkErrorAction,
 } from '../actions/AppStateActions';
 import { AppStateModel, ROUTES } from '../models/AppStateModel';
 
 type ActionType = SetSearchTermActionType &
   SetCategoriesActionType &
   SetRouteActionType &
-  SetRequestExecutingAction;
+  SetRequestExecutingAction &
+  SetNetworkErrorAction;
 
 export const AppStateReducer = (
   state: AppStateModel = new AppStateModel(),
@@ -56,6 +58,10 @@ export const AppStateReducer = (
         searching: false,
       });
     }
+  } else if (action.type === APP_STATE_ACTION_CONSTANTS.NETWORK_ERROR) {
+    return newState(state, {
+      networkErrorMessage: action.networkErrorMessage,
+    });
   }
 
   return state;

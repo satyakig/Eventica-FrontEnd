@@ -11,7 +11,9 @@ const MetadataContainer = (): JSX.Element | null => {
       .collection(DB_PATHS.METADATA)
       .doc('categories')
       .onSnapshot((doc) => {
-        dispatch(setCategoriesAction(doc.data()));
+        if (doc.exists) {
+          dispatch(setCategoriesAction(doc.data()));
+        }
       });
 
     return () => {

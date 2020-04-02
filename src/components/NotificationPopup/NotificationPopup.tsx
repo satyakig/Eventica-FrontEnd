@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { makeStyles, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment-timezone';
 import { ReduxState } from 'redux/combinedReducer';
 import { NotificationModel } from 'redux/models/NotificationModel';
 import { notificationPopupStyles } from './NotificationPopup.styles';
+import { setNetworkError } from '../../redux/actions/AppStateActions';
 
 function usePrevious(value: number): number {
   const ref = useRef<number>(0);
@@ -24,14 +25,24 @@ const useStyles = makeStyles(notificationPopupStyles);
 
 const NotificationPopup = (): JSX.Element => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const notifications = useSelector((state: ReduxState) => {
     return state.notifications;
   });
+
+  const networkError = useSelector((state: ReduxState) => {
+    return state.appState.networkErrorMessage;
+  });
+
   const [activeNotif, setActiveNotif] = useState<null | NotificationModel>(null);
   const prevCount = usePrevious(notifications.length);
 
   function closeNotif() {
     setActiveNotif(null);
+
+    if (activeNotif && activeNotif.networkError) {
+      dispatch(setNetworkError(null));
+    }
   }
 
   useEffect(() => {
@@ -44,6 +55,16 @@ const NotificationPopup = (): JSX.Element => {
       }
     }
   }, [activeNotif, prevCount, notifications]);
+
+  useEffect(() => {
+    if (networkError) {
+      const notif = new NotificationModel();
+      notif.message = networkError;
+      notif.severity = 'error';
+      notif.networkError = true;
+      setActiveNotif(notif);
+    }
+  }, [networkError]);
 
   return (
     <div className={classes.container}>

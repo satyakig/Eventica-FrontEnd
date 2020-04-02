@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
 import { ThunkAction } from 'redux-thunk';
 import { ReduxState } from 'redux/combinedReducer';
 import { AnyAction } from 'redux';
-import { setRequestExecutingAction } from 'redux/actions/AppStateActions';
+import { setNetworkError, setRequestExecutingAction } from 'redux/actions/AppStateActions';
 
 export const PATHS = {
   EVENT: 'event',
@@ -32,6 +32,9 @@ export function postRequest(path: string, data: any): ThunkActionType {
       })
       .catch((error: AxiosError) => {
         dispatch(setRequestExecutingAction(false));
+        if (error.isAxiosError && !error.response) {
+          dispatch(setNetworkError(error.message));
+        }
       });
   };
 }
@@ -48,6 +51,9 @@ export function patchRequest(path: string, data: any): ThunkActionType {
       })
       .catch((error: AxiosError) => {
         dispatch(setRequestExecutingAction(false));
+        if (error.isAxiosError && !error.response) {
+          dispatch(setNetworkError(error.message));
+        }
       });
   };
 }
@@ -67,6 +73,9 @@ export function deleteRequest(path: string, data: any): ThunkActionType {
       })
       .catch((error: AxiosError) => {
         dispatch(setRequestExecutingAction(false));
+        if (error.isAxiosError && !error.response) {
+          dispatch(setNetworkError(error.message));
+        }
       });
   };
 }

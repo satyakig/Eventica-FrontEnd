@@ -6,6 +6,7 @@ export const APP_STATE_ACTION_CONSTANTS = {
   SET_CATEGORIES: 'SET_CATEGORIES',
   SET_ROUTE: 'SET_ROUTE',
   REQUEST_EXECUTING: 'REQUEST_EXECUTING',
+  NETWORK_ERROR: 'NETWORK_ERROR',
 };
 
 export type SetSearchTermActionType = {
@@ -22,6 +23,10 @@ export type SetRouteActionType = {
 
 export type SetRequestExecutingAction = {
   state: boolean;
+} & Action;
+
+export type SetNetworkErrorAction = {
+  networkErrorMessage: string | null;
 } & Action;
 
 export function setSearchTermAction(searchTerm: string): SetSearchTermActionType {
@@ -56,5 +61,12 @@ export function setSearching(state: boolean): SetRequestExecutingAction {
   return {
     type: APP_STATE_ACTION_CONSTANTS.SET_SEARCHING,
     state,
+  };
+}
+
+export function setNetworkError(networkErrorMessage: string | null): SetNetworkErrorAction {
+  return {
+    type: APP_STATE_ACTION_CONSTANTS.NETWORK_ERROR,
+    networkErrorMessage,
   };
 }
