@@ -253,7 +253,7 @@ export const EventModal = (): JSX.Element => {
       case 2: // Chat
         return (
           <Fragment>
-            <EventChat />
+            <EventChat partOfEvent={partOfEvent} />
           </Fragment>
         );
 

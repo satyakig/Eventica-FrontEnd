@@ -7,11 +7,9 @@ import { DB_PATHS, getDb } from 'lib/Firebase';
 import { EventCommentType } from 'redux/models/EventModel';
 import CommentCard from './CommentCard';
 import SubmitCommentCard from './SubmitCommentCard';
-import { useLoggedIn } from '../../lib/useLoggedIn';
 
-export const EventChat = (): JSX.Element => {
+export const EventChat = (props: { partOfEvent: boolean }): JSX.Element => {
   const classes = eventChatStyles();
-  const loggedIn = useLoggedIn();
 
   const eventId = useSelector((state: ReduxState) => {
     return state.events.selectedEvent;
@@ -44,7 +42,7 @@ export const EventChat = (): JSX.Element => {
 
   return (
     <Grid container={true} alignItems="stretch">
-      {loggedIn ? (
+      {props.partOfEvent ? (
         <Grid item={true} xs={12} className={classes.gridItem}>
           <SubmitCommentCard eventId={eventId} />
         </Grid>

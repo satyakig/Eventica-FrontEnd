@@ -24,7 +24,9 @@ const AuthContainer = (): JSX.Element | null => {
           .doc(user.uid)
           .onSnapshot(
             (doc) => {
-              dispatch(updateUserFieldsAction(doc.data() as UserType));
+              if (doc.exists) {
+                dispatch(updateUserFieldsAction(doc.data() as UserType));
+              }
             },
             (error) => {
               console.error(error);
