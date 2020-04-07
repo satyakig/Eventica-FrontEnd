@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment-timezone';
-import { EventCommentType } from '../../redux/models/EventModel';
+import { EventCommentType } from 'redux/models/EventModel';
 import {
   Avatar,
   Button,
@@ -18,19 +18,19 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { commentCardStyles } from './CommentCard.styles';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { useDispatch, useSelector } from 'react-redux';
-import { ReduxState } from '../../redux/combinedReducer';
-import { uploadPhotoToFirestore } from '../../lib/Firebase';
+import { ReduxState } from 'redux/combinedReducer';
+import { uploadPhotoToFirestore } from 'lib/Firebase';
 import {
   deleteComment,
   DeleteCommentType,
   updateComment,
   UpdateCommentType,
-} from '../../lib/CommentRequests';
+} from 'lib/CommentRequests';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { commentCardStyles } from './CommentCard.styles';
 
 const COMMENT_TIME_FORMAT = 'MMM D YYYY, h:mm a';
 const EDIT_COMMENT_PHOTO = 'EDIT_COMMENT_PHOTO';

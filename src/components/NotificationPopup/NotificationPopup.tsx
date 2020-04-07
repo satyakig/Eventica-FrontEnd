@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { makeStyles, Snackbar } from '@material-ui/core';
+import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment-timezone';
 import { ReduxState } from 'redux/combinedReducer';
 import { NotificationModel } from 'redux/models/NotificationModel';
+import { setNetworkError } from 'redux/actions/AppStateActions';
 import { notificationPopupStyles } from './NotificationPopup.styles';
-import { setNetworkError } from '../../redux/actions/AppStateActions';
 
 function usePrevious(value: number): number {
   const ref = useRef<number>(0);
@@ -21,10 +21,8 @@ function usePrevious(value: number): number {
 const AUTO_HIDE = 4 * 1000; // 4 secs
 const MAX_TIME = 30 * 1000; // 30 secs
 
-const useStyles = makeStyles(notificationPopupStyles);
-
 const NotificationPopup = (): JSX.Element => {
-  const classes = useStyles();
+  const classes = notificationPopupStyles();
   const dispatch = useDispatch();
   const notifications = useSelector((state: ReduxState) => {
     return state.notifications;

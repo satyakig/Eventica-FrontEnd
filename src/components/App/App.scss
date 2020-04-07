@@ -45,28 +45,6 @@ body {
 
   font-family: Poppins, sans-serif;
 
-  @media only screen and (max-width: 450px) {
-    .MuiDialog-paper {
-      margin-left: 0;
-      margin-right: 0;
-    }
-
-    .MuiDialog-paperFullWidth {
-      width: 100%;
-    }
-  }
-
-  @media only screen and (max-height: 800px) {
-    .MuiDialog-paper {
-      margin-top: 0;
-      margin-bottom: 0;
-    }
-
-    .MuiDialog-paperScrollPaper {
-      max-height: 100%;
-    }
-  }
-
   .MuiPickersToolbar-toolbar,
   .MuiPickerDTTabs-tabs,
   .MuiPickersCalendarHeader-iconButton,

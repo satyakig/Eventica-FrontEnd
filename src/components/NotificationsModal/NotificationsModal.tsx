@@ -17,7 +17,7 @@ import moment from 'moment-timezone';
 import { ReduxState } from 'redux/combinedReducer';
 import { NotificationModel } from 'redux/models/NotificationModel';
 import { DB_PATHS, getDb } from 'lib/Firebase';
-import { profileModalStyles } from './NotificationModal.styles';
+import { notificationModalStyles } from './NotificationModal.styles';
 
 const NOTIF_TIME_FORMAT = 'MMM D YYYY, h:mm a';
 
@@ -27,7 +27,7 @@ interface NotificationsModalProps {
 }
 
 const NotificationModal = (props: NotificationsModalProps) => {
-  const classes = profileModalStyles();
+  const classes = notificationModalStyles();
 
   const notifications = useSelector((state: ReduxState) => {
     return state.notifications;

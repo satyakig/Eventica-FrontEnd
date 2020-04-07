@@ -1,6 +1,6 @@
-import { createStyles } from '@material-ui/core';
+import { createStyles, makeStyles } from '@material-ui/core';
 
-export const notificationPopupStyles = () => {
+export const notificationPopupStyles = makeStyles(() => {
   return createStyles({
     container: {
       position: 'absolute',
@@ -22,4 +22,4 @@ export const notificationPopupStyles = () => {
       userSelect: 'none',
     },
   });
-};
+});

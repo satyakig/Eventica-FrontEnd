@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import {
   AppBar,
   Toolbar,
@@ -30,10 +29,8 @@ import ProfileModal from '../ProfileModal/ProfileModal';
 import CreateEvent from '../CreateEvent/CreateEvent';
 import NotificationModal from '../NotificationsModal/NotificationsModal';
 
-const useStyles = makeStyles(navbarStyles);
-
 const Navbar = (): JSX.Element => {
-  const classes = useStyles();
+  const classes = navbarStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openCreateEvent, setOpenCreateEvent] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
