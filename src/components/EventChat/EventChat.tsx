@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { eventChatStyles } from './EventChat.styles';
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
 import { DB_PATHS, getDb } from 'lib/Firebase';
@@ -47,13 +47,22 @@ export const EventChat = (props: { partOfEvent: boolean }): JSX.Element => {
           <SubmitCommentCard eventId={eventId} />
         </Grid>
       ) : null}
-      {eventComments.map((comment, index) => {
-        return (
-          <Grid item={true} key={index} xs={12} className={classes.gridItem}>
-            <CommentCard eventId={eventId} comment={comment} />
-          </Grid>
-        );
-      })}
+      {console.log(eventComments)}
+      {eventComments.length !== 0 ? (
+        eventComments.map((comment, index) => {
+          return (
+            <Grid item={true} key={index} xs={12} className={classes.gridItem}>
+              <CommentCard eventId={eventId} comment={comment} />
+            </Grid>
+          );
+        })
+      ) : (
+        <Grid item={true} xs={12} className={classes.gridItem}>
+          <Typography variant="body1" gutterBottom={true} align="center">
+            No comments found. Be the first to post!
+          </Typography>
+        </Grid>
+      )}
     </Grid>
   );
 };
