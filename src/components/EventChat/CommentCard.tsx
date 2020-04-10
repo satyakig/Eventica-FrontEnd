@@ -77,6 +77,10 @@ const CommentCard = (props: EventCardProps) => {
     }
   }
 
+  function removePhoto() {
+    setCommentPhotoURL('');
+  }
+
   const handleCommentPictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     uploadPhotoToFirestore(e, user.uid).then((link) => {
       setCommentPhotoURL(link);
@@ -192,6 +196,14 @@ const CommentCard = (props: EventCardProps) => {
             <Grid container direction="row" justify="space-between" alignItems="center">
               <Button size="small" color="primary" onClick={uploadPhoto}>
                 {!commentPhotoURL ? 'Add Photo' : 'Update Photo'}
+              </Button>
+              {commentPhotoURL ? (
+                <Button size="small" color="primary" onClick={removePhoto}>
+                  Remove Photo
+                </Button>
+              ) : null}
+              <Button size="small" color="primary" onClick={toggleEditMode}>
+                Cancel
               </Button>
               <Button
                 size="small"
