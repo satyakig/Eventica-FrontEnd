@@ -31,6 +31,7 @@ import { EVENT_TYPE_LABELS, getEventType } from 'redux/models/EventModel';
 import { isValidEvent } from 'validation/EventValidation';
 import { createEventStyles } from './CreateEvent.styles';
 import { isSuperExtraSmallDown } from 'lib/useBreakPoints';
+import { setNetworkError } from 'redux/actions/AppStateActions';
 
 const EVENT_TIME_FORMAT = 'MMM D, h:mm a';
 const SMALL_FORMAT = 'D/MM H:m';
@@ -122,9 +123,17 @@ export default function CreateEvent(props: CreateEventProps) {
   });
 
   const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    uploadPhotoToFirestore(e, user.uid).then((link) => {
-      setPhotoURL(link);
-    });
+    const filelist = e.target.files;
+    const filetype = filelist ? filelist[0].type.substring(0, 5) : 'error';
+    if (filetype === 'image') {
+      uploadPhotoToFirestore(e, user.uid).then((link) => {
+        setPhotoURL(link);
+      });
+    } else {
+      dispatch(setNetworkError('Invalid Picture Format'));
+      setPhotoURL('');
+      e.target.value = '';
+    }
   };
 
   const onSubmit = () => {
