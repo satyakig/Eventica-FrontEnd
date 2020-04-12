@@ -20,6 +20,7 @@ import { ReduxState } from 'redux/combinedReducer';
 import { updateUser } from 'lib/UserRequests';
 import { uploadPhotoToFirestore } from 'lib/Firebase';
 import { profileModalStyles } from './ProfileModal.styles';
+import { setNetworkError } from 'redux/actions/AppStateActions';
 
 const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
 
@@ -56,9 +57,17 @@ const ProfileModal = (props: ProfileProps) => {
   }
 
   const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    uploadPhotoToFirestore(e, user.uid).then((link) => {
-      setPhotoUrl(link);
-    });
+    const filelist = e.target.files;
+    const filetype = filelist ? filelist[0].type.substring(0, 5) : 'error';
+    if (filetype === 'image') {
+      uploadPhotoToFirestore(e, user.uid).then((link) => {
+        setPhotoUrl(link);
+      });
+    } else {
+      dispatch(setNetworkError('Invalid Picture Format'));
+      setPhotoUrl(user.photoURL);
+      e.target.value = '';
+    }
   };
 
   function handleSaveChanges() {
