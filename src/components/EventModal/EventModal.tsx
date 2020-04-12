@@ -39,6 +39,7 @@ import { eventModalStyles } from './EventModal.styles';
 import { EventParticipants } from './EventParticipants';
 import EventOwner from './EventOwner';
 import { EventChat } from '../EventChat/EventChat';
+import { setNetworkError } from 'redux/actions/AppStateActions';
 
 const FILE_UPLOAD_EL = 'FILE_UPLOAD_EL';
 
@@ -95,9 +96,17 @@ export const EventModal = (): JSX.Element => {
   }
 
   const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    uploadPhotoToFirestore(e, user.uid).then((link) => {
-      setPhotoURL(link);
-    });
+    const filelist = e.target.files;
+    const filetype = filelist ? filelist[0].type.substring(0, 5) : 'error';
+    if (filetype === 'image') {
+      uploadPhotoToFirestore(e, user.uid).then((link) => {
+        setPhotoURL(link);
+      });
+    } else {
+      dispatch(setNetworkError('Invalid Picture Format'));
+      setPhotoURL(event.photoURL);
+      e.target.value = '';
+    }
   };
 
   function handleSubmit() {
