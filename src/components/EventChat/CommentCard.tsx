@@ -182,6 +182,7 @@ const CommentCard = (props: EventCardProps) => {
             type="file"
             onChange={handleCommentPictureChange}
             style={{ display: 'none' }}
+            inputProps={{ accept: 'image/*' }}
           />
           <TextField
             value={commentMsg}

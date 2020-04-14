@@ -308,6 +308,7 @@ export const EventModal = (): JSX.Element => {
           type="file"
           onChange={handlePictureChange}
           style={{ display: 'none' }}
+          inputProps={{ accept: 'image/*' }}
         />
       ) : null}
       <CardMedia

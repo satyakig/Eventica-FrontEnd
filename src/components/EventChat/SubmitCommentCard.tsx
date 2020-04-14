@@ -76,6 +76,7 @@ const SubmitCommentCard = (props: SubmitCommentCardProps) => {
         type="file"
         onChange={handleCommentPictureChange}
         style={{ display: 'none' }}
+        inputProps={{ accept: 'image/*' }}
       />
       <TextField
         value={commentMsg}

@@ -102,6 +102,7 @@ const ProfileModal = (props: ProfileProps) => {
         type="file"
         onChange={handlePictureChange}
         style={{ display: 'none' }}
+        inputProps={{ accept: 'image/*' }}
       />
       <Container maxWidth="lg">
         <DialogTitle>

@@ -324,6 +324,7 @@ export default function CreateEvent(props: CreateEventProps) {
               type="file"
               onChange={handlePictureChange}
               fullWidth={true}
+              inputProps={{ accept: 'image/*' }}
             />
           </Grid>
 
