@@ -24,8 +24,8 @@ import {
   USER_EVENT_STATUS_LABELS,
 } from 'redux/models/EventModel';
 import { updateUserEvent } from 'lib/UserEventRequests';
-import { useLoggedIn } from 'lib/useLoggedIn';
-import { isSuperExtraSmallDown } from 'lib/useBreakPoints';
+import { useLoggedIn } from 'lib/UseLoggedIn';
+import { isSuperExtraSmallDown } from 'lib/UseBreakPoints';
 import { ReduxState } from 'redux/combinedReducer';
 import CheckoutDialog from '../Checkout/Checkout';
 

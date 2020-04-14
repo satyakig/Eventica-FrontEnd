@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
 import { ReactComponent as GoogleLogo } from 'assets/google.svg';
 import { getAuth, makeLoginPopup } from 'lib/Firebase';
-import { isSmallDown } from 'lib/useBreakPoints';
+import { isSmallDown } from 'lib/UseBreakPoints';
 import { navbarStyles } from './NavBar.styles';
 import { setRouteAction, setSearching, setSearchTermAction } from 'redux/actions/AppStateActions';
 import { HOMEPAGE, MANAGE_EVENTS } from 'redux/models/AppStateModel';

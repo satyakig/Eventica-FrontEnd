@@ -34,7 +34,7 @@ import { ReduxState } from 'redux/combinedReducer';
 import { setSearching } from 'redux/actions/AppStateActions';
 import EventCard from '../EventCard/EventCard';
 import { eventGridStyles } from './EventGrid.styles';
-import { isSmallDown } from 'lib/useBreakPoints';
+import { isSmallDown } from 'lib/UseBreakPoints';
 
 const EVENT_TIME_FORMAT = 'MMMM Do, YYYY';
 

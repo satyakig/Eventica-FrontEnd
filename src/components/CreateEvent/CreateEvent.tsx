@@ -30,7 +30,7 @@ import { CreateEventType, createEvent } from 'lib/EventRequests';
 import { EVENT_TYPE_LABELS, getEventType } from 'redux/models/EventModel';
 import { isValidEvent } from 'validation/EventValidation';
 import { createEventStyles } from './CreateEvent.styles';
-import { isSuperExtraSmallDown } from 'lib/useBreakPoints';
+import { isSuperExtraSmallDown } from 'lib/UseBreakPoints';
 import { setNetworkError } from 'redux/actions/AppStateActions';
 
 const EVENT_TIME_FORMAT = 'MMM D, h:mm a';
