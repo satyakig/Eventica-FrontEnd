@@ -57,9 +57,9 @@ const ProfileModal = (props: ProfileProps) => {
   }
 
   const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const filelist = e.target.files;
-    const filetype = filelist ? filelist[0].type.substring(0, 5) : 'error';
-    if (filetype === 'image') {
+    const fileList = e.target.files;
+    const fileType = fileList ? fileList[0].type.substring(0, 5) : 'error';
+    if (fileType === 'image') {
       uploadPhotoToFirestore(e, user.uid).then((link) => {
         setPhotoUrl(link);
       });

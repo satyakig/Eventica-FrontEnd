@@ -15,6 +15,7 @@ import { ReduxState } from 'redux/combinedReducer';
 import { uploadPhotoToFirestore } from 'lib/Firebase';
 import { createComment, CreateCommentType } from 'lib/CommentRequests';
 import { commentCardStyles } from './CommentCard.styles';
+import { setNetworkError } from '../../redux/actions/AppStateActions';
 
 const SUBMIT_COMMENT_PHOTO = 'SUBMIT_COMMENT_PHOTO';
 
@@ -41,9 +42,17 @@ const SubmitCommentCard = (props: SubmitCommentCardProps) => {
   }
 
   const handleCommentPictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    uploadPhotoToFirestore(e, user.uid).then((link) => {
-      setCommentPhotoURL(link);
-    });
+    const fileList = e.target.files;
+    const fileType = fileList ? fileList[0].type.substring(0, 5) : 'error';
+    if (fileType === 'image') {
+      uploadPhotoToFirestore(e, user.uid).then((link) => {
+        setCommentPhotoURL(link);
+      });
+    } else {
+      dispatch(setNetworkError('Invalid Picture Format'));
+      setCommentPhotoURL(user.photoURL);
+      e.target.value = '';
+    }
   };
 
   const handleCommentMsgChange = (event: React.ChangeEvent<HTMLInputElement>) => {

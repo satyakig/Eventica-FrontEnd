@@ -31,6 +31,7 @@ import {
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { commentCardStyles } from './CommentCard.styles';
+import { setNetworkError } from '../../redux/actions/AppStateActions';
 
 const COMMENT_TIME_FORMAT = 'MMM D YYYY, h:mm a';
 const EDIT_COMMENT_PHOTO = 'EDIT_COMMENT_PHOTO';
@@ -82,9 +83,17 @@ const CommentCard = (props: EventCardProps) => {
   }
 
   const handleCommentPictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    uploadPhotoToFirestore(e, user.uid).then((link) => {
-      setCommentPhotoURL(link);
-    });
+    const fileList = e.target.files;
+    const fileType = fileList ? fileList[0].type.substring(0, 5) : 'error';
+    if (fileType === 'image') {
+      uploadPhotoToFirestore(e, user.uid).then((link) => {
+        setCommentPhotoURL(link);
+      });
+    } else {
+      dispatch(setNetworkError('Invalid Picture Format'));
+      setCommentPhotoURL(user.photoURL);
+      e.target.value = '';
+    }
   };
 
   const handleCommentMsgChange = (event: React.ChangeEvent<HTMLInputElement>) => {
