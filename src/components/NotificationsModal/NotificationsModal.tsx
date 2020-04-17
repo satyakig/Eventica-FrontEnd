@@ -46,6 +46,7 @@ const NotificationModal = (props: NotificationsModalProps) => {
 
   return (
     <Dialog
+      className={classes.dialog}
       open={props.open}
       onClose={props.handleClose}
       disableBackdropClick={false}

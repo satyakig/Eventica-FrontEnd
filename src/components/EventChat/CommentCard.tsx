@@ -30,8 +30,8 @@ import {
 } from 'lib/CommentRequests';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { setNetworkError } from 'redux/actions/AppStateActions';
 import { commentCardStyles } from './CommentCard.styles';
-import { setNetworkError } from '../../redux/actions/AppStateActions';
 
 const COMMENT_TIME_FORMAT = 'MMM D YYYY, h:mm a';
 const EDIT_COMMENT_PHOTO = 'EDIT_COMMENT_PHOTO';

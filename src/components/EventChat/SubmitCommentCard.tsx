@@ -14,8 +14,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from 'redux/combinedReducer';
 import { uploadPhotoToFirestore } from 'lib/Firebase';
 import { createComment, CreateCommentType } from 'lib/CommentRequests';
+import { setNetworkError } from 'redux/actions/AppStateActions';
 import { commentCardStyles } from './CommentCard.styles';
-import { setNetworkError } from '../../redux/actions/AppStateActions';
 
 const SUBMIT_COMMENT_PHOTO = 'SUBMIT_COMMENT_PHOTO';
 
