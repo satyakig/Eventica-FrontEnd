@@ -82,17 +82,22 @@ export default function EventOwner(props: EventOwnerProps) {
 
   function handleScan(data: string | null) {
     if (data) {
-      const ticketData = JSON.parse(data);
+      try {
+        const ticketData = JSON.parse(data);
 
-      const scannedUserArr = eventUsers.filter((user: EventUserType) => {
-        return user.uid === ticketData.eventUser && user.eid === ticketData.eventId && user.paid;
-      });
-      if (scannedUserArr.length > 0) {
-        setScannedUser(scannedUserArr[0].name);
-        setScannedUID(scannedUserArr[0].uid);
+        const scannedUserArr = eventUsers.filter((user: EventUserType) => {
+          return user.uid === ticketData.eventUser && user.eid === ticketData.eventId && user.paid;
+        });
 
-        setScanSuccessAlertOpen(true);
-      } else {
+        if (scannedUserArr.length > 0) {
+          setScannedUser(scannedUserArr[0].name);
+          setScannedUID(scannedUserArr[0].uid);
+
+          setScanSuccessAlertOpen(true);
+        } else {
+          setScanFailAlertOpen(true);
+        }
+      } catch (err) {
         setScanFailAlertOpen(true);
       }
     }
