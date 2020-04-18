@@ -39,7 +39,7 @@ export function getStorage() {
 
 export function makeLoginPopup() {
   return getAuth()
-    .signInWithPopup(new app.auth.GoogleAuthProvider())
+    .signInWithRedirect(new app.auth.GoogleAuthProvider())
     .then();
 }
 

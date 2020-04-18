@@ -231,8 +231,8 @@ const EventDetails = (props: any): JSX.Element => {
       <Grid item={true} xs={6}>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <DateTimePicker
-            format={isSXs ? SMALL_FORMAT : EVENT_TIME_FORMAT}
             className={classes.commonInputStyles}
+            format={isSXs ? SMALL_FORMAT : EVENT_TIME_FORMAT}
             inputVariant="outlined"
             value={moment(startDate)}
             onChange={(date) => {
@@ -248,10 +248,13 @@ const EventDetails = (props: any): JSX.Element => {
       <Grid item={true} xs={6}>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <DateTimePicker
-            format={isSXs ? SMALL_FORMAT : EVENT_TIME_FORMAT}
             className={classes.commonInputStyles}
+            format={isSXs ? SMALL_FORMAT : EVENT_TIME_FORMAT}
             inputVariant="outlined"
             value={moment(endDate)}
+            minDate={moment(startDate)}
+            minDateMessage="Event end must be after event start"
+            strictCompareDates={true}
             onChange={(date) => {
               setEndDate(date ? date.valueOf() : moment().valueOf());
             }}
@@ -339,6 +342,7 @@ const EventDetails = (props: any): JSX.Element => {
               onClick={attendingClick}
               variant="outlined"
               fullWidth={true}
+              disabled={eventStatus === EVENT_STATUS_LABELS[2]}
             >
               {USER_EVENT_STATUS_LABELS[1]}
             </Button>

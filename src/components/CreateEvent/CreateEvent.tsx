@@ -274,7 +274,9 @@ export default function CreateEvent(props: CreateEventProps) {
                 format={isSXs ? SMALL_FORMAT : EVENT_TIME_FORMAT}
                 inputVariant="outlined"
                 value={moment(startDate)}
+                strictCompareDates={true}
                 disablePast={true}
+                minDateMessage="Event start has to be in the future"
                 onChange={(date) => {
                   setStartDate(date ? date.valueOf() : moment().valueOf());
                 }}
@@ -291,7 +293,9 @@ export default function CreateEvent(props: CreateEventProps) {
                 format={isSXs ? SMALL_FORMAT : EVENT_TIME_FORMAT}
                 inputVariant="outlined"
                 value={moment(endDate)}
-                disablePast={true}
+                minDate={moment(startDate)}
+                minDateMessage="Event end must be after event start"
+                strictCompareDates={true}
                 onChange={(date) => {
                   setEndDate(date ? date.valueOf() : moment().valueOf());
                 }}
@@ -317,7 +321,7 @@ export default function CreateEvent(props: CreateEventProps) {
           </Grid>
 
           <Grid item={true} xs={6}>
-            <InputLabel>Upload Event Picture</InputLabel>
+            <InputLabel>Upload Picture</InputLabel>
             <Input
               className={classes.upload}
               disableUnderline={true}

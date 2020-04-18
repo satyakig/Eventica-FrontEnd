@@ -52,7 +52,8 @@ export const createEventStyles = makeStyles(({ spacing }: Theme) => {
     },
     upload: {
       '& input': {
-        cursor: 'pointer !important',
+        height: '100%',
+        cursor: 'pointer',
       },
     },
     title: {

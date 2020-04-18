@@ -50,7 +50,7 @@ export const navbarStyles = makeStyles(
         },
       },
       searchIcon: {
-        width: spacing(7),
+        width: spacing(5),
         height: '100%',
         position: 'absolute',
         pointerEvents: 'none',
@@ -64,7 +64,7 @@ export const navbarStyles = makeStyles(
         width: '100%',
       },
       inputInput: {
-        padding: spacing(1, 1, 1, 7),
+        padding: spacing(1, 1, 1, 5),
         transition: transitions.create('width'),
       },
       end: {
@@ -81,7 +81,8 @@ export const navbarStyles = makeStyles(
       },
       smallEvent: {
         [breakpoints.down('xs')]: {
-          paddingRight: 0,
+          paddingRight: '6px',
+          paddingLeft: '6px',
         },
       },
       listIcon: {

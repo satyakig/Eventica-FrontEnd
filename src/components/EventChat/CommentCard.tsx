@@ -101,6 +101,13 @@ const CommentCard = (props: EventCardProps) => {
   };
 
   function toggleEditMode() {
+    if (editMode) {
+      // Reset local edits
+      setComment(props.comment);
+      setCommentMsg(props.comment.message);
+      setCommentPhotoURL(props.comment.photoURL);
+    }
+
     setEditMode(!editMode);
     handleClose();
   }

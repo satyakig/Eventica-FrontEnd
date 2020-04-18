@@ -47,7 +47,6 @@ export const EventChat = (props: { partOfEvent: boolean }): JSX.Element => {
           <SubmitCommentCard eventId={eventId} />
         </Grid>
       ) : null}
-      {console.log(eventComments)}
       {eventComments.length !== 0 ? (
         eventComments.map((comment, index) => {
           return (
