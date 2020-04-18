@@ -10,13 +10,17 @@
 
 ### Setup
 
-- Install NodeJS v12 from https://nodejs.org/en/download/releases/
+- Install NodeJS v12 from [https://nodejs.org/en/download/releases/](https://nodejs.org/en/download/releases/)
 - Clone the GitHub repo
-- Run `npm ci` or `npm install` to install all the dependencies
+- Use a terminal and navigate to the project root directory
+- Run `npm install` or `npm ci` to install the project dependencies
 - Run `npm start` to start the application locally
 - Application will start on `https://localhost:3000`
-- This app will automatically communicate with the backend server which is deployed at https://seng-513.appspot.com/.
-  But it can be configured to use a local server instead, by changing `line #20` in `src/lib/HttpRequest.ts` to `http://localhost:3001/` instead
+- Note:
+
+  The frontend application is configured to interact with the cloud Node.js server.
+  So it is not required to run the server locally to test the client application on localhost.
+  However, it can be configured to use a local server instead, by changing `line #20` in `src/lib/HttpRequest.ts` to `http://localhost:3001/` instead.
 
 ### IDE Integration
 
