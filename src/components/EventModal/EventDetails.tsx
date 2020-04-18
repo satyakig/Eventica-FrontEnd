@@ -391,6 +391,8 @@ const EventDetails = (props: any): JSX.Element => {
         <Grid container={true} item={true} xs={12} justify="center">
           <QRCode
             renderAs="svg"
+            size={300}
+            includeMargin={true}
             value={JSON.stringify({
               eventUser: user.uid,
               eventId,
