@@ -104,16 +104,14 @@ export default function EventOwner(props: EventOwnerProps) {
   }
 
   function handleCheckin() {
-    try {
-      dispatch(
-        checkinUser({
-          eid: eventId,
-          uid: scannedUID,
-        }),
-      );
-    } catch (err) {
-      setScanFailAlertOpen(true);
-    }
+    setScanSuccessAlertOpen(false);
+
+    dispatch(
+      checkinUser({
+        eid: eventId,
+        uid: scannedUID,
+      }),
+    );
 
     handleClose();
   }
