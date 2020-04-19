@@ -94,9 +94,7 @@ const Navbar = (): JSX.Element => {
 
   function logout() {
     handleClose();
-    getAuth()
-      .signOut()
-      .then();
+    getAuth().signOut().then();
   }
 
   function updateSearch(event: React.ChangeEvent<HTMLInputElement>) {

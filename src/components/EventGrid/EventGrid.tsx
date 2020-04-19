@@ -137,7 +137,7 @@ const EventGrid = () => {
       });
     }
 
-    if (searching || !isHomepage) {
+    if (searching || !isHomepage || isSmDown) {
       filtered = filtered.filter((event) => {
         return event.fee >= priceRange[0] && event.fee <= priceRange[1];
       });
@@ -145,12 +145,8 @@ const EventGrid = () => {
       if (selectedDate) {
         filtered = filtered.filter((event) => {
           return (
-            moment(event.start)
-              .startOf('day')
-              .valueOf() ===
-            moment(selectedDate)
-              .startOf('day')
-              .valueOf()
+            moment(event.start).startOf('day').valueOf() ===
+            moment(selectedDate).startOf('day').valueOf()
           );
         });
       }
@@ -199,6 +195,7 @@ const EventGrid = () => {
     eventStatus,
     userEventStatus,
     isHomepage,
+    isSmDown,
   ]);
 
   const showSideBarClose = !isSmDown && isHomepage;

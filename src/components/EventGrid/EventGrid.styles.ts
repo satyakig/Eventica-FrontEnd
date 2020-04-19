@@ -2,7 +2,7 @@ import { createStyles, makeStyles } from '@material-ui/styles';
 import { NAV_BAR_HEIGHT } from 'assets/Styles';
 import { Theme } from '@material-ui/core';
 
-export const eventGridStyles = makeStyles(({ spacing, zIndex }: Theme) => {
+export const eventGridStyles = makeStyles(({ spacing }: Theme) => {
   return createStyles({
     container: {
       overflow: 'hidden',
@@ -13,7 +13,7 @@ export const eventGridStyles = makeStyles(({ spacing, zIndex }: Theme) => {
     },
     drawerContainer: {
       paddingRight: '8px',
-      height: `calc(100vh - ${NAV_BAR_HEIGHT} - 5px)`,
+      height: `calc(${window.innerHeight}px - ${NAV_BAR_HEIGHT})`,
       overflowY: 'auto',
     },
     drawer: {
@@ -22,7 +22,7 @@ export const eventGridStyles = makeStyles(({ spacing, zIndex }: Theme) => {
     },
     grid: {
       margin: '0 0 16px 0 !important',
-      height: `calc(100vh - ${NAV_BAR_HEIGHT})`,
+      height: `calc(${window.innerHeight}px - ${NAV_BAR_HEIGHT})`,
       overflowY: 'auto',
     },
     width100: {

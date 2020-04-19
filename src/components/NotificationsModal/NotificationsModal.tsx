@@ -35,12 +35,9 @@ const NotificationModal = (props: NotificationsModalProps) => {
 
   function dismissNotification(notif: NotificationModel) {
     return () => {
-      getDb()
-        .collection(DB_PATHS.NOTIFICATIONS)
-        .doc(notif.id)
-        .update({
-          seen: true,
-        });
+      getDb().collection(DB_PATHS.NOTIFICATIONS).doc(notif.id).update({
+        seen: true,
+      });
     };
   }
 

@@ -38,9 +38,7 @@ export function getStorage() {
 }
 
 export function makeLoginPopup() {
-  return getAuth()
-    .signInWithRedirect(new app.auth.GoogleAuthProvider())
-    .then();
+  return getAuth().signInWithRedirect(new app.auth.GoogleAuthProvider()).then();
 }
 
 export function uploadPhotoToFirestore(
