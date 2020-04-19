@@ -85,19 +85,27 @@ export default function EventOwner(props: EventOwnerProps) {
       try {
         const ticketData = JSON.parse(data);
 
-        const scannedUserArr = eventUsers.filter((user: EventUserType) => {
-          return user.uid === ticketData.eventUser && user.eid === ticketData.eventId && user.paid;
+        const ticket = eventUsers.find((user: EventUserType) => {
+          return (
+            user.uid === ticketData.uid &&
+            user.eid === ticketData.eventId &&
+            user.paid &&
+            !user.checkedIn
+          );
         });
 
-        if (scannedUserArr.length > 0) {
-          setScannedUser(scannedUserArr[0].name);
-          setScannedUID(scannedUserArr[0].uid);
+        if (ticket) {
+          setScannedUser(ticket.name);
+          setScannedUID(ticket.uid);
 
           setScanSuccessAlertOpen(true);
+          setScanFailAlertOpen(false);
         } else {
+          setScanSuccessAlertOpen(false);
           setScanFailAlertOpen(true);
         }
       } catch (err) {
+        setScanSuccessAlertOpen(false);
         setScanFailAlertOpen(true);
       }
     }
@@ -105,6 +113,7 @@ export default function EventOwner(props: EventOwnerProps) {
 
   function handleCheckin() {
     setScanSuccessAlertOpen(false);
+    setScanFailAlertOpen(false);
 
     dispatch(
       checkinUser({
@@ -228,19 +237,19 @@ export default function EventOwner(props: EventOwnerProps) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} variant="outlined" color="secondary">
             Cancel
           </Button>
-          <Button onClick={handleCheckin} color="primary">
+          <Button onClick={handleCheckin} variant="outlined" color="secondary">
             Yes
           </Button>
         </DialogActions>
       </Dialog>
       <Dialog open={scanFailAlertOpen} onClose={handleClose}>
         <DialogTitle>Invalid Ticket</DialogTitle>
-        <DialogContent>The ticket that was scanned is invalid.</DialogContent>
+        <DialogContent>The ticket is invalid or it has already been used.</DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} variant="outlined" color="secondary">
             Ok
           </Button>
         </DialogActions>

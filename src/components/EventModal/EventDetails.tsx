@@ -393,7 +393,7 @@ const EventDetails = (props: any): JSX.Element => {
             size={300}
             includeMargin={true}
             value={JSON.stringify({
-              eventUser: user.uid,
+              uid: user.uid,
               eventId,
               paid,
               attending,
