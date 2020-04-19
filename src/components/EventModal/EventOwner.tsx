@@ -232,7 +232,7 @@ export default function EventOwner(props: EventOwnerProps) {
             Cancel
           </Button>
           <Button onClick={handleCheckin} color="primary">
-            Check In user
+            Yes
           </Button>
         </DialogActions>
       </Dialog>
