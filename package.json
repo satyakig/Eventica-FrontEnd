@@ -55,7 +55,7 @@
     "firebase": "7.14.1",
     "lodash": "4.17.15",
     "moment": "2.24.0",
-    "moment-timezone": "0.5.28",
+    "moment-timezone": "0.5.35",
     "qrcode.react": "1.0.0",
     "react": "16.13.1",
     "react-app-polyfill": "1.0.6",
